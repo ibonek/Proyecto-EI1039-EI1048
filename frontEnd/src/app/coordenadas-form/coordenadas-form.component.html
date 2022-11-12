@@ -1,0 +1,28 @@
+<div class="card my-5">
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()" #coordenadasForm="ngForm">
+      <div class="form-group">
+        <label for="latitud">Latitud</label>
+        <input type="text" [(ngModel)]="coordenadas.latitud"
+               class="form-control"
+               id="latitud"
+               name="latitud"
+               placeholder="Introduce la Latitud"
+               required #name="ngModel">
+      </div>
+      <div [hidden]="!name.pristine" class="alert alert-danger">Latitud is required</div>
+      <div class="form-group">
+        <label for="longitud">longitud</label>
+        <input type="text" [(ngModel)]="coordenadas.longitud"
+               class="form-control"
+               id="longitud"
+               name="longitud"
+               placeholder="Introduce la Longitud"
+               required #longitud="ngModel">
+      </div>
+      <div [hidden]="!name.pristine" class="alert alert-danger">Longitud is required</div>
+      <button type="submit" [disabled]="!coordenadasForm.form.valid"
+              class="btn btn-info">Submit</button>
+    </form>
+  </div>
+</div>

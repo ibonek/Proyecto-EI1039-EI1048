@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'frontEnd';
+
+  title: string;
+
+  constructor() {
+    this.title = 'Spring Boot - Angular Application';
+  }
 }
