@@ -22,4 +22,11 @@ public class GeoCodingServiceTest {
         locations.addByName(name);
         assertEquals(1, locations.getNumberOfLocations());
     }
+
+    @Test(expectedExceptions = IncorrectLocationException.class)
+    public void addLocationByNameInvalid() throws IncorrectLocationException {
+        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
+        LocationManager locations = new LocationManager(geoCodSrv);
+        String name = "Balencia";
+        locations.addByName(name);}
 }
