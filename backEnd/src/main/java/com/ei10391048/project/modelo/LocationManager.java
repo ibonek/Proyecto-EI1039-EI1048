@@ -19,4 +19,7 @@ public class LocationManager {
     public int getNumberOfLocations() {
         return -1;
     }
+
+    public void addByCoordinates(Location location) throws IncorrectLocationException {
+    }
 }
