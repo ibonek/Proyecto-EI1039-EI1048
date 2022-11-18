@@ -8,4 +8,8 @@ public class Location {
 
     public Location(double v, double v1) {
     }
+
+    public String getName() {
+        return null;
+    }
 }
