@@ -1,6 +1,7 @@
 package com.ei10391048.project;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.modelo.Coordinates;
 import com.ei10391048.project.modelo.GeoCodingService;
 import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.LocationManager;
@@ -63,20 +64,20 @@ public class GeoCodingServiceTest {
      * @throws IncorrectLocationException
      */
 
-    @Test
-    void validarToponimoValido() {
-        String toponimo="Valencia";
-        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
 
-        Location localizacion=geoCodSrv.getLocation(toponimo);
-        assertEquals(localizacion.getName(),"Valencia");
+    @Test
+    public void validarCoordenadasValidas(){
+        Coordinates coordenadas = new Coordinates(39.985,-0.049);
+        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
+        Location location= geoCodSrv.getLocation(coordenadas);
+        assertEquals(location.getCoordinates(),coordenadas);
     }
 
-    @Test(expectedExceptions = IncorrectLocationException.class)
-    void validarToponimoInvalido(){
-        String toponimo="Balencia";
+    @Test(expectedExceptions= IncorrectLocationException.class)
+    public void validarCoordenadasInvalidas(){
+        Coordinates coordenadas = new Coordinates(50000000000.5,0.25);
         GeoCodingService geoCodSrv = GeoCodingService.getInstance();
+        Location location= geoCodSrv.getLocation(coordenadas);
 
-        Location localizacion=geoCodSrv.getLocation(toponimo);
     }
 }

@@ -12,4 +12,8 @@ public class GeoCodingService {
     public Location getLocation(String toponimo) {
         return null;
     }
+
+    public Location getLocation(Coordinates coordinates) {
+        return null;
+    }
 }
