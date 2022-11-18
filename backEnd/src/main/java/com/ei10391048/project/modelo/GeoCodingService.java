@@ -8,4 +8,8 @@ public class GeoCodingService {
     public static GeoCodingService getInstance(){
         return null;
     }
+
+    public Location getLocation(String name){
+        return null;
+    }
 }
