@@ -1,6 +1,7 @@
 package com.ei10391048.project;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.modelo.Coordinates;
 import com.ei10391048.project.modelo.GeoCodingService;
 import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.LocationManager;
