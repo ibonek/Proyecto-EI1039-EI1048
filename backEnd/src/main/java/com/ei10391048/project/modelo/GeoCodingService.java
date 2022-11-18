@@ -12,4 +12,9 @@ public class GeoCodingService {
     public Location getLocation(String name){
         return null;
     }
+
+
+    public Location getLocation(Coordinates coordinates) {
+        return null;
+    }
 }

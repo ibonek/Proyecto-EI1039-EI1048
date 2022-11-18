@@ -57,6 +57,30 @@ public class GeoCodingServiceTest {
     }
 
     /**
+     * Test que comprueba la historia de usuario 9: Como usuario quiero validar las coordenadas geográficas de una ubicación disponible
+     * en los servicios API activos, con el fin de evaluar su utilidad.
+     *
+     * @throws IncorrectLocationException
+     */
+
+
+    @Test
+    public void validarCoordenadasValidas(){
+        Coordinates coordenadas = new Coordinates(39.985,-0.049);
+        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
+        Location location= geoCodSrv.getLocation(coordenadas);
+        assertEquals(location.getCoordinates(),coordenadas);
+    }
+
+    @Test(expectedExceptions= IncorrectLocationException.class)
+    public void validarCoordenadasInvalidas(){
+        Coordinates coordenadas = new Coordinates(50000000000.5,0.25);
+        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
+        Location location= geoCodSrv.getLocation(coordenadas);
+
+    }
+
+    /**
      * Test que comprueba la historia de usuario 8: Como usuario quiero validar el topónimo de una ubicación disponible
      * en los servicios API activos, con el fin de evaluar su utilidad.
      *
