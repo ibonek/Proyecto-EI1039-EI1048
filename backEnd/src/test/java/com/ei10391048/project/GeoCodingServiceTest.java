@@ -71,6 +71,12 @@ public class GeoCodingServiceTest {
         assertEquals(location.getName(),"Valencia");
     }
 
+    @Test(expectedExceptions = IncorrectLocationException.class)
+    void validarToponimoInvalido(){
+        String toponimo="Balencia";
+        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
 
+        Location localizacion=geoCodSrv.getLocation(toponimo);
+    }
 
 }
