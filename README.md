@@ -168,7 +168,7 @@ Project Link: [https://github.com/ibonek/Proyecto-EI1039-EI1048](https://github.
 [forks-url]: https://github.com/ibonek/Proyecto-EI1039-EI1048/network/members
 [stars-shield]: https://img.shields.io/github/stars/ibonek/Proyecto-EI1039-EI1048.svg?style=for-the-badge
 [stars-url]: https://github.com/ibonek/Proyecto-EI1039-EI1048/stargazers
-[issues-shield]: https://img.shields.io/ibonek/Proyecto-EI1039-EI1048/github_username/repo.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/ibonek/Proyecto-EI1039-EI1048.svg?style=for-the-badge
 [issues-url]: https://github.com/ibonek/Proyecto-EI1039-EI1048/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
