@@ -8,16 +8,16 @@
   <h3 align="center">Proyecto-EI1039-EI1048</h3>
 
   <p align="center">
-    project_description
+    Proyecto EI1039 EI1048, Created by Carlos Feliu, David del Rio and Monica Pitarch
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/ibonek/Proyecto-EI1039-EI1048"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://github.com/ibonek/Proyecto-EI1039-EI1048">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/ibonek/Proyecto-EI1039-EI1048/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/ibonek/Proyecto-EI1039-EI1048/issues">Request Feature</a>
   </p>
 </p>
 
@@ -86,7 +86,7 @@ This is an example of how to list things you need to use the software and how to
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/ibonek/Proyecto-EI1039-EI1048.git
    ```
 2. Install NPM packages
    ```sh
@@ -135,10 +135,12 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Contact
 
 Mónica Pitarch Ruiz - al394883@uji.es
+
 David del Río López - 
+
 Carlos Feliu Usó    - 
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/ibonek/Proyecto-EI1039-EI1048](https://github.com/ibonek/Proyecto-EI1039-EI1048)
 
 
 
