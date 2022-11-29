@@ -1,0 +1,33 @@
+.fromBody {
+  background: #c2185b;
+  width: 23rem;
+  height: 21.8rem;
+  margin: 2rem auto;
+}
+.fromInterno{
+  height: 19.8rem;
+  margin: auto;
+  padding: 2rem 2rem 0 2rem;
+  horiz-align: center;
+  vertical-align: center;
+}
+.title{
+  color: white;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.lavelInput{
+  width: fit-content;
+  text-align: left;
+}
+.lavelInput input{
+  padding: 0.3rem 0.3rem;
+  border: none;
+  box-shadow: 0.1rem 0.1rem 0 #303030;
+  width: 13rem;
+}
+.separator{
+  height: 0.5rem;
+}
+

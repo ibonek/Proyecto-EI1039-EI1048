@@ -4,6 +4,7 @@ body {
   background: #303030;
   padding-top: 4rem;
   margin: 0;
+  font-family: Arial, serif;
 }
 
 app-top-bar{
