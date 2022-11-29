@@ -2,9 +2,12 @@ package com.ei10391048.project.modelo;
 
 import javax.persistence.*;
 
-
+@Entity
 public class Location {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id", nullable = false)
+    private Long locationId;
     private String name;
 
     @OneToOne

@@ -1,23 +1,25 @@
 package com.ei10391048.project.controlador;
-
-import com.ei10391048.project.modelo.Location;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class FindingByNameController {
 
+    private final FindingByNameRepository findingByNameRepository;
 
-    @GetMapping("/")
-    public void p(){
-        System.out.println("aa");
+    public FindingByNameController(FindingByNameRepository findingByNameRepository) {
+        this.findingByNameRepository = findingByNameRepository;
+    }
+
+    @GetMapping("/addLocation")
+    public void test(){
+        System.out.println("pepe");
 
     }
 
-    @PostMapping("/")
-    public void find(@RequestBody Location location){
+    @PostMapping("/addLocation")
+    public void find(@RequestBody String location){
 
-        System.out.println(location.toString());
+        System.out.println(location);
     }
 }
