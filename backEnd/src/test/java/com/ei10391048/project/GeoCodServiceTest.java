@@ -70,7 +70,7 @@ public class GeoCodServiceTest {
     public void validarToponimoValido(){
         String toponimo="Valencia";
         GeoCodService geoCodSrv = new GeoCodService();
-        geoCodSrv.setSearch(new ByName());
+        geoCodSrv.setSearch(new ByName(toponimo));
         Location location = geoCodSrv.findLocation();
         assertEquals(location.getName(),"Valencia");
     }
@@ -79,6 +79,7 @@ public class GeoCodServiceTest {
     void validarToponimoInvalido(){
         String toponimo="Balencia";
         GeoCodService geoCodSrv = new GeoCodService();
+        geoCodSrv.setSearch(new ByName(toponimo));
         Location localizacion=geoCodSrv.findLocation();
     }
 
