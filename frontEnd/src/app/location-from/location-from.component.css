@@ -1,15 +1,14 @@
 .fromBody {
   background: #c2185b;
-  width: 23rem;
-  height: 21.8rem;
-  margin: 2rem auto;
+  width: 20rem;
+  height: 9rem;
+  margin: 4rem auto;
 }
 .fromInterno{
   height: 19.8rem;
   margin: auto;
-  padding: 2rem 2rem 0 2rem;
-  horiz-align: center;
-  vertical-align: center;
+  padding: 1.5rem 1rem 0 1rem;
+
 }
 .title{
   color: white;
@@ -20,14 +19,21 @@
 .lavelInput{
   width: fit-content;
   text-align: left;
+  margin: auto;
+
 }
+
 .lavelInput input{
-  padding: 0.3rem 0.3rem;
+  font-size:medium;
+  padding: 0.8rem 0.4rem;
   border: none;
   box-shadow: 0.1rem 0.1rem 0 #303030;
   width: 13rem;
 }
 .separator{
-  height: 0.5rem;
+  height: 0.7rem;
 }
+
+
+
 

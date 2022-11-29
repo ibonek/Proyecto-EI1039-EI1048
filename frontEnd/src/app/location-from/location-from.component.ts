@@ -10,7 +10,7 @@ import {startWith, map} from 'rxjs/operators';
 })
 export class LocationFromComponent implements OnInit {
   control = new FormControl();
-  locations: string[] = ['Londres', 'Valencia', 'Madrid', 'Paris'];
+  locations: string[] = ['Londres', 'Valencia', 'Madrid', 'Paris', 'Castellón'];
   filteredLocations: Observable<string[]> | undefined;
 
   ngOnInit() {
