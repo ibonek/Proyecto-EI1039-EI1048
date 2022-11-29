@@ -1,6 +1,15 @@
 package com.ei10391048.project.modelo;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 public class Location {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id", nullable = false)
+    private Long locationId;
     private String name;
 
     private Coordinates coordinates;
