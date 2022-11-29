@@ -1,46 +1,49 @@
 package com.ei10391048.project;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.modelo.GeoCodingService;
+import com.ei10391048.project.modelo.ByName;
+import com.ei10391048.project.modelo.GeoCodService;
 import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.LocationManager;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class GeoCodingServiceTest {
-    /**
-     * Test que comprueba la historia de usuario 6: Como usuario quiero dar de alta una ubicación a partir de un
-     * topónimo, con el fin de tenerla disponible en el sistema.
-     *
-     * @throws IncorrectLocationException
-     */
+public class GeoCodServiceTest {
+
+    /*
+/**
+ * Test que comprueba la historia de usuario 6: Como usuario quiero dar de alta una ubicación a partir de un
+ * topónimo, con el fin de tenerla disponible en el sistema.
+ *
+ * @throws IncorrectLocationException
+
     @Test
     public void addLocationByNameValid() throws IncorrectLocationException {
-        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
-        LocationManager locations = new LocationManager(geoCodSrv);
+        LocationManager locations = LocationManager.getInstance();
+        int actual = locations.getNumberOfLocations();
         String name = "Valencia";
         locations.addByName(name);
-        assertEquals(1, locations.getNumberOfLocations());
+        assertEquals(actual, actual+1);
     }
 
     @Test(expectedExceptions = IncorrectLocationException.class)
     public void addLocationByNameInvalid() throws IncorrectLocationException {
-        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
-        LocationManager locations = new LocationManager(geoCodSrv);
+        LocationManager locations = LocationManager.getInstance();
         String name = "Balencia";
         locations.addByName(name);
     }
+
 
     /**
      * Test que comprueba la historia de usuario 7: Como usuario quiero dar de alta una ubicación a partir de unas
      * coordenadas geográficas, con el fin de tenerla disponible en el sistema.
      *
      * @throws IncorrectLocationException
-     */
+
     @Test
     public void addLocationByCoordinatesValid() throws IncorrectLocationException {
-        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
+        GeoCodService geoCodSrv = GeoCodService.getInstance();
         LocationManager locations = new LocationManager(geoCodSrv);
         Location location = new Location(39.46975, -0.37739);
         locations.addByCoordinates(location);
@@ -49,13 +52,13 @@ public class GeoCodingServiceTest {
 
     @Test(expectedExceptions = IncorrectLocationException.class)
     public void addLocationByCoordinatesInvalid() throws IncorrectLocationException {
-        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
+        GeoCodService geoCodSrv = GeoCodService.getInstance();
         LocationManager locations = new LocationManager(geoCodSrv);
         Location location = new Location(39.46975, -0.37739);
         locations.addByCoordinates(location);
         locations.addByCoordinates(location);
     }
-
+*/
     /**
      * Test que comprueba la historia de usuario 8: Como usuario quiero validar el topónimo de una ubicación disponible
      * en los servicios API activos, con el fin de evaluar su utilidad.
@@ -66,17 +69,17 @@ public class GeoCodingServiceTest {
     @Test
     public void validarToponimoValido(){
         String toponimo="Valencia";
-        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
-        Location location= geoCodSrv.getLocation(toponimo);
+        GeoCodService geoCodSrv = new GeoCodService();
+        geoCodSrv.setSearch(new ByName());
+        Location location = geoCodSrv.findLocation();
         assertEquals(location.getName(),"Valencia");
     }
 
     @Test(expectedExceptions = IncorrectLocationException.class)
     void validarToponimoInvalido(){
         String toponimo="Balencia";
-        GeoCodingService geoCodSrv = GeoCodingService.getInstance();
-
-        Location localizacion=geoCodSrv.getLocation(toponimo);
+        GeoCodService geoCodSrv = new GeoCodService();
+        Location localizacion=geoCodSrv.findLocation();
     }
 
 }
