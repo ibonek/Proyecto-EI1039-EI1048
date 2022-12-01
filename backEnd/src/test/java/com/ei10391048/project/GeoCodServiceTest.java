@@ -5,11 +5,14 @@ import com.ei10391048.project.modelo.ByName;
 import com.ei10391048.project.modelo.GeoCodService;
 import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.LocationManager;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class GeoCodServiceTest {
+
 
     /*
 /**
@@ -67,20 +70,24 @@ public class GeoCodServiceTest {
      */
 
     @Test
-    public void validarToponimoValido(){
-        String toponimo="Valencia";
-        GeoCodService geoCodSrv = new GeoCodService();
-        geoCodSrv.setSearch(new ByName(toponimo));
-        Location location = geoCodSrv.findLocation();
-        assertEquals(location.getName(),"Valencia");
+    public void validarToponimoValido() throws IncorrectLocationException {
+            String toponimo = "Valencia";
+            GeoCodService geoCodSrv = new GeoCodService();
+            geoCodSrv.setSearch(new ByName(toponimo));
+            Location location = geoCodSrv.findLocation();
+            assertEquals(location.getName(), "Valencia");
     }
 
-    @Test(expectedExceptions = IncorrectLocationException.class)
+    @Test
     void validarToponimoInvalido(){
-        String toponimo="Balencia";
-        GeoCodService geoCodSrv = new GeoCodService();
-        geoCodSrv.setSearch(new ByName(toponimo));
-        Location localizacion=geoCodSrv.findLocation();
+        try {
+            String toponimo = "Balencia";
+            GeoCodService geoCodSrv = new GeoCodService();
+            geoCodSrv.setSearch(new ByName(toponimo));
+            Location localizacion = geoCodSrv.findLocation();
+        } catch (IncorrectLocationException ex){
+            assertTrue(true);
+        }
     }
 
 }
