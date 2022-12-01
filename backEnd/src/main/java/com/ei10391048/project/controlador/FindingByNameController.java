@@ -20,6 +20,21 @@ public class FindingByNameController {
     @PostMapping("/addLocation")
     public void find(@RequestBody String location){
 
+        location= formatingInput(location);
         System.out.println(location);
     }
+
+
+
+
+    public static String formatingInput(String input){
+        //Quitamos espacios
+        input=input.trim();
+
+
+        //Ponemos inicial en mayúscula
+        input= input.substring(0,1).toUpperCase()+ input.substring(1).toLowerCase();
+        return input;
+    }
+
 }
