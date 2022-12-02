@@ -1,0 +1,22 @@
+<form class="fromBody" (ngSubmit)="onSubmit()" #locationForm="ngForm">
+  <div class="fromInterno">
+    <div class="lavelInput">
+      <label class="title"> Locations selector  </label>
+      <div class="separator"></div>
+      <input
+        type="text" [(ngModel)]="locationName"
+        placeholder="Search for a Location"
+        [formControl]="control"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let location of filteredLocations | async" [value]="location">
+          {{location}}
+        </mat-option>
+      </mat-autocomplete>
+    </div>
+  </div>
+  <div [hidden]=!confirmation class="alert alert-danger">Incorrect name</div>
+  <button type="submit" class="btn btn-info"> Submit</button>
+</form>
+
