@@ -5,7 +5,8 @@ import com.ei10391048.project.modelo.ByName;
 import com.ei10391048.project.modelo.GeoCodService;
 import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.LocationManager;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
+
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
