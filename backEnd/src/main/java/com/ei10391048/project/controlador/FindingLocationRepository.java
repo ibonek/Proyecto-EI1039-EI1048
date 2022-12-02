@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FindingByNameRepository extends CrudRepository<Location, Long> {
+public interface FindingLocationRepository extends CrudRepository<Location, Long> {
 }
