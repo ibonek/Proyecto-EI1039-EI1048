@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Proyecto-EI1039-EI1048.iml" filepath="$PROJECT_DIR$/Proyecto-EI1039-EI1048.iml" />
       <module fileurl="file://$PROJECT_DIR$/backEnd/backEnd.iml" filepath="$PROJECT_DIR$/backEnd/backEnd.iml" />
       <module fileurl="file://$PROJECT_DIR$/frontEnd/frontEnd.iml" filepath="$PROJECT_DIR$/frontEnd/frontEnd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backEnd/project.iml" filepath="$PROJECT_DIR$/backEnd/project.iml" />
     </modules>
   </component>
 </project>
