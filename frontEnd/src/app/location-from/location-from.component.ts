@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {startWith, map} from 'rxjs/operators';
-
+/*
 @Component({
   selector: 'app-location-from',
   templateUrl: './location-from.component.html',
@@ -29,3 +29,5 @@ export class LocationFromComponent implements OnInit {
     return value.toLowerCase().replace(/\s/g, '');
   }
 }
+
+ */

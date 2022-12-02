@@ -20,7 +20,7 @@ import {ConfirmationInputService} from "./location-form/confirmation-input.servi
 
 
 import { TopBarComponent } from './top-bar/top-bar.component';
-import { LocationFromComponent } from './location-from/location-from.component';
+//import { LocationFromComponent } from './location-from/location-from.component';
 
 
 @NgModule({
