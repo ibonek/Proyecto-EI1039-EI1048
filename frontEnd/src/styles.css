@@ -14,3 +14,13 @@ app-top-bar{
   display: flex;
 }
 
+.buttonWhite{
+  background: white;
+  border: none;
+  color: #c2185b;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  font-size: medium;
+  box-shadow: 0.1rem 0.1rem 0 #303030;
+  border-radius: 2px;
+}
