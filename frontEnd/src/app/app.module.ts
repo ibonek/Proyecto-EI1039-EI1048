@@ -16,6 +16,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import {RouterOutlet, Routes} from "@angular/router";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
+import {ConfirmationInputService} from "./location-form/confirmation-input.service";
 
 
 
@@ -39,7 +40,8 @@ import {FindingByNameService} from "./finding-by-name.service";
     MatOptionModule,
     AppRoutingModule
   ],
-  providers: [FindingByNameService],
+  providers: [FindingByNameService,
+              ConfirmationInputService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
