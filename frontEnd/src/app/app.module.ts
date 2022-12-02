@@ -19,11 +19,15 @@ import {FindingByNameService} from "./finding-by-name.service";
 import {ConfirmationInputService} from "./location-form/confirmation-input.service";
 
 
+import { TopBarComponent } from './top-bar/top-bar.component';
+import { LocationFromComponent } from './location-from/location-from.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    LocationFormComponent
+    LocationFormComponent,
+    TopBarComponent,
   ],
   imports: [
     FormsModule,

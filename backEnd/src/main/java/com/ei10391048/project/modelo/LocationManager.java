@@ -39,6 +39,12 @@ public class LocationManager {
     public void addByCoordinates(Coordinates coordinates) throws IncorrectLocationException {
     }
 
+
+
+    public void addByCoordinates() throws IncorrectLocationException {
+        locations.add(locationApi.findLocation());
+    }
+
     public LocationApiInterface getLocationApi() {
         return locationApi;
     }
@@ -46,4 +52,5 @@ public class LocationManager {
     public void setLocationApi(LocationApiInterface locationApi) {
         this.locationApi = locationApi;
     }
+
 }
