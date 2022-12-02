@@ -1,14 +1,14 @@
 .fromBody {
   background: #c2185b;
   width: 20rem;
-  height: 9rem;
+  height: 11.3rem;
   margin: 4rem auto;
+  border-radius: 2px;
 }
 .fromInterno{
-  height: 19.8rem;
   margin: auto;
   padding: 1.5rem 1rem 0 1rem;
-
+  text-align: right;
 }
 .title{
   color: white;
@@ -29,11 +29,11 @@
   border: none;
   box-shadow: 0.1rem 0.1rem 0 #303030;
   width: 13rem;
+  border-radius: 2px;
 }
 .separator{
-  height: 0.7rem;
+  height: 0.8rem;
 }
-
 
 
 
