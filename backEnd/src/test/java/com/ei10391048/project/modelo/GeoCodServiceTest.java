@@ -1,4 +1,4 @@
-package com.ei10391048.project;
+package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.modelo.ByName;
@@ -75,7 +75,7 @@ public class GeoCodServiceTest {
             GeoCodService geoCodSrv = new GeoCodService();
             geoCodSrv.setSearch(new ByName(toponimo));
             Location location = geoCodSrv.findLocation();
-            assertEquals(location.getName(), "Valencia");
+            assertEquals(location.getName(), toponimo);
     }
 
     @Test
