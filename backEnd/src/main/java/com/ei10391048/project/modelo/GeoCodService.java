@@ -12,4 +12,9 @@ public class GeoCodService implements  LocationApiInterface{
     public Location findLocation() throws IncorrectLocationException {
         return search.search();
     }
+
+
+    public SearchInterface getSearch() {
+        return search;
+    }
 }

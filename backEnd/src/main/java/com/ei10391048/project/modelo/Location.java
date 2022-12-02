@@ -39,4 +39,13 @@ public class Location {
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "locationId=" + locationId +
+                ", name='" + name + '\'' +
+                ", coordinates=" + coordinates +
+                '}';
+    }
 }

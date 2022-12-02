@@ -42,4 +42,13 @@ public class Coordinates {
     public Long getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "lat=" + lat +
+                ", lon=" + lon +
+                ", id=" + id +
+                '}';
+    }
 }

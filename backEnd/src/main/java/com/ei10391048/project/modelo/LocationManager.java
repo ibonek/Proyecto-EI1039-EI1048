@@ -25,13 +25,25 @@ public class LocationManager {
 
     }
 
-    public void addByName(String name) throws IncorrectLocationException {
+    public void addByName() throws IncorrectLocationException {
+        locations.add(locationApi.findLocation());
     }
 
+    public List<Location> getLocations(){
+        return locations;
+    }
     public int getNumberOfLocations() {
         return locations.size();
     }
 
     public void addByCoordinates(Coordinates coordinates) throws IncorrectLocationException {
+    }
+
+    public LocationApiInterface getLocationApi() {
+        return locationApi;
+    }
+
+    public void setLocationApi(LocationApiInterface locationApi) {
+        this.locationApi = locationApi;
     }
 }
