@@ -121,4 +121,26 @@ public class GeoCodServiceTest {
      *
      * @throws IncorrectLocationException
      */
+    @Test
+    public void validateCoordinatesValid() throws IncorrectLocationException {
+        Coordinates coordinates = new Coordinates(-39.985,-0.049);
+        GeoCodService geoCodSrv = new GeoCodService();
+        geoCodSrv.setSearch(new ByCoordinates(coordinates));
+        Location location = geoCodSrv.findLocation();
+        assertEquals(location.getCoordinates().getLat(), coordinates.getLat(),0.1);
+        assertEquals(location.getCoordinates().getLon(), coordinates.getLon(),0.1);
+
+    }
+
+    @Test
+    void validarToponimoInvalido(){
+        try {
+            Coordinates coordinates = new Coordinates(-191,-0.049);
+            GeoCodService geoCodSrv = new GeoCodService();
+            geoCodSrv.setSearch(new ByCoordinates(coordinates));
+            geoCodSrv.findLocation();
+        } catch (IncorrectLocationException ex){
+            assertTrue(true);
+        }
+    }
 }
