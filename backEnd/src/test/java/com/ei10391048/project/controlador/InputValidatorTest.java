@@ -7,15 +7,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FindingLocationControllerTest {
+class InputValidatorTest {
 
 
     @ParameterizedTest
     @MethodSource("nameDataFormat")
     public void formatingInputNameTest(String input, String sol) {
-        assertEquals(FindingLocationController.formatingInputName(input), sol);
+        assertEquals(InputValidator.formatingInputName(input), sol);
     }
 
     static Stream<Arguments> nameDataFormat() {
@@ -30,7 +30,7 @@ class FindingLocationControllerTest {
     @ParameterizedTest
     @MethodSource("coordsDataFormat")
     public void formatingInputCoordsTest(String input, double[] sol) {
-        Assert.assertArrayEquals(FindingLocationController.formatingInputCoords(input), sol,0.1);
+        Assert.assertArrayEquals(InputValidator.formatingInputCoords(input), sol,0.1);
     }
 
     static Stream<Arguments> coordsDataFormat() {
@@ -46,7 +46,7 @@ class FindingLocationControllerTest {
     @ParameterizedTest
     @MethodSource("transformCoordsData")
     public void transformCoordsTest(String coord, double value){
-        assertEquals(FindingLocationController.transformCoords(coord),value,0.1);
+        assertEquals(InputValidator.transformCoords(coord),value,0.1);
     }
     static Stream<Arguments> transformCoordsData() {
         return Stream.of(
@@ -61,7 +61,7 @@ class FindingLocationControllerTest {
     @ParameterizedTest
     @MethodSource("NameOrCoordData")
     public void isCoordinatesTest(String input, boolean sol){
-        assertEquals(FindingLocationController.isCoordinates(input),sol);
+        assertEquals(InputValidator.isCoordinates(input),sol);
     }
 
     static Stream<Arguments> NameOrCoordData() {
