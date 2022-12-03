@@ -1,8 +1,6 @@
 package com.ei10391048.project.controlador;
 import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.modelo.ByName;
-import com.ei10391048.project.modelo.GeoCodService;
-import com.ei10391048.project.modelo.LocationManager;
+import com.ei10391048.project.modelo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,28 +23,66 @@ public class FindingLocationController {
     @PostMapping("/addLocation")
     public void createLocation(@RequestBody String location) {
 
-        location=location.trim();
-        if (isCoordinates(location)){
-
-        }else{
+        location = location.trim();
+        LocationManager locationManager = LocationManager.getInstance();
+        locationManager.setLocationApi(new GeoCodService());
+        if (isCoordinates(location)) {
+            double[] coordinateInput = formatingInputCoords(location);
+            Coordinates coordinates = new Coordinates(coordinateInput[0], coordinateInput[1]);
+            locationManager.getLocationApi().setSearch(new ByCoordinates(coordinates));
+        } else {
             location = formatingInputName(location);
-            //Comprobamos que sea coordenada o name
 
-
-            //Llamamos a quien sea necesario
-            LocationManager locationManager = LocationManager.getInstance();
-
-            locationManager.setLocationApi(new GeoCodService());
             locationManager.getLocationApi().setSearch(new ByName(location));
-
-            try {
-                locationManager.addByName();
-                confirmation=true;
-            } catch (IncorrectLocationException ex){
-                confirmation=false;
-            }
+        }
+        try {
+            locationManager.addLocation();
+            confirmation = true;
+        } catch (IncorrectLocationException ex) {
+            confirmation = false;
         }
     }
+
+    public static double[] formatingInputCoords(String input){
+        double[] format= new double[2];
+        String[] array;
+        if (input.contains("º")){
+            if (input.contains(",")){
+                array = input.split(",");
+            } else {
+                array = input.split(" ");
+            }
+            for (int i = 0;i < 2 ;i++) {
+                format[i]=transformCoords(array[i]);
+            }
+
+        } else {
+            if (input.contains(",")) {
+                array = input.split(",");
+            } else {
+                array = input.split(" ");
+            }
+            for (int i=0;i<2;i++) {
+                format[i] = Double.parseDouble(array[i]);
+            }
+
+        }
+        return format;
+    }
+
+
+    public static double transformCoords(String coord){
+        int multiplicador = 1;
+        if (coord.toUpperCase().contains("W") ||  coord.toUpperCase().contains("S") ||  coord.toUpperCase().contains("O")) {
+            multiplicador=-1;
+        }
+        coord=coord.substring(0,coord.length()-1);
+        double grados = Double.parseDouble(coord.substring(0,coord.indexOf("º")));
+        double minutos = Double.parseDouble(coord.substring(coord.indexOf("º")+1,coord.indexOf("'")))/60;
+        double segundos = Double.parseDouble(coord.substring(coord.indexOf("'")+1,coord.length()-1))/3600;
+        return multiplicador * (grados+minutos+segundos);
+        }
+
 
 
     public static boolean isCoordinates(String input){
