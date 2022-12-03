@@ -2,6 +2,9 @@ package com.ei10391048.project.controlador;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class InputValidator {
     public static double[] formatingInputCoords(String input){
         double[] format= new double[2];
@@ -81,5 +84,11 @@ public class InputValidator {
         //Ponemos inicial en mayúscula
         input= input.substring(0,1).toUpperCase()+ input.substring(1).toLowerCase();
         return input;
+    }
+
+    public static List<String> generateAutocompleteList(){
+        List<String> list = new ArrayList<>();
+
+        return list;
     }
 }
