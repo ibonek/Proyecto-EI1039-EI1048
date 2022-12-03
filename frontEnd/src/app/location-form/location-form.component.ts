@@ -22,7 +22,7 @@ export class LocationFormComponent implements OnInit {
 
   constructor(    private route: ActivatedRoute,
                   private router: Router,
-                  private findingByNameService: FindingByNameService  ) {
+                  private findingByNameService: FindingByNameService) {
     this.locationName="";
   }
 
@@ -55,7 +55,7 @@ export class LocationFormComponent implements OnInit {
     }
 
     setConfirmation(b: boolean){
-    this.confirmation=b;
+      this.confirmation=b;
     }
 
 

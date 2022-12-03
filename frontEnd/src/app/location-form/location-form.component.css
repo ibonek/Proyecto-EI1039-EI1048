@@ -1,8 +1,8 @@
 .fromBody {
   background: #c2185b;
-  width: 20rem;
+  width: 19rem;
   height: 11.3rem;
-  margin: 4rem auto;
+  margin: 3rem 3rem;
   border-radius: 2px;
 }
 .fromInterno{
@@ -34,6 +34,3 @@
 .separator{
   height: 0.8rem;
 }
-
-
-
