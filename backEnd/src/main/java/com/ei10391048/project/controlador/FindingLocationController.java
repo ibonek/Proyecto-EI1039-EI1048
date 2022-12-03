@@ -132,13 +132,5 @@ public class FindingLocationController {
     }
 
 
-    public static void main(String[] args) {
-        String a="2º 1".strip();
-        String[] c = a.split(",");
-        //a.substring(a.)
-
-        //double b = Double.parseDouble(c[0]);
-        System.out.println(Arrays.toString(Arrays.stream(c).toArray()));
-    }
 
 }
