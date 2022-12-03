@@ -55,10 +55,6 @@ class FindingLocationControllerTest {
                 Arguments.of("6º26'37\"E",  6.4435),
                 Arguments.of("6º26'37\"O", -6.4435),
                 Arguments.of("6º26'37\"W", -6.4435)
-
-
-
-
                 );
     }
 
