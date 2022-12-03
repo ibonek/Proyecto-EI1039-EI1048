@@ -30,7 +30,7 @@ public class GeoCodServiceTest {
         int num = locations.getNumberOfLocations();
 
         locations.setLocationApi(geoCodSrv);
-        locations.addByName();
+        locations.addLocation();
 
         assertEquals( locations.getNumberOfLocations(), num + 1);
     }
@@ -62,7 +62,7 @@ public class GeoCodServiceTest {
          geoCodSrv.setSearch(new ByCoordinates(coordinates));
          LocationManager locations = LocationManager.getInstance();
          int num = locations.getNumberOfLocations();
-         locations.addByCoordinates();
+         locations.addLocation();
          assertEquals(locations.getNumberOfLocations(), num + 1);
      }
 
@@ -88,4 +88,59 @@ public class GeoCodServiceTest {
                  Arguments.of(100,-190)
          );
      }
+
+    /**
+     * Test que comprueba la historia de usuario 8: Como usuario quiero validar el topónimo de una ubicación disponible en los servicios API activos, con el fin de evaluar su utilidad.
+     *
+     * @throws IncorrectLocationException
+     */
+
+     @Test
+    public void validatePlaceNameValid() throws IncorrectLocationException {
+         String toponimo = "Valencia";
+         GeoCodService geoCodSrv = new GeoCodService();
+         geoCodSrv.setSearch(new ByName(toponimo));
+         Location location = geoCodSrv.findLocation();
+         assertEquals(location.getName(), "Valencia");
+     }
+
+    @Test
+    void validatePlaceNameInvalid(){
+        try {
+            String toponimo = "Balencia";
+            GeoCodService geoCodSrv = new GeoCodService();
+            geoCodSrv.setSearch(new ByName(toponimo));
+            geoCodSrv.findLocation();
+        } catch (IncorrectLocationException ex){
+            assertTrue(true);
+        }
+    }
+
+    /**
+     * Test que comprueba la historia de usuario 9: Como usuario quiero validar las coordenadas geográficas de una ubicación disponible en los servicios API activos, con el fin de evaluar su utilidad.
+     *
+     * @throws IncorrectLocationException
+     */
+    @Test
+    public void validateCoordinatesValid() throws IncorrectLocationException {
+        Coordinates coordinates = new Coordinates(-39.985,-0.049);
+        GeoCodService geoCodSrv = new GeoCodService();
+        geoCodSrv.setSearch(new ByCoordinates(coordinates));
+        Location location = geoCodSrv.findLocation();
+        assertEquals(location.getCoordinates().getLat(), coordinates.getLat(),0.1);
+        assertEquals(location.getCoordinates().getLon(), coordinates.getLon(),0.1);
+
+    }
+
+    @Test
+    void validarToponimoInvalido(){
+        try {
+            Coordinates coordinates = new Coordinates(-191,-0.049);
+            GeoCodService geoCodSrv = new GeoCodService();
+            geoCodSrv.setSearch(new ByCoordinates(coordinates));
+            geoCodSrv.findLocation();
+        } catch (IncorrectLocationException ex){
+            assertTrue(true);
+        }
+    }
 }

@@ -17,4 +17,8 @@ export class FindingByNameService {
   public giveConfirmation(){
     return this.http.get<boolean>(this.url);
   }
+
+  public giveCityList(){
+    return this.http.get<string[]>("http://localhost:8080/giveLocations");
+  }
 }

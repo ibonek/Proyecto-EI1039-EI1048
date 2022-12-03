@@ -14,7 +14,7 @@ import {waitForAsync} from "@angular/core/testing";
 })
 export class LocationFormComponent implements OnInit {
   control = new FormControl();
-  locations: string[] = ['Londres', 'Valencia', 'Madrid', 'Paris'];
+  locations: string[] | undefined;
   filteredLocations: Observable<string[]> | undefined;
   locationName: string |undefined;
   confirmation: boolean| undefined;
@@ -22,21 +22,21 @@ export class LocationFormComponent implements OnInit {
 
   constructor(    private route: ActivatedRoute,
                   private router: Router,
-                  private findingByNameService: FindingByNameService  ) {
+                  private findingByNameService: FindingByNameService) {
     this.locationName="";
   }
 
   ngOnInit() {
-
+    this.findingByNameService.giveCityList().subscribe(data=>{this.locations=data});
     this.filteredLocations = this.control.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     );
-
   }
 
   private _filter(value: string): string[] {
     const filterValue = this._normalizeValue(value);
+    // @ts-ignore
     return this.locations.filter(location => this._normalizeValue(location).includes(filterValue));
   }
 
@@ -44,27 +44,17 @@ export class LocationFormComponent implements OnInit {
     return value.toLowerCase().replace(/\s/g, '');
   }
 
-    onSubmit() {
+  onSubmit() {
+    this.findingByNameService.save(this.locationName).subscribe(result=>
+      this.goToConfirmation());
+  }
 
-      this.findingByNameService.save(this.locationName).subscribe(result=>
-        this.goToConfirmation());
-    }
+  goToConfirmation(){
+    this.router.navigate(['/confirmationInput']);
+  }
 
-    goToConfirmation(){
-      this.router.navigate(['/confirmationInput']);
-    }
-
-    setConfirmation(b: boolean){
+  setConfirmation(b: boolean){
     this.confirmation=b;
-    }
-
-
-
-
-
-
-
-
-
+  }
 
 }
