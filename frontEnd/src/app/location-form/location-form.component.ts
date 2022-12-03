@@ -26,10 +26,6 @@ export class LocationFormComponent implements OnInit {
     this.locationName="";
   }
 
-  delay(ms:  number){
-    return new Promise(resolve => setTimeout(resolve,ms));
-  }
-
   ngOnInit() {
 
     this.filteredLocations = this.control.valueChanges.pipe(

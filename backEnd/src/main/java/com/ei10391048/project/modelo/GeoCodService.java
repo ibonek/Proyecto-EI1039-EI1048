@@ -17,4 +17,6 @@ public class GeoCodService implements  LocationApiInterface{
     public SearchInterface getSearch() {
         return search;
     }
+
+
 }

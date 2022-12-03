@@ -23,6 +23,10 @@ public class Location {
     public Location() {
 
     }
+    public Location(double lat, double lon) {
+        this.coordinates = new Coordinates(lat,lon);
+
+    }
 
     public String getName() {
         return name;
