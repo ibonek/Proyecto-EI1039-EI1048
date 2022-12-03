@@ -4,6 +4,7 @@ import com.ei10391048.project.modelo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class FindingLocationController {
     }
 
     @GetMapping("/giveLocations")
-    public List<String> giveCityList(){
+    public List<String> giveCityList() throws IOException, InterruptedException {
 
         return InputValidator.generateAutocompleteList();
     }

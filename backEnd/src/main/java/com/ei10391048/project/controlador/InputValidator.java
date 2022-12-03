@@ -1,7 +1,15 @@
 package com.ei10391048.project.controlador;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,9 +94,23 @@ public class InputValidator {
         return input;
     }
 
-    public static List<String> generateAutocompleteList(){
-        List<String> list = new ArrayList<>();
+    public static List<String> generateAutocompleteList() throws IOException, InterruptedException {
+        ArrayList<String> list = new ArrayList<>();
+        int numberOfLocations = 1000;
+        HttpClient client= HttpClient.newHttpClient();
+        HttpRequest request= HttpRequest.newBuilder()
+                .uri(URI.create("https://data.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000%40public&q=&lang=ES&rows="+numberOfLocations+"&sort=population&refine.country_code=ES"))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+        JSONArray json = new JSONArray(response.body().substring(response.body().indexOf("records")+10));
+
+
+        for (int i=0; i<numberOfLocations; i++){
+            JSONObject jsonObject = new JSONObject(json.getJSONObject(i).get("fields").toString());
+            list.add(jsonObject.getString("name"));
+        }
         return list;
     }
+
 }
