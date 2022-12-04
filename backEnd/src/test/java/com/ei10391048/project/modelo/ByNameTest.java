@@ -1,5 +1,5 @@
 package com.ei10391048.project.modelo;
-
+/*
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.github.prominence.openweathermap.api.OpenWeatherMapClient;
 import com.github.prominence.openweathermap.api.enums.Language;
@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.when;*/
 /*
 class ByNameTest {
     private OpenWeatherMapClient mock;
