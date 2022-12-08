@@ -11,6 +11,8 @@ public class Location {
     private String name;
 
     @OneToOne
+    private APIManager apiManager;
+    @OneToOne
     private Coordinates coordinates;
     public Location(String name) {
         this.name = name;

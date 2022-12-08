@@ -10,6 +10,8 @@ public class LocationManager {
 
     private static  LocationManager locationManager;
 
+    private APIManager apiManager;
+
     private LocationApiInterface locationApi;
 
     private LocationManager() {
@@ -45,4 +47,11 @@ public class LocationManager {
         this.locationApi = locationApi;
     }
 
+    public void setApiManager(APIManager apiManager) {
+        this.apiManager = apiManager;
+    }
+
+    public APIManager getApiManager() {
+        return apiManager;
+    }
 }
