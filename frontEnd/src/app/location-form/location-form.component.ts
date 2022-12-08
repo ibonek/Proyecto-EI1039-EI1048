@@ -60,16 +60,19 @@ export class LocationFormComponent implements OnInit {
 
   }
 
-
   goToConfirmation(){
     this.router.navigate(['/confirmationInput']);
+  }
+
+  goToList(){
+    this.router.navigate(['/locationList']);
   }
 
   setConfirmation(b: boolean){
     this.confirmation=b;
   }
-  tinyAlert() {
 
+  tinyAlert() {
     if (this.confirmation) {
       //Swal.fire('Good job!','Your location '+this.locationName+ " has been added!", "success");
       Swal.fire({
@@ -83,7 +86,6 @@ export class LocationFormComponent implements OnInit {
     } else {
       Swal.fire('Error: '+this.locationName+ " is not found", "","error");
     }
-
   }
 
 }
