@@ -1,13 +1,13 @@
 .fromBody {
   background: #c2185b;
-  width: 19rem;
+  width: 20rem;
   height: 11.3rem;
   margin: 3rem 3rem;
   border-radius: 2px;
 }
 .fromInterno{
   margin: auto;
-  padding: 1.5rem 1rem 0 1rem;
+  padding: 1.5rem 2rem;
   text-align: right;
 }
 .title{
@@ -17,7 +17,7 @@
 }
 
 .lavelInput{
-  width: fit-content;
+  width: 100%;
   text-align: left;
   margin: auto;
 
@@ -28,20 +28,14 @@
   padding: 0.8rem 0.4rem;
   border: none;
   box-shadow: 0.1rem 0.1rem 0 #303030;
-  width: 13rem;
+  width: 15.2rem;
   border-radius: 2px;
 }
 .separator{
   height: 0.8rem;
 }
-
-
-
-.swal2-styled.swal2-confirm {
-  border: 0;
-  border-radius: 0.25em;
-  background: initial;
-  background-color: #c2185b !important;
-  color: #fff;
-  font-size: 1em;
+.buttons{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }

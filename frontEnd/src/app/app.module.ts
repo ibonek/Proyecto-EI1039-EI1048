@@ -18,8 +18,8 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
 import Swal from "sweetalert2"
 
-
 import { TopBarComponent } from './top-bar/top-bar.component';
+import { LocationListComponent } from './location-list/location-list.component';
 //import { LocationFromComponent } from './location-from/location-from.component';
 
 
@@ -28,6 +28,8 @@ import { TopBarComponent } from './top-bar/top-bar.component';
     AppComponent,
     LocationFormComponent,
     TopBarComponent,
+    LocationListComponent,
+
   ],
   imports: [
     FormsModule,
