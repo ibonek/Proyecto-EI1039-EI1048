@@ -16,7 +16,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import {RouterOutlet, Routes} from "@angular/router";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
-import {ConfirmationInputService} from "./location-form/confirmation-input.service";
+import Swal from "sweetalert2"
 
 
 import { TopBarComponent } from './top-bar/top-bar.component';
@@ -43,9 +43,10 @@ import { TopBarComponent } from './top-bar/top-bar.component';
     ReactiveFormsModule,
     MatOptionModule,
     AppRoutingModule
+
   ],
-  providers: [FindingByNameService,
-              ConfirmationInputService],
+  providers: [FindingByNameService
+              ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
