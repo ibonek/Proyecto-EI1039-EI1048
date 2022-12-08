@@ -24,7 +24,7 @@ public class FindingLocationController {
 
     @PostMapping("/addLocation")
     public void createLocation(@RequestBody String location) {
-
+        try {
         location = location.trim();
         LocationManager locationManager = LocationManager.getInstance();
         locationManager.setLocationApi(new GeoCodService());
@@ -37,10 +37,10 @@ public class FindingLocationController {
 
             locationManager.getLocationApi().setSearch(new ByName(location));
         }
-        try {
+
             locationManager.addLocation();
             confirmation = true;
-        } catch (IncorrectLocationException ex) {
+        } catch (Exception ex) {
             confirmation = false;
         }
     }
