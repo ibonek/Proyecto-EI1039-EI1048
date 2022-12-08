@@ -26,12 +26,17 @@ export class LocationFormComponent implements OnInit {
     this.locationName="";
   }
 
-  ngOnInit() {
-    this.findingByNameService.giveCityList().subscribe(data=>{this.locations=data});
-    this.filteredLocations = this.control.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
+  async ngOnInit() {
+    await this.findingByNameService.giveCityList().subscribe(data => {
+      this.locations=data;
+      this.filteredLocations = this.control.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+      alert(this.locations);
+    });
+
+
   }
 
   private _filter(value: string): string[] {
