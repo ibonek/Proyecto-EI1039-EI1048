@@ -34,3 +34,14 @@
 .separator{
   height: 0.8rem;
 }
+
+
+
+.swal2-styled.swal2-confirm {
+  border: 0;
+  border-radius: 0.25em;
+  background: initial;
+  background-color: #c2185b !important;
+  color: #fff;
+  font-size: 1em;
+}

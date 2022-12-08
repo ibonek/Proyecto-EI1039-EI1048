@@ -71,7 +71,15 @@ export class LocationFormComponent implements OnInit {
   tinyAlert() {
 
     if (this.confirmation) {
-      Swal.fire('Good job!','Your location '+this.locationName+ " has been added!", "success");
+      //Swal.fire('Good job!','Your location '+this.locationName+ " has been added!", "success");
+      Swal.fire({
+        title: 'Good job!',
+        text: 'Your location '+this.locationName+" has been added!",
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#c2185b',
+        confirmButtonText: 'Ok'
+      })
     } else {
       Swal.fire('Error: '+this.locationName+ " is not found", "","error");
     }
