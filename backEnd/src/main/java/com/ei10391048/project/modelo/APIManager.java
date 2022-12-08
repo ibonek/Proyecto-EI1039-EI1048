@@ -1,5 +1,7 @@
 package com.ei10391048.project.modelo;
 
+import com.ei10391048.project.exception.NonActiveServiceException;
+
 import javax.persistence.*;
 import java.util.LinkedList;
 
@@ -23,13 +25,13 @@ public class APIManager {
         apiList.add(type);
     }
 
-    public API getAPI(APIsNames name){
+    public API getAPI(APIsNames name)  throws NonActiveServiceException {
         for (API api: apiList){
             if (api.getAPIName().equals(name.getApiName())){
                 return api;
             }
         }
 
-        return null;
+        throw new NonActiveServiceException();
     }
 }
