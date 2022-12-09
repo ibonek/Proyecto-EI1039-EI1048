@@ -14,19 +14,8 @@ public class Location {
     private APIManager apiManager;
     @OneToOne
     private Coordinates coordinates;
-    public Location(String name) {
-        this.name = name;
-    }
-
-    public Location(Coordinates coordinates) {
-        this.coordinates=coordinates;
-    }
 
     public Location() {
-
-    }
-    public Location(double lat, double lon) {
-        this.coordinates = new Coordinates(lat,lon);
 
     }
 
@@ -53,5 +42,19 @@ public class Location {
                 ", name='" + name + '\'' +
                 ", coordinates=" + coordinates +
                 '}';
+    }
+
+
+    public APIManager getApiManager() {
+        return apiManager;
+    }
+
+    public APIInformation getInfo(){
+        return apiManager.getInfo(name);
+
+    }
+
+    public void generateAPIManager() {
+        this.apiManager = new APIManager();
     }
 }

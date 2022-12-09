@@ -7,17 +7,35 @@ public abstract class API {
 
     @Id
     @Column(name = "name", nullable = false)
-    protected String name;
+    private String name;
 
-    public Information getInfo(){
-        return null;
+
+    String apiKey=null;
+
+    @OneToOne
+    private APIInformation information;
+    public APIInformation getInfo(String locationName){
+        setInfo(locationName);
+        return this.information;
+    }
+    private void setInfo(String locationName){
+        APIInformation information = new APIInformation();
+        apiCall(locationName);
+        information.setApiName(this.insertAPIName());
+        information.setLocationName(this.insertLocationName());
+
+
+        this.information=information;
     }
 
     public String getAPIName() {
         return name;
     }
 
-    public void setAPIName(String name) {
-        this.name = name;
-    }
+    abstract String insertAPIName();
+
+    abstract String insertLocationName();
+
+
+    abstract void apiCall(String locationName);
 }

@@ -10,8 +10,6 @@ public class LocationManager {
 
     private static  LocationManager locationManager;
 
-    private APIManager apiManager;
-
     private LocationApiInterface locationApi;
 
     private LocationManager() {
@@ -28,7 +26,9 @@ public class LocationManager {
     }
 
     public void addLocation() throws IncorrectLocationException {
-        locations.add(locationApi.findLocation());
+        Location location = locationApi.findLocation();
+        location.generateAPIManager();
+        locations.add(location);
     }
 
     public List<Location> getLocations(){
@@ -47,11 +47,5 @@ public class LocationManager {
         this.locationApi = locationApi;
     }
 
-    public void setApiManager(APIManager apiManager) {
-        this.apiManager = apiManager;
-    }
 
-    public APIManager getApiManager() {
-        return apiManager;
-    }
 }

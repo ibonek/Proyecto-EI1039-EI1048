@@ -11,8 +11,6 @@ public class APIManager {
     @Column(name="id", nullable = false)
     private Long id;
 
-    private static APIManager apiManager;
-
     @OneToMany
     private LinkedList<API> apiList;
 
@@ -26,6 +24,7 @@ public class APIManager {
     }
 
     public API getAPI(APIsNames name)  throws NonActiveServiceException {
+
         for (API api: apiList){
             if (api.getAPIName().equals(name.getApiName())){
                 return api;
@@ -33,5 +32,11 @@ public class APIManager {
         }
 
         throw new NonActiveServiceException();
+    }
+
+
+    public APIInformation getInfo(String locationName){
+        API api = apiList.get(0);
+        return api.getInfo(locationName);
     }
 }

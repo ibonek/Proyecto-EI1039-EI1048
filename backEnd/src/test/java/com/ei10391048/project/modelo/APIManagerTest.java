@@ -8,54 +8,53 @@ import org.junit.jupiter.api.Test;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class APIManagerTest {
 
     List<Location> locationList = new LinkedList<>();
     @BeforeEach
     public void setParams() throws IncorrectLocationException {
+        LocationManager locationManager = LocationManager.getInstance();
         GeoCodService geoCodSrv = new GeoCodService();
         String toponimo = "Valencia";
         geoCodSrv.setSearch(new ByName(toponimo));
+        locationManager.setLocationApi(geoCodSrv);
 
-        locationList.add(geoCodSrv.findLocation());
+        locationManager.addLocation();
 
         toponimo = "Madrid";
         geoCodSrv.setSearch(new ByName(toponimo));
 
-        locationList.add(geoCodSrv.findLocation());
+        locationManager.addLocation();
 
         toponimo = "Castellón";
         geoCodSrv.setSearch(new ByName(toponimo));
 
-        locationList.add(geoCodSrv.findLocation());
+        locationManager.addLocation();
 
     }
     @Test
-    public void getInfoFrom1LocationValidTest() throws NonActiveServiceException {
+    public void getInfoFrom1LocationValidTest() {
         int index = 0;
         LocationManager locationManager = LocationManager.getInstance();
-        APIManager apiManager = new APIManager();
-        apiManager.addAPI(new OpenWeather());
-        locationManager.setApiManager(apiManager);
-        API api = locationManager.getApiManager().getAPI(APIsNames.WEATHER);
-
-        assertEquals(api.getInfo().getName(), locationManager.getLocations().get(index).getName());
+        Location location = locationManager.getLocations().get(index);
+        APIManager manager = location.getApiManager();
+        manager.addAPI(OpenWeather.getInstance());
+        assertEquals(location.getInfo().getLocationName(), locationManager.getLocations().get(index).getName());
 
     }
 
     @Test
     public void getInfoFrom1LocationInvalidTest(){
-        int index = 0;
-        LocationManager locationManager = LocationManager.getInstance();
-        APIManager apiManager = new APIManager();
-        locationManager.setApiManager(apiManager);
-        try {
-            API api = locationManager.getApiManager().getAPI(APIsNames.WEATHER);
 
-            assertTrue(false);
+        LocationManager locationManager = LocationManager.getInstance();
+        APIManager manager = locationManager.getLocations().get(0).getApiManager();
+
+        try {
+            manager.getAPI(APIsNames.WEATHER);
+
+            fail();
         } catch (NonActiveServiceException ex){
             assertTrue(true);
         }
