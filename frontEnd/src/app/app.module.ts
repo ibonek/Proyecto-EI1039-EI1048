@@ -13,7 +13,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatOptionModule} from "@angular/material/core";
 import {AppRoutingModule} from "./app-routing.module";
-import {RouterOutlet, Routes} from "@angular/router";
+import {RouterModule, RouterOutlet, Routes} from "@angular/router";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
 import Swal from "sweetalert2"
@@ -22,7 +22,7 @@ import { TopBarComponent } from './top-bar/top-bar.component';
 import { LocationListComponent } from './location-list/location-list.component';
 //import { LocationFromComponent } from './location-from/location-from.component';
 
-
+const routes: Routes=[];
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,8 +44,12 @@ import { LocationListComponent } from './location-list/location-list.component';
     MatAutocompleteModule,
     ReactiveFormsModule,
     MatOptionModule,
-    AppRoutingModule
+    AppRoutingModule,
+    RouterModule.forRoot(routes)
 
+  ],
+  exports:[
+    RouterModule
   ],
   providers: [FindingByNameService
               ],
