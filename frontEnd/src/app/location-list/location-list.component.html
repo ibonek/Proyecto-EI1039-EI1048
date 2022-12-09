@@ -1,1 +1,12 @@
-<p>location-list works!</p>
+<app-top-bar></app-top-bar>
+
+
+<div class="listBox">
+  <div class="inBox">
+    <h1>Active Location</h1>
+    <li *ngFor="let location of locations">
+      <div class="lista" [textContent]="location"></div>
+      <button class="buttonList" mat-icon-button><mat-icon >delete_forever</mat-icon></button>
+    </li>
+  </div>
+</div>

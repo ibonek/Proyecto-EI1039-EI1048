@@ -52,9 +52,13 @@ public class FindingLocationController {
         return confirmation;
     }
 
-    @GetMapping("/giveLocations")
+    @GetMapping("/giveAutocompleteLocations")
     public List<String> giveCityList() throws IOException, InterruptedException {
-
         return InputValidator.generateAutocompleteList();
+    }
+
+    @GetMapping("/giveLocations")
+    public List<String> getActiveLocationList() throws IOException, InterruptedException {
+        return InputValidator.getActiveLocation();
     }
 }

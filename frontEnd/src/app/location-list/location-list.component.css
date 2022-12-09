@@ -1,0 +1,41 @@
+h1{
+  color: white;
+}
+
+.listBox{
+  background: #c2185b;
+  width: 80%;
+  height: fit-content;
+  margin: 3rem auto;
+  border-radius: 2px;
+}
+
+.inBox{
+  text-align: center;
+  padding: 1rem 3rem 2rem;
+}
+
+li{
+  font-size: 20px;
+  line-height: 2rem;
+  list-style: none;
+  margin:0 0 0.6rem 0;
+  display: flex;
+  color: white;
+}
+
+.lista{
+  font-weight: bold;
+  text-align: left;
+  /*background: white;*/
+  border-radius: 2px;
+  width: 100%;
+  padding: 0.2rem 1rem ;
+}
+
+.buttonList{
+  margin:0 0 0 0.6rem;
+  border-radius: 2px;
+  /*background: white;*/
+  border: none;
+}

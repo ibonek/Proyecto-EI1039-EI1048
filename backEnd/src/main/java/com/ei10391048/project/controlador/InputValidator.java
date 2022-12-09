@@ -1,5 +1,7 @@
 package com.ei10391048.project.controlador;
 
+import com.ei10391048.project.modelo.Location;
+import com.ei10391048.project.modelo.LocationManager;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
@@ -127,6 +129,10 @@ public class InputValidator {
             list.add(jsonObject.getString("name"));
         }
         return list;
+    }
+
+    public static List<String> getActiveLocation(){
+        return LocationManager.getInstance().getLocationsName();
     }
 
 }
