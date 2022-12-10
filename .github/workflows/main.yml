@@ -22,10 +22,10 @@ jobs:
           distribution: 'adopt'
 
       - name: Build
-        run: mvn --batch-mode -DskipTests package
+        run: mvn --batch-mode -DskipTests backEnd/package
 
       - name: Test
-        run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
+        run: mvn --batch-mode -Dmaven.test.failure.ignore=true backEnd/test
 
       - name: Report
         uses: dorny/test-reporter@v1
