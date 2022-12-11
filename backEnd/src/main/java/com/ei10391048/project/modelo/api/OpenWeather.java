@@ -13,7 +13,7 @@ public class OpenWeather extends API {
     private static OpenWeather instance;
     private final OpenWeatherMapClient openWeatherMapClient;
 
-    private WeatherInformation information;
+    private final WeatherInformation information;
 
     private Weather weather;
     private OpenWeather(){
@@ -61,13 +61,17 @@ public class OpenWeather extends API {
     }
 
     @Override
-    APIInformation getInfo() {
+    WeatherInformation getInfo() {
         return information;
     }
 
     @Override
     void insertBodyData() {
         information.setTemperature(weather.getTemperature().getValue());
+        information.setWeatherState(weather.getWeatherState().getName());
+        information.setImageURL(weather.getWeatherState().getWeatherIconUrl());
+        information.setHumidity(weather.getHumidity().getValue());
+
     }
 
 
