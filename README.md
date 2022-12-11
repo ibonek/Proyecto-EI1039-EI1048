@@ -4,7 +4,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![Java CI with Maven][maven-shield]][maven-url]
+[![Workflow][maven-shield]][maven-url]
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -168,5 +168,5 @@ Carlos Feliu Usó    -
 [Angular-url]: https://angular.io/
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
-[maven-shield]: https://img.shields.io/github/workflow/status/ibonek/Proyecto-EI1039-EI1048/Java%20CI%20with%20Maven?label=Java%20CI%20with%20Maven&style=for-the-badge
+[maven-shield]: https://img.shields.io/github/workflow/status/ibonek/Proyecto-EI1039-EI1048/Java%20CI%20with%20Maven?&style=for-the-badge
 [maven-url]: https://github.com/ibonek/Proyecto-EI1039-EI1048/actions/workflows/maven.yml
