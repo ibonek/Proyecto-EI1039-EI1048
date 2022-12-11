@@ -1,20 +1,18 @@
 package com.ei10391048.project.modelo;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-@Entity
+
 public class APIInformation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id", nullable = false)
+
     private Long id;
 
     String apiName;
     String locationName;
-    Date date;
-    boolean state;
-    String informationBody;
+    LocalDateTime date;
+
 
 
     public String getApiName() {
@@ -33,29 +31,14 @@ public class APIInformation {
         this.locationName = locationName;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public boolean isState() {
-        return state;
-    }
-
-    public void setState(boolean state) {
-        this.state = state;
-    }
-
-    public String getInformationBody() {
-        return informationBody;
-    }
-
-    public void setInformationBody(String informationBody) {
-        this.informationBody = informationBody;
-    }
 
 
 }
