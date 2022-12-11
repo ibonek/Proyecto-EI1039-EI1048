@@ -41,7 +41,7 @@ public class APIManagerTest {
         LocationManager locationManager = LocationManager.getInstance();
         Location location = locationManager.getLocations().get(index);
         APIManager manager = location.getApiManager();
-        manager.addAPI(OpenWeather.getInstance());
+        manager.addAPI(new OpenWeather());
         assertEquals(location.getInfo().getLocationName(), locationManager.getLocations().get(index).getName());
 
     }

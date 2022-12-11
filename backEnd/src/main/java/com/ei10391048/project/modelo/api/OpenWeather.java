@@ -16,19 +16,12 @@ public class OpenWeather extends API {
     private final WeatherInformation information;
 
     private Weather weather;
-    private OpenWeather(){
+    public OpenWeather(){
         apiKey = "96a01f139118d49f85a54068a7321e3d";
         openWeatherMapClient = new OpenWeatherMapClient(apiKey);
         information  = new WeatherInformation();
         name = APIsNames.WEATHER.getApiName();
 
-
-    }
-    public static OpenWeather getInstance(){
-        if (instance == null){
-            instance = new OpenWeather();
-        }
-        return instance;
 
     }
 
@@ -71,6 +64,7 @@ public class OpenWeather extends API {
         information.setWeatherState(weather.getWeatherState().getName());
         information.setImageURL(weather.getWeatherState().getWeatherIconUrl());
         information.setHumidity(weather.getHumidity().getValue());
+        information.setWind(weather.getWind().getSpeed());
 
     }
 
