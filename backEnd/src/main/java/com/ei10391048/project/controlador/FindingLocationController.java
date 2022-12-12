@@ -12,14 +12,9 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class FindingLocationController {
 
-    private final FindingLocationRepository findingLocationRepository;
 
     public Boolean confirmation=null;
 
-
-    public FindingLocationController(FindingLocationRepository findingLocationRepository) {
-        this.findingLocationRepository = findingLocationRepository;
-    }
 
 
     @PostMapping("/addLocation")

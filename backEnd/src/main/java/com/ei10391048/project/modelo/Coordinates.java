@@ -3,7 +3,7 @@ package com.ei10391048.project.modelo;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
+
 public class Coordinates {
     private double lat;
     private double lon;

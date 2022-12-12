@@ -14,20 +14,38 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class InformationController {
 
-    @GetMapping("/weatherState")
-    public List<WeatherInformation> getWeatherInfo() {
-        LinkedList<WeatherInformation> list = new LinkedList<>();
+    @GetMapping("/apiInfo")
+    public  List<APIInformation> getAPIsInfo() throws IncorrectLocationException {
+        List<APIInformation> list = new LinkedList<>();
         LocationManager locationManager = LocationManager.getInstance();
+        /*
+        GeoCodService geoCodSrv = new GeoCodService();
+        String toponimo = "Valencia";
+        geoCodSrv.setSearch(new ByName(toponimo));
+        locationManager.setLocationApi(geoCodSrv);
+        locationManager.addLocation();
 
-        for (Location location: locationManager.getLocations()){
-            APIManager manager = location.getApiManager();
-            manager.addAPI(new OpenWeather());
-            list.add((WeatherInformation) manager.getInfo(location.getName()));
+        toponimo = "Madrid";
+        geoCodSrv.setSearch(new ByName(toponimo));
+
+        locationManager.addLocation();
+*/
+
+
+            for (Location location: locationManager.getLocations()){
+                APIManager manager = location.getApiManager();
+                manager.addAPI(new OpenWeather());
+                list.add(manager.getInfo(location.getName()));
+            }
+            return list;
+
         }
-        return list;
 
+
+
+    public static void main(String[] args) throws IncorrectLocationException {
+        //InformationController informationController = new InformationController();
+        //System.out.println(informationController.getAPIsInfo());
     }
-
-
 
 }

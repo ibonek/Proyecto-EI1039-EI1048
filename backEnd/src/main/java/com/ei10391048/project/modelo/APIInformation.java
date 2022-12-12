@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 
-public class APIInformation {
+public abstract class APIInformation {
 
-    private Long id;
+
 
     String apiName;
     String locationName;
@@ -38,7 +38,6 @@ public class APIInformation {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
-
 
 
 }

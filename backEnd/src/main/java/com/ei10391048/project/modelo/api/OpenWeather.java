@@ -10,7 +10,6 @@ import com.github.prominence.openweathermap.api.model.weather.Weather;
 
 public class OpenWeather extends API {
 
-    private static OpenWeather instance;
     private final OpenWeatherMapClient openWeatherMapClient;
 
     private final WeatherInformation information;

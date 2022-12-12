@@ -4,11 +4,10 @@ import com.ei10391048.project.modelo.APIInformation;
 
 import javax.persistence.*;
 
-@Entity
+
 public abstract class API {
 
-    @Id
-    @Column(name = "name", nullable = false)
+
     protected String name;
 
 
@@ -47,6 +46,7 @@ public abstract class API {
     abstract void insertDate();
     abstract boolean apiCall(String locationName);
 
+    //Tiene que ser lista cuando añadas otra API
 
     abstract APIInformation getInfo();
 

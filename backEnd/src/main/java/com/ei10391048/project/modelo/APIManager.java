@@ -5,15 +5,13 @@ import com.ei10391048.project.modelo.api.API;
 
 import javax.persistence.*;
 import java.util.LinkedList;
+import java.util.List;
 
-@Entity
+
 public class APIManager {
-    @Id
-    @Column(name="id", nullable = false)
-    private Long id;
 
-    @OneToMany
-    private LinkedList<API> apiList;
+
+    private List<API> apiList;
 
     public APIManager() {
         apiList = new LinkedList<>();
