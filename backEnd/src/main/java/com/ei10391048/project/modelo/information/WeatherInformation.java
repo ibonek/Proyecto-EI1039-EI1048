@@ -1,6 +1,8 @@
-package com.ei10391048.project.modelo;
+package com.ei10391048.project.modelo.information;
 
-public class WeatherInformation extends APIInformation{
+import com.ei10391048.project.modelo.information.APIInformation;
+
+public class WeatherInformation extends APIInformation {
     @Override
     public String toString() {
         return "WeatherInformation{" +
