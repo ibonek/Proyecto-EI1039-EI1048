@@ -1,12 +1,13 @@
 package com.ei10391048.project.modelo.api;
 
-import com.ei10391048.project.modelo.APIInformation;
+import com.ei10391048.project.modelo.information.APIInformation;
+import com.ei10391048.project.modelo.information.EventInformation;
+import com.ei10391048.project.modelo.information.WeatherInformation;
 
-import javax.persistence.*;
+import java.util.List;
 
 
 public abstract class API {
-
 
     protected String name;
 
@@ -14,11 +15,11 @@ public abstract class API {
     String apiKey=null;
 
 
-    public APIInformation generateInfo(String locationName)  {
+    public List<APIInformation> generateInfo(String locationName)  {
         return setInfoData(locationName);
 
     }
-    private APIInformation setInfoData(String locationName) {
+    private List<APIInformation> setInfoData(String locationName) {
 
         if (apiCall(locationName)){
             insertAPIName();
@@ -48,7 +49,7 @@ public abstract class API {
 
     //Tiene que ser lista cuando añadas otra API
 
-    abstract APIInformation getInfo();
+    abstract List<APIInformation> getInfo();
 
     abstract void insertBodyData();
 

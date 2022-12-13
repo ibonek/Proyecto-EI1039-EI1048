@@ -1,4 +1,4 @@
-package com.ei10391048.project.modelo;
+package com.ei10391048.project.modelo.information;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
