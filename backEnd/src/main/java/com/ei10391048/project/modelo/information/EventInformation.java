@@ -8,7 +8,7 @@ public class EventInformation extends APIInformation{
 
     private String place;
 
-    private String imageURL;
+
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
@@ -22,8 +22,16 @@ public class EventInformation extends APIInformation{
         this.place = place;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public String getEventName() {
+        return eventName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPlace() {
+        return place;
     }
 
     @Override

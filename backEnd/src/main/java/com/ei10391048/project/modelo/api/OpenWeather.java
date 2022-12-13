@@ -42,8 +42,14 @@ public class OpenWeather extends API {
     }
 
     @Override
+    void insertImageURL() {
+        information.get(0).setImageURL(weather.getWeatherState().getWeatherIconUrl());
+
+    }
+
+    @Override
     void insertDate() {
-        information.get(0).setDate(weather.getCalculationTime());
+        information.get(0).setDate(weather.getCalculationTime().toString());
     }
 
     @Override
@@ -67,7 +73,6 @@ public class OpenWeather extends API {
         WeatherInformation info = (WeatherInformation) information.get(0);
         info.setTemperature(weather.getTemperature().getValue());
         info.setWeatherState(weather.getWeatherState().getName());
-        info.setImageURL(weather.getWeatherState().getWeatherIconUrl());
         info.setHumidity(weather.getHumidity().getValue());
         info.setWind(weather.getWind().getSpeed());
 

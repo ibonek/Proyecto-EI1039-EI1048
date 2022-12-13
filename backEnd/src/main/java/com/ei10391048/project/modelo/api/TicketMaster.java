@@ -63,6 +63,17 @@ public class TicketMaster extends API{
     }
 
     @Override
+    void insertImageURL() {
+        JSONArray json;
+        for (int i=0; i<numberOfEvents;i++){
+            EventInformation info = (EventInformation) information.get(i);
+            JSONObject object =new JSONObject(events.get(i).toString());
+            json = object.getJSONArray("images");
+            info.setImageURL(new JSONObject(json.get(0).toString()).getString("url"));
+        }
+    }
+
+    @Override
     void insertDate() {
         JSONObject event;
         for (int i=0; i<numberOfEvents;i++) {
@@ -70,7 +81,7 @@ public class TicketMaster extends API{
             JSONObject sales = event.getJSONObject("sales").getJSONObject("public");
             String date = sales.getString("endDateTime");
             date = date.substring(0,date.length()-1);
-            information.get(i).setDate(LocalDateTime.parse(date));
+            information.get(i).setDate(date);
         }
 
 
@@ -103,21 +114,9 @@ public class TicketMaster extends API{
         return information;
     }
 
-    private void insertImagesURL(){
-        JSONArray json;
-        for (int i=0; i<numberOfEvents;i++){
-            EventInformation info = (EventInformation) information.get(i);
-            JSONObject object =new JSONObject(events.get(i).toString());
-            json = object.getJSONArray("images");
-            info.setImageURL(new JSONObject(json.get(0).toString()).getString("url"));
-        }
-
-    }
     @Override
     void insertBodyData() {
         insertEventName();
-        insertImagesURL();
-
     }
 
     public static void main(String[] args) {

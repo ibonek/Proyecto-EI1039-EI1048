@@ -21,8 +21,6 @@ public class WeatherInformation extends APIInformation {
 
     String weatherState;
 
-    String imageURL;
-
     int humidity;
     double wind;
 
@@ -34,9 +32,6 @@ public class WeatherInformation extends APIInformation {
         this.weatherState=weatherState;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
 
     public void setHumidity(int value){
         humidity=value;
@@ -59,9 +54,6 @@ public class WeatherInformation extends APIInformation {
         return weatherState;
     }
 
-    public String getImageURL() {
-        return imageURL;
-    }
 
     public int getHumidity() {
         return humidity;

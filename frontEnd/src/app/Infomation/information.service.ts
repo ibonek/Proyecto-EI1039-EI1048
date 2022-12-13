@@ -13,9 +13,10 @@ export class InformationService {
     this.infoUrl ='http://localhost:8080/apiInfo';
   }
 
-  public findAll(): Observable<APIInformation[]>{
+  public findAll(): Observable<APIInformation[][][]>{
 
-    let a = this.http.get<APIInformation[]>(this.infoUrl);
+    let a = this.http.get<APIInformation[][][]>(this.infoUrl);
+
     return a;
   }
 }

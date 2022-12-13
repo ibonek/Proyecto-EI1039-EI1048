@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {APIInformation} from "./apiinformation";
-import {InformationService} from "./information.service";
-import {WeatherInformation} from "./weather-information";
+import {APIInformation} from "./Infomation/apiinformation";
+import {InformationService} from "./Infomation/information.service";
+import {WeatherInformation} from "./Infomation/weather-information";
+import {EventInformation} from "./Infomation/event-information";
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import {WeatherInformation} from "./weather-information";
 export class AppComponent implements OnInit{
 
   title: string;
-  info : APIInformation[] |undefined;
+  info : APIInformation[][][] |undefined;
 
   constructor(private informationService: InformationService) {
     this.title = 'Spring Boot - Angular Application';
@@ -21,9 +22,12 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.informationService.findAll().subscribe(data => {
       this.info = data;
-      for (let i=0; i<this.info.length;i++){
-        let b = this.info[i] as WeatherInformation
-        alert(b.locationName)
+      let b = this.info[0][0][0] as WeatherInformation
+      alert(b.locationName + ": "+b.temperature)
+
+      for (let i=0; i<2;i++){
+        let c = this.info[0][1][i] as EventInformation
+        alert(c.locationName+ ":" + c.eventName);
       }
 
     });

@@ -25,6 +25,7 @@ public abstract class API {
             insertAPIName();
             insertLocationName();
             insertDate();
+            insertImageURL();
             insertBodyData();
             return getInfo();
         }
@@ -44,6 +45,7 @@ public abstract class API {
     abstract void insertLocationName();
 
 
+    abstract void insertImageURL();
     abstract void insertDate();
     abstract boolean apiCall(String locationName);
 

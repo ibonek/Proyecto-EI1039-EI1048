@@ -18,10 +18,11 @@ public class InformationController {
 
     @GetMapping("/apiInfo")
     public  List<List<List<APIInformation>>> getAPIsInfo() throws IncorrectLocationException {
+
         List<List<List<APIInformation>>> list = new LinkedList<>();
         LocationManager locationManager = LocationManager.getInstance();
-        /*
 
+/*
         GeoCodService geoCodSrv = new GeoCodService();
         String toponimo = "Valencia";
         geoCodSrv.setSearch(new ByName(toponimo));
@@ -48,11 +49,11 @@ public class InformationController {
 
 
     public static void main(String[] args) throws IncorrectLocationException {
-        /*
-        InformationController informationController = new InformationController();
-        System.out.println(informationController.getAPIsInfo().get(0).get(0).get(0));
 
-         */
+        InformationController informationController = new InformationController();
+        System.out.println(informationController.getAPIsInfo().get(0).get(1).get(0));
+
+
     }
 
 }

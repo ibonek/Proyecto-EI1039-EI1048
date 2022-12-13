@@ -11,7 +11,9 @@ public abstract class APIInformation {
 
     String apiName;
     String locationName;
-    LocalDateTime date;
+    String date;
+
+    String imageURL;
 
 
 
@@ -31,13 +33,19 @@ public abstract class APIInformation {
         this.locationName = locationName;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 
+    public String getImageURL() {
+        return imageURL;
+    }
 }
