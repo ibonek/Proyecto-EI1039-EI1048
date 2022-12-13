@@ -2,8 +2,8 @@ package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.NonActiveServiceException;
 import com.ei10391048.project.modelo.api.API;
+import com.ei10391048.project.modelo.information.APIInformation;
 
-import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,9 +34,12 @@ public class APIManager {
     }
 
 
-    public APIInformation getInfo(String locationName) {
-        API api = apiList.get(0);
-        return api.generateInfo(locationName);
+    public List<List<APIInformation>> getInfo(String locationName) {
+        List<List<APIInformation>> list = new LinkedList<>();
+        for (API api: apiList){
+            list.add(api.generateInfo(locationName));
+        }
+        return list;
 
     }
 }

@@ -42,7 +42,7 @@ public class APIManagerTest {
         Location location = locationManager.getLocations().get(index);
         APIManager manager = location.getApiManager();
         manager.addAPI(new OpenWeather());
-        assertEquals(location.getInfo().getLocationName(), locationManager.getLocations().get(index).getName());
+        assertEquals(location.getInfo().get(0).getLocationName(), locationManager.getLocations().get(index).getName());
 
     }
 
@@ -53,7 +53,7 @@ public class APIManagerTest {
         APIManager manager = locationManager.getLocations().get(0).getApiManager();
 
         try {
-            manager.getAPI(APIsNames.WEATHER);
+            manager.getAPI(APIsNames.EVENTS);
 
             fail();
         } catch (NonActiveServiceException ex){
