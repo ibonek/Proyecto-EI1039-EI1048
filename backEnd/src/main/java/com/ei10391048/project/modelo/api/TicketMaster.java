@@ -23,11 +23,11 @@ public class TicketMaster extends API{
 
     private final List<APIInformation> information;
 
-    private int numberOfEvents = 15;
+    private final int numberOfEvents = 15;
     public TicketMaster(){
         apiKey = "0F9NRxxNHHARWvlAgkokiKrKFYVqEqM8";
         name = APIsNames.EVENTS.getApiName();
-        information = new LinkedList<>();
+        information = super.information;
         for (int i=0 ; i<numberOfEvents;i++){
             information.add(new EventInformation());
         }
@@ -109,19 +109,11 @@ public class TicketMaster extends API{
         }
     }
 
-    @Override
-    List<APIInformation> getInfo() {
-        return information;
-    }
 
     @Override
     void insertBodyData() {
         insertEventName();
     }
 
-    public static void main(String[] args) {
-        TicketMaster ticketMaster = new TicketMaster();
-        ticketMaster.apiCall("Valencia");
-        ticketMaster.insertLocationName();
-    }
+
 }

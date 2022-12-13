@@ -4,6 +4,7 @@ import com.ei10391048.project.modelo.information.APIInformation;
 import com.ei10391048.project.modelo.information.EventInformation;
 import com.ei10391048.project.modelo.information.WeatherInformation;
 
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -12,7 +13,8 @@ public abstract class API {
     protected String name;
 
 
-    String apiKey=null;
+    protected List<APIInformation> information= new LinkedList<>();;
+    protected String apiKey=null;
 
 
     public List<APIInformation> generateInfo(String locationName)  {
@@ -51,7 +53,11 @@ public abstract class API {
 
     //Tiene que ser lista cuando añadas otra API
 
-    abstract List<APIInformation> getInfo();
+    List<APIInformation> getInfo(){
+
+            return information;
+
+    }
 
     abstract void insertBodyData();
 
