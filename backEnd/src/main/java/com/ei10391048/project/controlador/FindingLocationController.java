@@ -59,6 +59,6 @@ public class FindingLocationController {
 
     @GetMapping("/giveLocations")
     public List<String> getActiveLocationList() throws IOException, InterruptedException {
-        return InputValidator.getActiveLocation();
+        return InputValidator.getAvailableLocation();
     }
 }
