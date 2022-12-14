@@ -1,6 +1,7 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.controlador.InputValidator;
+import com.ei10391048.project.exception.IncorrectLocationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -18,9 +19,9 @@ class LocationManagerTest {
 
     @ParameterizedTest
     @MethodSource("getName")
-    void getLocationsName(LinkedList<Location> input,ArrayList<String> sol) {
+    void getLocationsNameValidCase(LinkedList<Location> input,ArrayList<String> sol) {
         LocationManager manager = LocationManager.getInstance();
-        manager.setLocations(input);
+        manager.setLocations(new LinkedList<Location>());
         assertEquals(manager.getLocationsName(), sol);
     }
 
@@ -39,4 +40,12 @@ class LocationManagerTest {
                 Arguments.of(list2, sol2)
         );
     }
+
+    @Test
+    void getLocationsNameInvalidCase() {
+        LocationManager manager = LocationManager.getInstance();
+        manager.setLocations(new LinkedList<Location>());
+        assertEquals(manager.getLocationsName(), new LinkedList<Location>());
+    }
+
 }
