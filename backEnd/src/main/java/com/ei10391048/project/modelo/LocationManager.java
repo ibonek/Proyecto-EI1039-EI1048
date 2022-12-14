@@ -46,6 +46,10 @@ public class LocationManager {
         this.locationApi = locationApi;
     }
 
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
     public List<String> getLocationsName() {
         ArrayList<String> list = new ArrayList<>();
         for (Location loc : getLocations()) {
