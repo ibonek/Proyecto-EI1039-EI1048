@@ -50,5 +50,16 @@ public class LocationManager {
         this.locations = locations;
     }
 
+    public List<String> getLocationsName(){
+        List<String> list = new LinkedList<>();
+        for (Location location: locations){
+            list.add(location.getName());
+        }
+        return list;
+    }
+
+    public void clearLocations(){
+        locations.clear();
+    }
 
 }
