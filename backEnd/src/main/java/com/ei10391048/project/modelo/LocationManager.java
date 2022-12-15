@@ -27,7 +27,7 @@ public class LocationManager {
 
     public void addLocation() throws IncorrectLocationException {
         Location location = locationApi.findLocation();
-        location.generateAPIManager();
+        location.setApiManager(new APIManager());
         locations.add(location);
     }
 
@@ -47,5 +47,8 @@ public class LocationManager {
         this.locationApi = locationApi;
     }
 
+    public void clearLocations(){
+        this.locations.clear();
+    }
 
 }

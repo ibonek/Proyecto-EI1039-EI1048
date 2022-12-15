@@ -14,10 +14,10 @@ import static org.testng.Assert.*;
 
 public class APIManagerTest {
 
-    List<Location> locationList = new LinkedList<>();
     @BeforeEach
     public void setParams() throws IncorrectLocationException {
         LocationManager locationManager = LocationManager.getInstance();
+        locationManager.clearLocations();
         GeoCodService geoCodSrv = new GeoCodService();
         String toponimo = "Valencia";
         geoCodSrv.setSearch(new ByName(toponimo));
@@ -43,7 +43,7 @@ public class APIManagerTest {
         Location location = locationManager.getLocations().get(index);
         APIManager manager = location.getApiManager();
         manager.addAPI(new OpenWeather());
-        assertEquals(location.getInfo().get(0).getLocationName(), locationManager.getLocations().get(index).getName());
+        assertEquals(manager.getInfo(location.getName()).get(0).get(0).getLocationName(), locationManager.getLocations().get(index).getName());
 
     }
 

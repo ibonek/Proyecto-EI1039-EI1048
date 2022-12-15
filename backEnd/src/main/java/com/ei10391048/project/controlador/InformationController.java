@@ -18,7 +18,7 @@ import java.util.List;
 public class InformationController {
 
     @GetMapping("/apiInfo")
-    public  List<List<List<APIInformation>>> getAPIsInfo() throws IncorrectLocationException {
+    public  List<List<List<APIInformation>>> getAPIsInfo() {
 
         List<List<List<APIInformation>>> list = new LinkedList<>();
         LocationManager locationManager = LocationManager.getInstance();
@@ -48,25 +48,11 @@ public class InformationController {
 
                 list.add(manager.getInfo(location.getName()));
             }
-        //System.out.println(list.get(0).get(2).get(1));
             return list;
 
         }
 
 
 
-    public static void main(String[] args) throws IncorrectLocationException {
-
-        InformationController informationController = new InformationController();
-        List<List<List<APIInformation>>> info = informationController.getAPIsInfo();
-        System.out.println(info.get(0).get(2).get(0));
-        System.out.println(info.get(0).get(1).get(0));
-        System.out.println(info.get(0).get(2).get(1));
-        System.out.println(info.get(0).get(0).get(0));
-        System.out.println(info.get(0).get(0).get(1));
-
-
-
-    }
 
 }

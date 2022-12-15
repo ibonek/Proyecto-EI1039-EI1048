@@ -53,7 +53,7 @@ public class Location {
 
     }
 
-    public void generateAPIManager() {
-        this.apiManager = new APIManager();
+    public void setApiManager(APIManager apiManager) {
+        this.apiManager = apiManager;
     }
 }
