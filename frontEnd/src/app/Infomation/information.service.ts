@@ -17,6 +17,7 @@ export class InformationService {
 
     let a = this.http.get<APIInformation[][][]>(this.infoUrl);
 
+
     return a;
   }
 }

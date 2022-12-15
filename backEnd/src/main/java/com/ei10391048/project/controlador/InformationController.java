@@ -41,12 +41,14 @@ public class InformationController {
 
             for (Location location: locationManager.getLocations()){
                 APIManager manager = location.getApiManager();
-                manager.addAPI(new NewsAPI());
+
                 manager.addAPI(new OpenWeather());
                 manager.addAPI(new TicketMaster());
+                manager.addAPI(new NewsAPI());
 
                 list.add(manager.getInfo(location.getName()));
             }
+        //System.out.println(list.get(0).get(2).get(1));
             return list;
 
         }

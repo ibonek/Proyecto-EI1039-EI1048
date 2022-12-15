@@ -1,8 +1,8 @@
 export class APIInformation {
-  apiName:String | undefined;
-  locationName:String | undefined;
-  date:String | undefined;
-  imageURL: String | undefined;
+  apiName:string | undefined;
+  locationName:string | undefined;
+  date:string | undefined;
+  imageURL: string | undefined;
 
 
 }
