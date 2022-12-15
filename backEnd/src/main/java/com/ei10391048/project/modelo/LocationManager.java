@@ -2,6 +2,7 @@ package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,6 +44,22 @@ public class LocationManager {
 
     public void setLocationApi(LocationApiInterface locationApi) {
         this.locationApi = locationApi;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<String> getLocationsName(){
+        List<String> list = new LinkedList<>();
+        for (Location location: locations){
+            list.add(location.getName());
+        }
+        return list;
+    }
+
+    public void clearLocations(){
+        locations.clear();
     }
 
 }

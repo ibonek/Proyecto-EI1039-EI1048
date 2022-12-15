@@ -10,21 +10,21 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-public class FindingLocationController {
+public class LocationController {
 
     private final FindingLocationRepository findingLocationRepository;
 
     public Boolean confirmation=null;
 
 
-    public FindingLocationController(FindingLocationRepository findingLocationRepository) {
+    public LocationController(FindingLocationRepository findingLocationRepository) {
         this.findingLocationRepository = findingLocationRepository;
     }
 
 
     @PostMapping("/addLocation")
     public void createLocation(@RequestBody String location) {
-
+        try {
         location = location.trim();
         LocationManager locationManager = LocationManager.getInstance();
         locationManager.setLocationApi(new GeoCodService());
@@ -37,10 +37,10 @@ public class FindingLocationController {
 
             locationManager.getLocationApi().setSearch(new ByName(location));
         }
-        try {
+
             locationManager.addLocation();
             confirmation = true;
-        } catch (IncorrectLocationException ex) {
+        } catch (Exception ex) {
             confirmation = false;
         }
     }
@@ -52,9 +52,14 @@ public class FindingLocationController {
         return confirmation;
     }
 
-    @GetMapping("/giveLocations")
+    @GetMapping("/giveAutocompleteLocations")
     public List<String> giveCityList() throws IOException, InterruptedException {
-
         return InputValidator.generateAutocompleteList();
+    }
+
+    @GetMapping("/giveLocations")
+    public List<Location> getActiveLocationList() {
+        LocationManager manager = LocationManager.getInstance();
+        return manager.getLocations();
     }
 }

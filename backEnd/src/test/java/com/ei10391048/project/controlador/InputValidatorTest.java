@@ -71,6 +71,8 @@ class InputValidatorTest {
                 Arguments.of("  MADRID", false),
                 Arguments.of("Castellón de la Plana", false),
                 Arguments.of("Washington DC", false),
+                Arguments.of("Las Piedras", false),
+                Arguments.of("20 2 3", false),
                 Arguments.of("100.05, 50.02", true),
                 Arguments.of(" 100.41, 64.01", true),
                 Arguments.of("100º10'12\", 10º11'15\"", true),
@@ -79,7 +81,9 @@ class InputValidatorTest {
                 Arguments.of("100.05N, 10.11O",true),
                 Arguments.of("100.05N, 10.11W",true),
                 Arguments.of("100.05N, 10.11E",true),
-                Arguments.of("100.05S, 10.11O",true)
+                Arguments.of("100.05S, 10.11O",true),
+                Arguments.of("N39°59'34.44\", O0°3'27.65\"",true)
+
                 );
     }
 
