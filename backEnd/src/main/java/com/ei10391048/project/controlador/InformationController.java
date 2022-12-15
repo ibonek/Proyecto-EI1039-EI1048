@@ -2,6 +2,7 @@ package com.ei10391048.project.controlador;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.modelo.*;
+import com.ei10391048.project.modelo.api.NewsAPI;
 import com.ei10391048.project.modelo.api.OpenWeather;
 import com.ei10391048.project.modelo.api.TicketMaster;
 import com.ei10391048.project.modelo.information.APIInformation;
@@ -22,9 +23,11 @@ public class InformationController {
         List<List<List<APIInformation>>> list = new LinkedList<>();
         LocationManager locationManager = LocationManager.getInstance();
 
-/*
+
+        /*
+
         GeoCodService geoCodSrv = new GeoCodService();
-        String toponimo = "Valencia";
+        String toponimo = "London";
         geoCodSrv.setSearch(new ByName(toponimo));
         locationManager.setLocationApi(geoCodSrv);
         locationManager.addLocation();
@@ -38,8 +41,10 @@ public class InformationController {
 
             for (Location location: locationManager.getLocations()){
                 APIManager manager = location.getApiManager();
+                manager.addAPI(new NewsAPI());
                 manager.addAPI(new OpenWeather());
                 manager.addAPI(new TicketMaster());
+
                 list.add(manager.getInfo(location.getName()));
             }
             return list;
@@ -51,7 +56,13 @@ public class InformationController {
     public static void main(String[] args) throws IncorrectLocationException {
 
         InformationController informationController = new InformationController();
-        System.out.println(informationController.getAPIsInfo().get(0).get(1).get(0));
+        List<List<List<APIInformation>>> info = informationController.getAPIsInfo();
+        System.out.println(info.get(0).get(2).get(0));
+        System.out.println(info.get(0).get(1).get(0));
+        System.out.println(info.get(0).get(2).get(1));
+        System.out.println(info.get(0).get(0).get(0));
+        System.out.println(info.get(0).get(0).get(1));
+
 
 
     }

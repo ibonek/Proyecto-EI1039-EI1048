@@ -1,8 +1,8 @@
-package com.ei10391048.project.modelo;
+package com.ei10391048.project.modelo.api;
 
 public enum APIsNames {
     WEATHER("OpenWeather"),
-    NEWS("Currents"),
+    NEWS("NewsAPI"),
     EVENTS("TicketMaster");
 
     private String nombreAPI;
