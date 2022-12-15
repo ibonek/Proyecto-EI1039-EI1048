@@ -10,14 +10,14 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-public class FindingLocationController {
+public class LocationController {
 
     private final FindingLocationRepository findingLocationRepository;
 
     public Boolean confirmation=null;
 
 
-    public FindingLocationController(FindingLocationRepository findingLocationRepository) {
+    public LocationController(FindingLocationRepository findingLocationRepository) {
         this.findingLocationRepository = findingLocationRepository;
     }
 
@@ -58,7 +58,8 @@ public class FindingLocationController {
     }
 
     @GetMapping("/giveLocations")
-    public List<String> getActiveLocationList() throws IOException, InterruptedException {
-        return InputValidator.getAvailableLocation();
+    public List<Location> getActiveLocationList() {
+        LocationManager manager = LocationManager.getInstance();
+        return manager.getLocations();
     }
 }

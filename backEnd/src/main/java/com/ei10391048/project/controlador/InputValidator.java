@@ -131,8 +131,4 @@ public class InputValidator {
         return list;
     }
 
-    public static List<String> getAvailableLocation(){
-        return LocationManager.getInstance().getLocationsName();
-    }
-
 }

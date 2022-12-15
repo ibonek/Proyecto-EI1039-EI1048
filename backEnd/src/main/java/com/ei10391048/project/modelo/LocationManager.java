@@ -50,11 +50,5 @@ public class LocationManager {
         this.locations = locations;
     }
 
-    public List<String> getLocationsName() {
-        ArrayList<String> list = new ArrayList<>();
-        for (Location loc : getLocations()) {
-            list.add(loc.getName());
-        }
-        return list;
-    }
+
 }
