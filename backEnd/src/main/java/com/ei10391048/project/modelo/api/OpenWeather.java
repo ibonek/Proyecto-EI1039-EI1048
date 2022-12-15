@@ -1,15 +1,12 @@
 package com.ei10391048.project.modelo.api;
 
-import com.ei10391048.project.modelo.APIsNames;
 import com.ei10391048.project.modelo.information.APIInformation;
-import com.ei10391048.project.modelo.information.EventInformation;
 import com.ei10391048.project.modelo.information.WeatherInformation;
 import com.github.prominence.openweathermap.api.OpenWeatherMapClient;
 import com.github.prominence.openweathermap.api.enums.Language;
 import com.github.prominence.openweathermap.api.enums.UnitSystem;
 import com.github.prominence.openweathermap.api.model.weather.Weather;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class OpenWeather extends API {

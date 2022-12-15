@@ -1,9 +1,7 @@
 package com.ei10391048.project.modelo.api;
 
-import com.ei10391048.project.modelo.APIsNames;
 import com.ei10391048.project.modelo.information.APIInformation;
 import com.ei10391048.project.modelo.information.EventInformation;
-import com.ei10391048.project.modelo.information.WeatherInformation;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,8 +10,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 
 public class TicketMaster extends API{
@@ -83,9 +79,6 @@ public class TicketMaster extends API{
             date = date.substring(0,date.length()-1);
             information.get(i).setDate(date);
         }
-
-
-
     }
 
     @Override
