@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {map, startWith} from "rxjs/operators";
 import {FindingByNameService} from "../finding-by-name.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Location} from "../location";
 
 @Component({
   selector: 'app-location-list',
@@ -10,14 +11,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class LocationListComponent implements OnInit {
 
-  locations: string[] | undefined
+  locations: Location[] | undefined
 
   constructor( private route: ActivatedRoute,
                private router: Router,
                private findingByNameService: FindingByNameService) { }
 
-  async ngOnInit(){
-    await this.findingByNameService.getActiveLocationList().subscribe(data => {
+  ngOnInit(){
+    this.findingByNameService.getActiveLocationList().subscribe(data => {
       this.locations=data;
     });
   }

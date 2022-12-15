@@ -1,6 +1,13 @@
-export class Location {
-  name: String | undefined
+import {Coordinates} from "./coordinates";
 
-  constructor() {
+export class Location {
+  name!: string
+  coordinates!: Coordinates
+
+
+  public toString(): string{
+
+    return this.name+ '( '+this.coordinates.lat +', '+this.coordinates.lon+')';
   }
+
 }

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {Location} from "./location";
 
 @Injectable()
 export class FindingByNameService {
@@ -23,6 +24,6 @@ export class FindingByNameService {
   }
 
   public getActiveLocationList(){
-    return this.http.get<string[]>("http://localhost:8080/giveLocations");
+    return this.http.get<Location[]>("http://localhost:8080/giveLocations");
   }
 }
