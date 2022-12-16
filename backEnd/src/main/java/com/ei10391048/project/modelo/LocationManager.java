@@ -1,5 +1,6 @@
 package com.ei10391048.project.modelo;
 
+import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.exception.IncorrectLocationException;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class LocationManager {
         locations.add(locationApi.findLocation());
     }
 
-    public void addActiveLocation() {
+    public void activeLocation(String name) throws AlreadyActiveLocation {
     }
 
     public List<Location> getLocations(){
@@ -57,8 +58,6 @@ public class LocationManager {
         return null;
     }
 
-
-
     public void setLocationApi(LocationApiInterface locationApi) {
         this.locationApi = locationApi;
     }
@@ -70,8 +69,5 @@ public class LocationManager {
     public void clearLocations(){
         locations.clear();
     }
-
-
-
 
 }
