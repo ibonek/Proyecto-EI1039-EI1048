@@ -30,24 +30,19 @@ public class LocationManager {
         locations.add(locationApi.findLocation());
     }
 
+    public void addActiveLocation() {
+    }
+
     public List<Location> getLocations(){
         return locations;
     }
+
     public int getNumberOfLocations() {
         return locations.size();
     }
 
-
     public LocationApiInterface getLocationApi() {
         return locationApi;
-    }
-
-    public void setLocationApi(LocationApiInterface locationApi) {
-        this.locationApi = locationApi;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
     }
 
     public List<String> getLocationsName(){
@@ -58,8 +53,25 @@ public class LocationManager {
         return list;
     }
 
+    public List<String> getActiveLocationsName() {
+        return null;
+    }
+
+
+
+    public void setLocationApi(LocationApiInterface locationApi) {
+        this.locationApi = locationApi;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
     public void clearLocations(){
         locations.clear();
     }
+
+
+
 
 }

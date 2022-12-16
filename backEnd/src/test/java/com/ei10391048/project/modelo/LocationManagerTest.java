@@ -40,9 +40,9 @@ class LocationManagerTest {
 
     static Stream<Arguments> getName() {
 
-        ArrayList<String> sol = new ArrayList<String>();
+        ArrayList<String> sol = new ArrayList<>();
         addAll(sol, "Valencia","Madrid","Beijing");
-        ArrayList<String> sol2 = new ArrayList<String>();
+        ArrayList<String> sol2 = new ArrayList<>();
         addAll(sol2, "Montevideo","Castellon","London");
         return Stream.of(
                 Arguments.of( sol),
@@ -57,4 +57,29 @@ class LocationManagerTest {
         assertEquals(manager.getLocations(), new LinkedList<Location>());
     }
 
+    @ParameterizedTest
+    @MethodSource("getActiveLocation")
+    void getActiveLocationValidCase(ArrayList<String> sol) throws IncorrectLocationException {
+        LocationManager manager = LocationManager.getInstance();
+        GeoCodService geoCodService = new GeoCodService();
+        for (String name : sol) {
+            geoCodService.setSearch(new ByName(name));
+            manager.setLocationApi(geoCodService);
+            manager.addLocation();
+            manager.addActiveLocation();
+        }
+        assertEquals(manager.getActiveLocationsName(), sol);
+    }
+
+    static Stream<Arguments> getActiveLocation() {
+
+        ArrayList<String> sol = new ArrayList<>();
+        addAll(sol, "Valencia","Madrid","Beijing");
+        ArrayList<String> sol2 = new ArrayList<>();
+        addAll(sol2, "Montevideo","Castellon","London");
+        return Stream.of(
+                Arguments.of( sol),
+                Arguments.of( sol2)
+        );
+    }
 }
