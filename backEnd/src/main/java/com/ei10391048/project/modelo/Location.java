@@ -28,6 +28,11 @@ public class Location {
 
     }
 
+    public Location(String teruel, double lat, double lon) {
+        this.name = teruel;
+        this.coordinates = new Coordinates(lat,lon);
+    }
+
     public String getName() {
         return name;
     }

@@ -1,5 +1,6 @@
 package com.ei10391048.project.controlador;
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class FindingLocationController {
         try {
             locationManager.addLocation();
             confirmation = true;
-        } catch (IncorrectLocationException ex) {
+        } catch (IncorrectLocationException | NotSavedException ex) {
             confirmation = false;
         }
     }
