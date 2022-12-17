@@ -39,3 +39,10 @@ li{
   /*background: white;*/
   border: none;
 }
+
+.active{
+
+}
+.inactive{
+  background: lightgrey;
+}

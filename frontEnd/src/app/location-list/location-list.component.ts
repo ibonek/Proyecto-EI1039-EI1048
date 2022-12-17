@@ -11,7 +11,7 @@ import {Location} from "../location";
 })
 export class LocationListComponent implements OnInit {
 
-  locations: Location[] | undefined
+  locations!: Location[]
 
   constructor( private route: ActivatedRoute,
                private router: Router,

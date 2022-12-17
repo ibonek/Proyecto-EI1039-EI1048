@@ -34,7 +34,7 @@ public class LocationManager {
     public void activeLocation(String name) throws AlreadyActiveLocation {
         for (Location location: locations) {
             if (location.getName().equals(name)){
-                if (location.isActive()) {
+                if (location.getIsActive()) {
                     throw new AlreadyActiveLocation();
                 }
                 location.setActive(true);
@@ -65,7 +65,7 @@ public class LocationManager {
     public List<String> getActiveLocationsName() {
         List<String> aux = new LinkedList<>();
         for (Location location: locations){
-            if (location.isActive()){
+            if (location.getIsActive()){
                 aux.add(location.getName());
             }
         }
