@@ -9,15 +9,17 @@ public class Location {
     @Column(name="id", nullable = false)
     private Long locationId;
     private String name;
-
+    private boolean isActive;
     @OneToOne
     private Coordinates coordinates;
     public Location(String name) {
         this.name = name;
+        isActive=true;
     }
 
     public Location(Coordinates coordinates) {
         this.coordinates=coordinates;
+        isActive=true;
     }
 
     public Location() {
@@ -30,6 +32,14 @@ public class Location {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public void setName(String name) {

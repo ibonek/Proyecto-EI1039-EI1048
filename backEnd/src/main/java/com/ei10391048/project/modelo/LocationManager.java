@@ -47,15 +47,21 @@ public class LocationManager {
     }
 
     public List<String> getLocationsName(){
-        List<String> list = new LinkedList<>();
+        List<String> aux = new LinkedList<>();
         for (Location location: locations){
-            list.add(location.getName());
+            aux.add(location.getName());
         }
-        return list;
+        return aux;
     }
 
     public List<String> getActiveLocationsName() {
-        return null;
+        List<String> aux = new LinkedList<>();
+        for (Location location: locations){
+            if (location.isActive()){
+                aux.add(location.getName());
+            }
+        }
+        return aux;
     }
 
     public void setLocationApi(LocationApiInterface locationApi) {
