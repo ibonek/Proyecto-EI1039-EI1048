@@ -32,6 +32,14 @@ public class LocationManager {
     }
 
     public void activeLocation(String name) throws AlreadyActiveLocation {
+        for (Location location: locations) {
+            if (location.getName().equals(name)){
+                if (location.isActive()) {
+                    throw new AlreadyActiveLocation();
+                }
+                location.setActive(true);
+            }
+        }
     }
 
     public List<Location> getLocations(){
