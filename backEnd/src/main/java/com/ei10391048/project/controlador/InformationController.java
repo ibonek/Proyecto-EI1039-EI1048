@@ -46,7 +46,7 @@ public class InformationController {
                 manager.addAPI(new TicketMaster());
                 manager.addAPI(new NewsAPI());
 
-                list.add(manager.getInfo(location.getName()));
+                list.add(location.getInfo());
             }
             return list;
 
