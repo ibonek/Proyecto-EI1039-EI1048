@@ -75,7 +75,7 @@ public class NewsAPI extends API{
     boolean apiCall(String locationName) {
         HttpClient client= HttpClient.newHttpClient();
         HttpRequest request= HttpRequest.newBuilder()
-                .uri(URI.create("https://www.newsapi.ai/api/v1/article/getArticles?query=%7B%22%24query%22%3A%7B%22%24and%22%3A%5B%7B%22conceptUri%22%3A%22http%3A%2F%2Fen.wikipedia.org%2Fwiki%2F"+locationName+"%22%7D%2C%7B%22keyword%22%3A%22"+locationName+"%22%2C%22keywordLoc%22%3A%22title%22%7D%5D%7D%2C%22%24filter%22%3A%7B%22forceMaxDataTimeWindow%22%3A%2231%22%7D%7D&resultType=articles&articlesSortBy=date&articlesCount="+numberOfNews+"&articleBodyLen=-1&apiKey="+apiKey+"&callback=JSON_CALLBACK"))
+                .uri(URI.create("https://www.newsapi.ai/api/v1/article/getArticles?query=%7B%22%24query%22%3A%7B%22%24and%22%3A%5B%7B%22%24and%22%3A%5B%7B%22conceptUri%22%3A%22http%3A%2F%2Fen.wikipedia.org%2Fwiki%2F"+locationName+"%22%7D%2C%7B%22keyword%22%3A%22"+locationName+"%22%2C%22keywordLoc%22%3A%22title%22%7D%5D%7D%2C%7B%22%24or%22%3A%5B%7B%22lang%22%3A%22eng%22%7D%2C%7B%22lang%22%3A%22spa%22%7D%2C%7B%22lang%22%3A%22cat%22%7D%5D%7D%5D%7D%2C%22%24filter%22%3A%7B%22forceMaxDataTimeWindow%22%3A%2231%22%7D%7D&resultType=articles&articlesSortBy=date&articlesCount="+numberOfNews+"&articleBodyLen=-1&apiKey="+apiKey+"&callback=JSON_CALLBACK"))
                 .build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

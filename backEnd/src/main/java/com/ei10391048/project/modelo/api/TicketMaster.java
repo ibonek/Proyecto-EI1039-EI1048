@@ -3,6 +3,7 @@ package com.ei10391048.project.modelo.api;
 import com.ei10391048.project.modelo.information.APIInformation;
 import com.ei10391048.project.modelo.information.EventInformation;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -92,12 +93,11 @@ public class TicketMaster extends API{
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             JSONObject json = new JSONObject(response.body());
-
             events = new JSONArray( json.getJSONObject("_embedded").getJSONArray("events"));
 
             return true;
 
-        } catch (IOException | InterruptedException ex){
+        } catch (IOException | InterruptedException | JSONException ex){
             return false;
         }
     }

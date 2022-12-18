@@ -38,7 +38,9 @@ public class APIManager {
     public List<List<APIInformation>> getInfo(String locationName) {
         List<List<APIInformation>> list = new LinkedList<>();
         for (API api: apiList){
-            list.add(api.generateInfo(locationName));
+            List<APIInformation> info = api.generateInfo(locationName);
+            if (info != null)
+                list.add(info);
         }
         return list;
 
