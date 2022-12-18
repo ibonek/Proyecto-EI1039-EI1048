@@ -12,14 +12,11 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class LocationController {
 
-    private final FindingLocationRepository findingLocationRepository;
 
     public Boolean confirmation=null;
 
 
-    public LocationController(FindingLocationRepository findingLocationRepository) {
-        this.findingLocationRepository = findingLocationRepository;
-    }
+
 
 
     @PostMapping("/addLocation")
@@ -60,6 +57,7 @@ public class LocationController {
     @GetMapping("/giveLocations")
     public List<Location> getActiveLocationList() {
         LocationManager manager = LocationManager.getInstance();
+        System.out.println(manager.getLocations());
         return manager.getLocations();
     }
 }
