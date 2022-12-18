@@ -1,11 +1,11 @@
 import {APIInformation} from "./apiinformation";
 
 export class EventInformation extends APIInformation{
-  eventName: string | undefined;
+  eventName!: string;
 
-  address: string | undefined;
+  address!: string;
 
-  place: string | undefined;
+  place!: string;
 
 
 

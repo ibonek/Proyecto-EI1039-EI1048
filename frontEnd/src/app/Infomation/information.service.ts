@@ -15,9 +15,7 @@ export class InformationService {
 
   public findAll(): Observable<APIInformation[][][]>{
 
-    let a = this.http.get<APIInformation[][][]>(this.infoUrl);
+    return this.http.get<APIInformation[][][]>(this.infoUrl);
 
-
-    return a;
   }
 }

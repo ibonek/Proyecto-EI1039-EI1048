@@ -1,11 +1,11 @@
 import {APIInformation} from "./apiinformation";
 
 export class WeatherInformation extends APIInformation{
-  temperature:string | undefined;
+  temperature!:string;
 
-  weatherState:string | undefined;
+  weatherState!:string;
 
-  humidity:string | undefined;
+  humidity!:string;
 
-  wind:string | undefined;
+  wind!:string;
 }

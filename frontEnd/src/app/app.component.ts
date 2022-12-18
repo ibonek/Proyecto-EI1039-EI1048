@@ -33,7 +33,7 @@ export class AppComponent implements OnInit{
       }
 
       for (let j=0; j<2;j++){
-        let c = this.info[0][2][j] as NewsInformation
+        let c = this.info[0][1][j] as NewsInformation
         alert(c.apiName+": "+c.locationName+ ":" + c.title);
       }
 
