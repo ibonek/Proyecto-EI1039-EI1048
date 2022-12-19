@@ -57,7 +57,6 @@ public class LocationController {
     @GetMapping("/giveLocations")
     public List<Location> getActiveLocationList() {
         LocationManager manager = LocationManager.getInstance();
-        System.out.println(manager.getLocations());
         return manager.getLocations();
     }
 }

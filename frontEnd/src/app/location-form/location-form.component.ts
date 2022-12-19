@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FindingByNameService} from "../finding-by-name.service";
 import {waitForAsync} from "@angular/core/testing";
 import Swal from "sweetalert2";
+import {Location} from "../location";
 
 @Component({
   selector: 'app-location-form',
@@ -15,10 +16,11 @@ import Swal from "sweetalert2";
 })
 export class LocationFormComponent implements OnInit {
   control = new FormControl();
-  locations: string[] | undefined;
+  locations!: string[];
   filteredLocations: Observable<string[]> | undefined;
-  locationName: string |undefined;
-  confirmation: boolean| undefined;
+  locationName!: string;
+  mylocations !: Location[]
+
 
 
   constructor(    private route: ActivatedRoute,
@@ -34,9 +36,16 @@ export class LocationFormComponent implements OnInit {
         startWith(''),
         map(value => this._filter(value))
       );
+      this.getMyLocations()
     });
 
 
+  }
+
+  private getMyLocations(){
+    this.findingByNameService.getActiveLocationList().subscribe(data => {
+      this.mylocations=data;
+    });
   }
 
   private _filter(value: string): string[] {
@@ -50,10 +59,24 @@ export class LocationFormComponent implements OnInit {
   }
 
   onSubmit() {
+    for (let i =0; i<this.mylocations.length;i++){
+      if (this.mylocations[i].name === this.locationName){
+        this.tinyFailAlert("Your location "+this.locationName+" has been added previously");
+        return;
+      }
+    }
     this.findingByNameService.save(this.locationName).subscribe(data=> {
       this.findingByNameService.giveConfirmation().subscribe(confirmation=> {
-          this.confirmation=confirmation;
-          this.tinyAlert();
+          if (confirmation){
+            this.tinySuccessAlert();
+            this.findingByNameService.getActiveLocationList().subscribe(data => {
+              this.mylocations=data;
+            });
+          } else {
+            this.tinyFailAlert("Your location "+this.locationName+" does not exist")
+          }
+
+
       });
       });
 
@@ -68,12 +91,7 @@ export class LocationFormComponent implements OnInit {
     this.router.navigate(['/locationList']);
   }
 
-  setConfirmation(b: boolean){
-    this.confirmation=b;
-  }
-
-  tinyAlert() {
-    if (this.confirmation) {
+  tinySuccessAlert() {
       //Swal.fire('Good job!','Your location '+this.locationName+ " has been added!", "success");
       Swal.fire({
         title: 'Good job!',
@@ -83,9 +101,18 @@ export class LocationFormComponent implements OnInit {
         confirmButtonColor: '#c2185b',
         confirmButtonText: 'Ok'
       })
-    } else {
-      Swal.fire('Error: '+this.locationName+ " is not found", "","error");
-    }
+
+  }
+
+  tinyFailAlert(reason: string){
+    Swal.fire({
+      title: 'Ooops',
+      text: reason,
+      icon: 'error',
+      confirmButtonColor: '#c2185b',
+      confirmButtonText: 'Ok'
+    })
+
   }
 
 }
