@@ -19,7 +19,7 @@ export class LocationFormComponent implements OnInit {
   locations!: string[];
   filteredLocations: Observable<string[]> | undefined;
   locationName!: string;
-  mylocations !: Location[]
+  mylocations !: string[]
 
 
 
@@ -27,6 +27,7 @@ export class LocationFormComponent implements OnInit {
                   private router: Router,
                   private findingByNameService: FindingByNameService) {
     this.locationName="";
+    this.mylocations = [];
   }
 
   async ngOnInit() {
@@ -44,7 +45,9 @@ export class LocationFormComponent implements OnInit {
 
   private getMyLocations(){
     this.findingByNameService.getActiveLocationList().subscribe(data => {
-      this.mylocations=data;
+      for (let i=0; i<data.length; i++){
+        this.mylocations[i] = data[i].name
+      }
     });
   }
 
@@ -59,19 +62,17 @@ export class LocationFormComponent implements OnInit {
   }
 
   onSubmit() {
-    for (let i =0; i<this.mylocations.length;i++){
-      if (this.mylocations[i].name === this.locationName){
+      if (this.mylocations.includes(this.locationName)){
         this.tinyFailAlert("Your location "+this.locationName+" has been added previously");
         return;
       }
-    }
+
     this.findingByNameService.save(this.locationName).subscribe(data=> {
       this.findingByNameService.giveConfirmation().subscribe(confirmation=> {
           if (confirmation){
             this.tinySuccessAlert();
-            this.findingByNameService.getActiveLocationList().subscribe(data => {
-              this.mylocations=data;
-            });
+            this.mylocations[this.mylocations.length] = this.locationName;
+
           } else {
             this.tinyFailAlert("Your location "+this.locationName+" does not exist")
           }
