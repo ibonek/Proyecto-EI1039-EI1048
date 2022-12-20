@@ -14,9 +14,9 @@
           {{location}}
         </mat-option>
       </mat-autocomplete>
-      <div style="text-align: right">
-        <div class="separator"></div>
-        <div [hidden]=!confirmation class="alert alert-danger">Incorrect name</div>
+      <div class="separator"></div>
+      <div class="buttons">
+        <button (click)="goToList()"  class="buttonWhite">Active locations</button>
         <button type="submit" class="buttonWhite">Search</button>
       </div>
     </div>

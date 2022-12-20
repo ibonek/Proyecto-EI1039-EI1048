@@ -20,9 +20,10 @@ public class FireBaseTest {
     private static CRUDFireBase crudFireBase;
     private static Location location;
     @BeforeAll
-    public static void setUp() {
+    public static void setUp() throws ExecutionException, InterruptedException {
         location = new Location("Teruel", 40.345, -0.6667);
         crudFireBase = new CRUDFireBase();
+        crudFireBase.deleteLocations();
     }
     @Test
     public void addLocationToBBDDValid(){

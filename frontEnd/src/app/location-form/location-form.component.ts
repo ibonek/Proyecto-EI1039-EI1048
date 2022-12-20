@@ -6,6 +6,7 @@ import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FindingByNameService} from "../finding-by-name.service";
 import {waitForAsync} from "@angular/core/testing";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-location-form',
@@ -26,12 +27,16 @@ export class LocationFormComponent implements OnInit {
     this.locationName="";
   }
 
-  ngOnInit() {
-    this.findingByNameService.giveCityList().subscribe(data=>{this.locations=data});
-    this.filteredLocations = this.control.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
+  async ngOnInit() {
+    await this.findingByNameService.giveCityList().subscribe(data => {
+      this.locations=data;
+      this.filteredLocations = this.control.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+    });
+
+
   }
 
   private _filter(value: string): string[] {
@@ -45,16 +50,42 @@ export class LocationFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.findingByNameService.save(this.locationName).subscribe(result=>
-      this.goToConfirmation());
+    this.findingByNameService.save(this.locationName).subscribe(data=> {
+      this.findingByNameService.giveConfirmation().subscribe(confirmation=> {
+          this.confirmation=confirmation;
+          this.tinyAlert();
+      });
+      });
+
+
   }
 
   goToConfirmation(){
     this.router.navigate(['/confirmationInput']);
   }
 
+  goToList(){
+    this.router.navigate(['/locationList']);
+  }
+
   setConfirmation(b: boolean){
     this.confirmation=b;
+  }
+
+  tinyAlert() {
+    if (this.confirmation) {
+      //Swal.fire('Good job!','Your location '+this.locationName+ " has been added!", "success");
+      Swal.fire({
+        title: 'Good job!',
+        text: 'Your location '+this.locationName+" has been added!",
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#c2185b',
+        confirmButtonText: 'Ok'
+      })
+    } else {
+      Swal.fire('Error: '+this.locationName+ " is not found", "","error");
+    }
   }
 
 }
