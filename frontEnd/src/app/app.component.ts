@@ -14,30 +14,34 @@ import {NewsInformation} from "./Infomation/news-information";
 export class AppComponent implements OnInit{
 
   title: string;
-  info : APIInformation[][][] |undefined;
+  info !: APIInformation[][][];
+  weatherInfo! : WeatherInformation
+  newsInfo! : NewsInformation
+  eventInfo! : EventInformation
 
   constructor(private informationService: InformationService) {
     this.title = 'Spring Boot - Angular Application';
   }
 
   ngOnInit(): void {
+
+
     this.informationService.findAll().subscribe(data => {
       this.info = data;
-      //alert(this.info[0][0][0].locationName)
-      let b = this.info[0][0][0] as WeatherInformation
-      alert(b.apiName+": "+b.locationName + ": "+b.temperature)
-
-      for (let i=0; i<2;i++){
-        let c = this.info[0][1][i] as EventInformation
-        alert(c.apiName+": "+c.locationName+ ":" + c.eventName);
-      }
-
-      for (let j=0; j<2;j++){
-        let c = this.info[0][1][j] as NewsInformation
-        alert(c.apiName+": "+c.locationName+ ":" + c.title);
-      }
-
     });
+
   }
 
+  castWeatherInfo(information: APIInformation){
+    this.weatherInfo =  information as WeatherInformation
+  }
+
+  castNewsInfo(information: APIInformation){
+    this.newsInfo = information as NewsInformation
+
+  }
+
+  castEventsInfo(information: APIInformation){
+    this.eventInfo = information as EventInformation
+  }
 }
