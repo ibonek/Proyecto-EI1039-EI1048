@@ -20,6 +20,7 @@ import Swal from "sweetalert2"
 
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { LocationListComponent } from './location-list/location-list.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 //import { LocationFromComponent } from './location-from/location-from.component';
 
 const routes: Routes=[];
@@ -31,23 +32,24 @@ const routes: Routes=[];
     LocationListComponent,
 
   ],
-  imports: [
-    FormsModule,
-    HttpClientModule,
-    BrowserModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatGridListModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
-    MatOptionModule,
-    AppRoutingModule,
-    RouterModule.forRoot(routes)
+    imports: [
+        FormsModule,
+        HttpClientModule,
+        BrowserModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatGridListModule,
+        MatListModule,
+        MatFormFieldModule,
+        MatAutocompleteModule,
+        ReactiveFormsModule,
+        MatOptionModule,
+        AppRoutingModule,
+        RouterModule.forRoot(routes),
+        MatSlideToggleModule
 
-  ],
+    ],
   exports:[
     RouterModule
   ],
