@@ -1,7 +1,7 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.modelo.*;
+import com.ei10391048.project.exception.NotSavedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -21,7 +22,7 @@ public class GeoCodServiceTest {
      * @throws IncorrectLocationException
      */
     @Test
-    public void addLocationByNameValid() throws IncorrectLocationException {
+    public void addLocationByNameValid() throws IncorrectLocationException, NotSavedException {
         GeoCodService geoCodSrv = new GeoCodService();
         String name = "Valencia";
         geoCodSrv.setSearch(new ByName(name));
@@ -48,7 +49,6 @@ public class GeoCodServiceTest {
         }
 }
 
-
     /**
      * Test que comprueba la historia de usuario 7: Como usuario quiero dar de alta una ubicación a partir de unas
      * coordenadas geográficas, con el fin de tenerla disponible en el sistema.
@@ -56,7 +56,7 @@ public class GeoCodServiceTest {
      * @throws IncorrectLocationException
     */
      @Test
-     public void addLocationByCoordinatesValid() throws IncorrectLocationException {
+     public void addLocationByCoordinatesValid() throws IncorrectLocationException, NotSavedException {
          Coordinates coordinates = new Coordinates(-0.3773900,39.4697500);
          GeoCodService geoCodSrv = new GeoCodService();
          geoCodSrv.setSearch(new ByCoordinates(coordinates));
@@ -65,7 +65,6 @@ public class GeoCodServiceTest {
          locations.addLocation();
          assertEquals(locations.getNumberOfLocations(), num + 1);
      }
-
 
      @ParameterizedTest
      @MethodSource("coords")

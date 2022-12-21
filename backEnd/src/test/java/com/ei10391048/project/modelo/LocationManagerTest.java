@@ -3,6 +3,7 @@ package com.ei10391048.project.modelo;
 import com.ei10391048.project.controlador.InputValidator;
 import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.NotSavedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,7 +19,6 @@ import static java.util.Collections.addAll;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LocationManagerTest {
-
     @BeforeEach
     void setUp(){
         LocationManager manager = LocationManager.getInstance();
@@ -26,7 +26,7 @@ class LocationManagerTest {
     }
     @ParameterizedTest
     @MethodSource("getName")
-    void getLocationsNameValidCase(ArrayList<String> sol) throws IncorrectLocationException {
+    void getLocationsNameValidCase(ArrayList<String> sol) throws IncorrectLocationException, NotSavedException {
         LocationManager manager = LocationManager.getInstance();
         GeoCodService geoCodService = new GeoCodService();
         for (String name : sol) {

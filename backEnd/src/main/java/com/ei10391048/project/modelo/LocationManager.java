@@ -1,7 +1,11 @@
 package com.ei10391048.project.modelo;
 
+
 import com.ei10391048.project.exception.AlreadyActiveLocation;
+import com.ei10391048.project.fireBase.CRUDFireBase;
+
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.NotSavedException;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,6 +13,7 @@ import java.util.List;
 
 public class LocationManager {
     private List<Location> locations;
+    private CRUDFireBase crudFireBase;
 
     private static  LocationManager locationManager;
 
@@ -17,6 +22,7 @@ public class LocationManager {
     private LocationManager() {
         this.locations = new LinkedList<>();;
         this.locationApi = new GeoCodService();
+        this.crudFireBase = new CRUDFireBase();
     }
 
     public static LocationManager getInstance(){
@@ -27,8 +33,10 @@ public class LocationManager {
 
     }
 
-    public void addLocation() throws IncorrectLocationException {
-        locations.add(locationApi.findLocation());
+    public void addLocation() throws IncorrectLocationException, NotSavedException {
+        Location location = locationApi.findLocation();
+        locations.add(location);
+        crudFireBase.addLocation(location);
     }
 
     public void activeLocation(String name) throws AlreadyActiveLocation {
