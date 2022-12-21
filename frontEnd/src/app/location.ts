@@ -3,6 +3,7 @@ import {Coordinates} from "./coordinates";
 export class Location {
   name!: string
   coordinates!: Coordinates
+  isActive!: boolean
 
 
   public toString(): string{

@@ -1,6 +1,9 @@
 package com.ei10391048.project.modelo;
 
+
+import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.fireBase.CRUDFireBase;
+
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 
@@ -36,16 +39,45 @@ public class LocationManager {
         crudFireBase.addLocation(location);
     }
 
+    public void activeLocation(String name) throws AlreadyActiveLocation {
+        for (Location location: locations) {
+            if (location.getName().equals(name)){
+                if (location.getIsActive()) {
+                    throw new AlreadyActiveLocation();
+                }
+                location.setActive(true);
+            }
+        }
+    }
+
     public List<Location> getLocations(){
         return locations;
     }
+
     public int getNumberOfLocations() {
         return locations.size();
     }
 
-
     public LocationApiInterface getLocationApi() {
         return locationApi;
+    }
+
+    public List<String> getLocationsName(){
+        List<String> aux = new LinkedList<>();
+        for (Location location: locations){
+            aux.add(location.getName());
+        }
+        return aux;
+    }
+
+    public List<String> getActiveLocationsName() {
+        List<String> aux = new LinkedList<>();
+        for (Location location: locations){
+            if (location.getIsActive()){
+                aux.add(location.getName());
+            }
+        }
+        return aux;
     }
 
     public void setLocationApi(LocationApiInterface locationApi) {
@@ -54,14 +86,6 @@ public class LocationManager {
 
     public void setLocations(List<Location> locations) {
         this.locations = locations;
-    }
-
-    public List<String> getLocationsName(){
-        List<String> list = new LinkedList<>();
-        for (Location location: locations){
-            list.add(location.getName());
-        }
-        return list;
     }
 
     public void clearLocations(){

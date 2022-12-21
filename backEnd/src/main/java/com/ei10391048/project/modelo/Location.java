@@ -2,15 +2,11 @@ package com.ei10391048.project.modelo;
 
 import javax.persistence.*;
 
-@Entity
 public class Location {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id", nullable = false)
-    private Long locationId;
-    private String name;
 
-    @OneToOne
+    private String name;
+    private boolean isActive=true;
+
     private Coordinates coordinates;
     public Location(String name) {
         this.name = name;
@@ -37,6 +33,16 @@ public class Location {
         return name;
     }
 
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -52,9 +58,9 @@ public class Location {
     @Override
     public String toString() {
         return "Location{" +
-                "locationId=" + locationId +
                 ", name='" + name + '\'' +
                 ", coordinates=" + coordinates +
+                ", isActive="+ isActive+
                 '}';
     }
 }

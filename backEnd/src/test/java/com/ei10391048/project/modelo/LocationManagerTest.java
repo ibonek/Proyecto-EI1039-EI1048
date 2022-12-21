@@ -1,6 +1,7 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.controlador.InputValidator;
+import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,9 +41,9 @@ class LocationManagerTest {
 
     static Stream<Arguments> getName() {
 
-        ArrayList<String> sol = new ArrayList<String>();
+        ArrayList<String> sol = new ArrayList<>();
         addAll(sol, "Valencia","Madrid","Beijing");
-        ArrayList<String> sol2 = new ArrayList<String>();
+        ArrayList<String> sol2 = new ArrayList<>();
         addAll(sol2, "Montevideo","Castellon","London");
         return Stream.of(
                 Arguments.of( sol),
@@ -57,4 +58,64 @@ class LocationManagerTest {
         assertEquals(manager.getLocations(), new LinkedList<Location>());
     }
 
+    @ParameterizedTest
+    @MethodSource("getActiveLocation")
+    void getActiveLocationValidCase(ArrayList<String> sol) throws IncorrectLocationException, AlreadyActiveLocation {
+        LocationManager manager = LocationManager.getInstance();
+        GeoCodService geoCodService = new GeoCodService();
+        for (String name : sol) {
+            geoCodService.setSearch(new ByName(name));
+            manager.setLocationApi(geoCodService);
+            manager.addLocation();
+            manager.activeLocation(name);
+        }
+        assertEquals(manager.getActiveLocationsName(), sol);
+    }
+
+    static Stream<Arguments> getActiveLocation() {
+
+        ArrayList<String> sol = new ArrayList<>();
+        addAll(sol, "Valencia","Madrid","Beijing");
+        ArrayList<String> sol2 = new ArrayList<>();
+        addAll(sol2, "Montevideo","Castellon","London");
+        return Stream.of(
+                Arguments.of( sol),
+                Arguments.of( sol2)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getActiveLocationInvalid")
+    void getActiveLocationInvalidCase(ArrayList<String> input,ArrayList<String> sol) throws IncorrectLocationException, AlreadyActiveLocation {
+        LocationManager manager = LocationManager.getInstance();
+        GeoCodService geoCodService = new GeoCodService();
+        for (String name : input) {
+            geoCodService.setSearch(new ByName(name));
+            manager.setLocationApi(geoCodService);
+            manager.addLocation();
+            manager.activeLocation(name);
+        }
+        for (String name : sol){
+            manager.activeLocation(name);
+        }
+
+        assertEquals(manager.getActiveLocationsName(), sol);
+
+    }
+
+    static Stream<Arguments> getActiveLocationInvalid() {
+
+        ArrayList<String> input = new ArrayList<>();
+        addAll(input, "Valencia","Madrid","Beijing");
+        ArrayList<String> input2 = new ArrayList<>();
+        addAll(input2, "Montevideo","Castellon","London");
+        ArrayList<String> sol = new ArrayList<>();
+        addAll(sol, "Madrid","Beijing");
+        ArrayList<String> sol2 = new ArrayList<>();
+        addAll(sol2, "Castellon","London");
+        return Stream.of(
+                Arguments.of(input, sol),
+                Arguments.of(input2, sol2)
+        );
+    }
 }
