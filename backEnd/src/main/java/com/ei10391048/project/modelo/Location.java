@@ -1,26 +1,21 @@
 package com.ei10391048.project.modelo;
 
-import javax.persistence.*;
+
+import java.util.Objects;
 
 public class Location {
+
+
 
     private String name;
     private boolean isActive=true;
 
-    private Coordinates coordinates;
-    public Location(String name) {
-        this.name = name;
-    }
 
-    public Location(Coordinates coordinates) {
-        this.coordinates=coordinates;
-    }
+    private ApiFacade apiManager;
+
+    private Coordinates coordinates;
 
     public Location() {
-
-    }
-    public Location(double lat, double lon) {
-        this.coordinates = new Coordinates(lat,lon);
 
     }
 
@@ -62,5 +57,22 @@ public class Location {
                 ", coordinates=" + coordinates +
                 ", isActive="+ isActive+
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return isActive == location.isActive && Objects.equals(name, location.name) && Objects.equals(coordinates, location.coordinates);
+    }
+
+
+    public ApiFacade getApiManager() {
+        return apiManager;
+    }
+
+    public void setApiManager(APIManager apiManager) {
+        this.apiManager = apiManager;
     }
 }

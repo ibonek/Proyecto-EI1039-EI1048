@@ -1,8 +1,62 @@
 <app-top-bar></app-top-bar>
+<app-location-form></app-location-form>
+<app-filter></app-filter>
+  <div class="infoBody" *ngFor="let infoPakage of this.info">
+    <div class="backgroundMain"><h1>{{infoPakage[0][0].locationName}}</h1></div>
+    <div class="timeBody">
+      <div class="backgroundMain"><h2>Weather</h2></div>
+      <div class="timeContent"> {{castWeatherInfo(infoPakage[0][0])}}
+          <div class="temperature">
+            <h1>{{this.weatherInfo.temperature}}ºC</h1>
+            <img src="{{this.weatherInfo.imageURL}}">
+          </div>
+        <div class="weatherData">
+          <div class="">
+            <h3>Humidity</h3>
+            <h3>{{this.weatherInfo.humidity}}</h3>
+          </div>
+          <div class="">
+            <h3>Weather State</h3>
+            <h3>{{this.weatherInfo.weatherState}}</h3>
+          </div>
+          <div class="">
+            <h3>Wind</h3>
+            <h3>{{this.weatherInfo.wind}}</h3>
+          </div>
+          <div class="">
+            <h3>Date</h3>
+            <h3>{{this.weatherInfo.date}}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="extrasBody">
+      <div class="newsBody" >
+        <div class="backgroundMain"><h3>News</h3></div>
+        <div class="new" *ngFor="let news of infoPakage[2]"> {{castNewsInfo(news)}}
+          <div>
+            <h3>{{this.newsInfo.title}}</h3>
+            <h4>{{this.newsInfo.author}}       {{this.newsInfo.date}}</h4>
+            <img class="newsImg" src="{{this.newsInfo.imageURL}}">
+            <p>{{this.newsInfo.description}}</p>
+            <a href="{{this.newsInfo.newsURL}}">More info</a>
+          </div>
+        </div>
+      </div>
+      <div class="eventBody">
+        <div class="backgroundMain"><h3>Events</h3></div>
+        <div *ngFor="let event of infoPakage[1]"> {{castEventsInfo(event)}}
+          <div class="new">
+            <h3>{{this.eventInfo.eventName}}</h3>
+            <h4>{{this.eventInfo.place}}      {{this.eventInfo.date}}</h4>
+            <img class="newsImg" src="{{this.eventInfo.imageURL}}">
+            <p>{{this.eventInfo.address}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<a routerLink ="/addLocation" routerLinkActive="active" ariaCurrentWhenActive="page" class="buttonWhite">Add</a>
 
-
-<button routerLink ="/locationList" routerLinkActive="active" ariaCurrentWhenActive="page" class="buttonWhite">List</button>
 
 <router-outlet></router-outlet>

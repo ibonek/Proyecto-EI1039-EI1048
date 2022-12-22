@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.concurrent.ExecutionException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
@@ -48,10 +49,13 @@ public class FireBaseTest {
     @Test
     public void getLocationFromBBDDValid(){
         try {
-            crudFireBase.getLocation(location);
-            assertTrue(true);
+            crudFireBase.addLocation(location);
+            Location location2 = crudFireBase.getLocation(location);
+            assertTrue(location2.equals(location));
         } catch (ExecutionException | InterruptedException exception){
             fail();
+        } catch (NotSavedException e) {
+            throw new RuntimeException(e);
         }
     }
 

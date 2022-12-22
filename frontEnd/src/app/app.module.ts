@@ -16,9 +16,16 @@ import {AppRoutingModule} from "./app-routing.module";
 import {RouterModule, RouterOutlet, Routes} from "@angular/router";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
+
 import Swal from "sweetalert2"
 
 import { TopBarComponent } from './top-bar/top-bar.component';
+import {MatMenuModule} from "@angular/material/menu";
+import { MatSelectModule } from '@angular/material/select';
+import { FilterComponent } from './filter/filter.component';
+import {InformationService} from "./Infomation/information.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
 import { LocationListComponent } from './location-list/location-list.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 //import { LocationFromComponent } from './location-from/location-from.component';
@@ -29,10 +36,12 @@ const routes: Routes=[];
     AppComponent,
     LocationFormComponent,
     TopBarComponent,
+    FilterComponent,
     LocationListComponent,
 
   ],
     imports: [
+      BrowserAnimationsModule,
         FormsModule,
         HttpClientModule,
         BrowserModule,
@@ -46,15 +55,14 @@ const routes: Routes=[];
         ReactiveFormsModule,
         MatOptionModule,
         AppRoutingModule,
-        RouterModule.forRoot(routes),
-        MatSlideToggleModule
-
+        MatSelectModule,
+        MatMenuModule
     ],
+  providers: [FindingByNameService,
+              InformationService],
   exports:[
     RouterModule
   ],
-  providers: [FindingByNameService
-              ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

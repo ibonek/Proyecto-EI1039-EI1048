@@ -1,6 +1,7 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.modelo.*;
 import com.ei10391048.project.exception.NotSavedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,9 +11,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class GeoCodServiceTest {
     /**
@@ -49,6 +50,7 @@ public class GeoCodServiceTest {
         }
 }
 
+
     /**
      * Test que comprueba la historia de usuario 7: Como usuario quiero dar de alta una ubicación a partir de unas
      * coordenadas geográficas, con el fin de tenerla disponible en el sistema.
@@ -65,6 +67,7 @@ public class GeoCodServiceTest {
          locations.addLocation();
          assertEquals(locations.getNumberOfLocations(), num + 1);
      }
+
 
      @ParameterizedTest
      @MethodSource("coords")
@@ -142,4 +145,5 @@ public class GeoCodServiceTest {
             assertTrue(true);
         }
     }
+
 }

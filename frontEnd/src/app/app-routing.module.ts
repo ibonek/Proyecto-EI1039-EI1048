@@ -6,6 +6,7 @@ import {LocationListComponent} from "./location-list/location-list.component";
 
 
 const routes: Routes= [
+
   {path: 'addLocation', component: LocationFormComponent},
   {path: 'locationList', component: LocationListComponent}
 

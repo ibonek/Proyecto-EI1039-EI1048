@@ -15,18 +15,18 @@ public class LocationManager {
     private List<Location> locations;
     private CRUDFireBase crudFireBase;
 
-    private static  LocationManager locationManager;
+    private static LocationManager locationManager;
 
     private LocationApiInterface locationApi;
 
     private LocationManager() {
-        this.locations = new LinkedList<>();;
+        this.locations = new LinkedList<>();
         this.locationApi = new GeoCodService();
         this.crudFireBase = new CRUDFireBase();
     }
 
-    public static LocationManager getInstance(){
-        if (locationManager == null){
+    public static LocationManager getInstance() {
+        if (locationManager == null) {
             locationManager = new LocationManager();
         }
         return locationManager;
@@ -35,61 +35,57 @@ public class LocationManager {
 
     public void addLocation() throws IncorrectLocationException, NotSavedException {
         Location location = locationApi.findLocation();
+        location.setApiManager(new APIManager());
         locations.add(location);
         crudFireBase.addLocation(location);
+
+
     }
 
-    public void activeLocation(String name) throws AlreadyActiveLocation {
-        for (Location location: locations) {
-            if (location.getName().equals(name)){
-                if (location.getIsActive()) {
-                    throw new AlreadyActiveLocation();
-                }
-                location.setActive(true);
-            }
+        public List<Location> getLocations () {
+            return locations;
         }
-    }
 
-    public List<Location> getLocations(){
-        return locations;
-    }
-
-    public int getNumberOfLocations() {
-        return locations.size();
-    }
-
-    public LocationApiInterface getLocationApi() {
-        return locationApi;
-    }
-
-    public List<String> getLocationsName(){
-        List<String> aux = new LinkedList<>();
-        for (Location location: locations){
-            aux.add(location.getName());
+        public int getNumberOfLocations () {
+            return locations.size();
         }
-        return aux;
-    }
 
-    public List<String> getActiveLocationsName() {
-        List<String> aux = new LinkedList<>();
-        for (Location location: locations){
-            if (location.getIsActive()){
+        public LocationApiInterface getLocationApi () {
+            return locationApi;
+        }
+
+        public List<String> getLocationsName () {
+            List<String> aux = new LinkedList<>();
+            for (Location location : locations) {
                 aux.add(location.getName());
             }
+            return aux;
         }
-        return aux;
-    }
 
-    public void setLocationApi(LocationApiInterface locationApi) {
-        this.locationApi = locationApi;
-    }
+        public List<String> getActiveLocationsName () {
+            List<String> aux = new LinkedList<>();
+            for (Location location : locations) {
+                if (location.getIsActive()) {
+                    aux.add(location.getName());
+                }
+            }
+            return aux;
+        }
 
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
+        public void setLocationApi(LocationApiInterface locationApi){
+            this.locationApi = locationApi;
+        }
 
-    public void clearLocations(){
-        locations.clear();
-    }
+        public void clearLocations() {
+            this.locations.clear();
+        }
 
+        public void setLocations(List < Location > locations) {
+            this.locations = locations;
+        }
+
+    public void setCrudFireBase(CRUDFireBase crudFireBase) {
+        this.crudFireBase = crudFireBase;
+    }
 }
+

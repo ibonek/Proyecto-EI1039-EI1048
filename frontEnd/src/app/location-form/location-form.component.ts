@@ -16,7 +16,7 @@ import {Location} from "../location";
 })
 export class LocationFormComponent implements OnInit {
   control = new FormControl();
-  locations!: string[];
+  locations: string[] | undefined;
   filteredLocations: Observable<string[]> | undefined;
   locationName!: string;
   mylocations !: string[]
@@ -31,13 +31,14 @@ export class LocationFormComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.getMyLocations()
+
     await this.findingByNameService.giveCityList().subscribe(data => {
       this.locations=data;
       this.filteredLocations = this.control.valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value))
       );
-      this.getMyLocations()
     });
 
 
@@ -48,6 +49,7 @@ export class LocationFormComponent implements OnInit {
       for (let i=0; i<data.length; i++){
         this.mylocations[i] = data[i].name
       }
+
     });
   }
 
@@ -62,31 +64,34 @@ export class LocationFormComponent implements OnInit {
   }
 
   onSubmit() {
-      if (this.mylocations.includes(this.locationName)){
-        this.tinyFailAlert("Your location "+this.locationName+" has been added previously");
-        return;
+    this.findingByNameService.getActiveLocationList().subscribe(data =>{
+      for (let i= 0;i<data.length;i++){
+        if (data[i].name === this.locationName){
+          this.tinyFailAlert("Your location "+this.locationName+" has been added previously");
+          return;
+        }
       }
-
-    this.findingByNameService.save(this.locationName).subscribe(data=> {
-      this.findingByNameService.giveConfirmation().subscribe(confirmation=> {
+      this.findingByNameService.save(this.locationName).subscribe(data=> {
+        this.findingByNameService.giveConfirmation().subscribe(confirmation=> {
           if (confirmation){
             this.tinySuccessAlert();
             this.mylocations[this.mylocations.length] = this.locationName;
-
           } else {
             this.tinyFailAlert("Your location "+this.locationName+" does not exist")
           }
 
 
+        });
       });
-      });
+
+    });
+
+
 
 
   }
 
-  goToConfirmation(){
-    this.router.navigate(['/confirmationInput']);
-  }
+
 
   goToList(){
     this.router.navigate(['/locationList']);
@@ -101,7 +106,11 @@ export class LocationFormComponent implements OnInit {
         showCancelButton: false,
         confirmButtonColor: '#c2185b',
         confirmButtonText: 'Ok'
-      })
+      }).then((result =>{
+        if (result.isConfirmed){
+          window.location.reload()
+        }
+      }))
 
   }
 

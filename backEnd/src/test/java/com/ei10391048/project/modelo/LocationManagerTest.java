@@ -24,19 +24,21 @@ class LocationManagerTest {
         LocationManager manager = LocationManager.getInstance();
         manager.clearLocations();
     }
+
+
     @ParameterizedTest
     @MethodSource("getName")
     void getLocationsNameValidCase(ArrayList<String> sol) throws IncorrectLocationException, NotSavedException {
         LocationManager manager = LocationManager.getInstance();
-        GeoCodService geoCodService = new GeoCodService();
         for (String name : sol) {
+            GeoCodService geoCodService = new GeoCodService();
             geoCodService.setSearch(new ByName(name));
             manager.setLocationApi(geoCodService);
             manager.addLocation();
 
         }
 
-        assertEquals(manager.getLocationsName(), sol);
+        assertEquals(manager.getActiveLocationsName(), sol);
     }
 
     static Stream<Arguments> getName() {
@@ -60,14 +62,13 @@ class LocationManagerTest {
 
     @ParameterizedTest
     @MethodSource("getActiveLocation")
-    void getActiveLocationValidCase(ArrayList<String> sol) throws IncorrectLocationException, AlreadyActiveLocation {
+    void getActiveLocationValidCase(ArrayList<String> sol) throws IncorrectLocationException,  NotSavedException {
         LocationManager manager = LocationManager.getInstance();
         GeoCodService geoCodService = new GeoCodService();
         for (String name : sol) {
             geoCodService.setSearch(new ByName(name));
             manager.setLocationApi(geoCodService);
             manager.addLocation();
-            manager.activeLocation(name);
         }
         assertEquals(manager.getActiveLocationsName(), sol);
     }
@@ -86,20 +87,17 @@ class LocationManagerTest {
 
     @ParameterizedTest
     @MethodSource("getActiveLocationInvalid")
-    void getActiveLocationInvalidCase(ArrayList<String> input,ArrayList<String> sol) throws IncorrectLocationException, AlreadyActiveLocation {
+    void getActiveLocationInvalidCase(ArrayList<String> input) throws IncorrectLocationException, AlreadyActiveLocation, NotSavedException {
         LocationManager manager = LocationManager.getInstance();
         GeoCodService geoCodService = new GeoCodService();
         for (String name : input) {
             geoCodService.setSearch(new ByName(name));
             manager.setLocationApi(geoCodService);
             manager.addLocation();
-            manager.activeLocation(name);
-        }
-        for (String name : sol){
-            manager.activeLocation(name);
         }
 
-        assertEquals(manager.getActiveLocationsName(), sol);
+
+        assertNotEquals(manager.getActiveLocationsName().size(), 0);
 
     }
 
@@ -109,13 +107,9 @@ class LocationManagerTest {
         addAll(input, "Valencia","Madrid","Beijing");
         ArrayList<String> input2 = new ArrayList<>();
         addAll(input2, "Montevideo","Castellon","London");
-        ArrayList<String> sol = new ArrayList<>();
-        addAll(sol, "Madrid","Beijing");
-        ArrayList<String> sol2 = new ArrayList<>();
-        addAll(sol2, "Castellon","London");
         return Stream.of(
-                Arguments.of(input, sol),
-                Arguments.of(input2, sol2)
+                Arguments.of(input),
+                Arguments.of(input2)
         );
     }
 }
