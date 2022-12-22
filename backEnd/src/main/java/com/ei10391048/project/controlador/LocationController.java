@@ -1,12 +1,8 @@
 package com.ei10391048.project.controlador;
-import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.*;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -15,10 +11,6 @@ public class LocationController {
 
 
     public Boolean confirmation=null;
-
-
-
-
 
     @PostMapping("/addLocation")
     public void createLocation(@RequestBody String location) {
@@ -60,4 +52,11 @@ public class LocationController {
         LocationManager manager = LocationManager.getInstance();
         return manager.getLocations();
     }
+
+    @PostMapping("/changeActiveEstate")
+    public void chageActiveEstate(@RequestBody Location location) {
+        LocationManager manager = LocationManager.getInstance();
+        manager.changeActiveEstate(location);
+    }
+
 }

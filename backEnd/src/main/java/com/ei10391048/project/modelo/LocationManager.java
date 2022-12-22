@@ -1,13 +1,11 @@
 package com.ei10391048.project.modelo;
 
 
-import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -86,6 +84,15 @@ public class LocationManager {
 
     public void setCrudFireBase(CRUDFireBase crudFireBase) {
         this.crudFireBase = crudFireBase;
+    }
+
+    public void changeActiveEstate(Location location) {
+        for(Location loc : locations){
+            if (loc.getName().equals(location.getName())){
+                loc.setActive(location.getIsActive());
+                System.out.println(location.getName()+"   "+location.getIsActive());
+            }
+        }
     }
 }
 
