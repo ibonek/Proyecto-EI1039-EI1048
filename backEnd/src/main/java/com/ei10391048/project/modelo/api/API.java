@@ -51,10 +51,8 @@ public abstract class API {
     abstract void insertDate();
     abstract boolean apiCall(String locationName);
 
-    //Tiene que ser lista cuando añadas otra API
 
     List<APIInformation> getInfo(){
-
             return information;
 
     }
