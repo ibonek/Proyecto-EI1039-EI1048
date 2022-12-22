@@ -1,0 +1,73 @@
+.infoBody{
+  text-align: center;
+  color: white;
+  margin: auto;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.backgroundMain{
+  background: #c2185b;
+}
+
+.timeBody{
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.timeContent{
+  background: #c2185b;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.temperature{
+  vertical-align: top;
+  line-height: 0;
+  font-size: 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.weatherData{
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.extrasBody{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+.newsBody{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.new{
+  background: #c2185b;
+  text-align: left;
+  padding: 1rem;
+}
+
+.newsImg{
+  height: 7rem;
+}
+
+.eventBody{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
