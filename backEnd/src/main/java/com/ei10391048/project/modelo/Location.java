@@ -1,9 +1,5 @@
 package com.ei10391048.project.modelo;
 
-import com.ei10391048.project.modelo.information.APIInformation;
-
-import java.util.List;
-
 
 public class Location {
 
@@ -11,7 +7,7 @@ public class Location {
     private String name;
 
 
-    private APIManager apiManager;
+    private ApiFacade apiManager;
 
     private Coordinates coordinates;
 
@@ -44,13 +40,8 @@ public class Location {
     }
 
 
-    public APIManager getApiManager() {
+    public ApiFacade getApiManager() {
         return apiManager;
-    }
-
-    public List<List<APIInformation>> getInfo(){
-        return apiManager.getInfo(name);
-
     }
 
     public void setApiManager(APIManager apiManager) {

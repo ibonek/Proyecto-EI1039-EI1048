@@ -32,10 +32,14 @@ public class APIsTest {
         info.setWeatherState("Cloudy");
         list.add(info);
 
+        List<API> apiList = new LinkedList<>();
+
         when(apiMock.generateInfo(any(String.class))).thenReturn(list);
+        apiList.add(apiMock);
         APIManager manager = new APIManager();
-        manager.addAPI(apiMock);
-        assertEquals(manager.getInfo("Valencia").get(0), list);
+        manager.setApiList(apiList);
+        manager.generateInfo("Valencia");
+        assertEquals(manager.getWeatherInformation(), list);
 
     }
 }

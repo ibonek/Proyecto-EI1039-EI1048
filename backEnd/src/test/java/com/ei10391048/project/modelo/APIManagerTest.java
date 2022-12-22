@@ -1,14 +1,8 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.exception.NonActiveServiceException;
-import com.ei10391048.project.modelo.api.APIsNames;
-import com.ei10391048.project.modelo.api.OpenWeather;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -36,17 +30,22 @@ public class APIManagerTest {
         locationManager.addLocation();
 
     }
+    /**
+     * Test que comprueba la historia de usuario 18:  Como usuario quiero consultar fácilmente la información de cualquiera de las ubicaciones activas por separado.
+     *
+     */
     @Test
     public void getInfoFrom1LocationValidTest() {
         int index = 0;
         LocationManager locationManager = LocationManager.getInstance();
         Location location = locationManager.getLocations().get(index);
-        APIManager manager = location.getApiManager();
-        manager.addAPI(new OpenWeather());
-        assertEquals(manager.getInfo(location.getName()).get(0).get(0).getLocationName(), locationManager.getLocations().get(index).getName());
+        ApiFacade manager = location.getApiManager();
+        manager.generateInfo(location.getName());
+        assertEquals(manager.getWeatherInformation().get(0).getLocationName(), locationManager.getLocations().get(index).getName());
 
     }
 
+    /*
     @Test
     public void getInfoFrom1LocationInvalidTest(){
 
@@ -62,4 +61,6 @@ public class APIManagerTest {
         }
 
     }
+
+     */
 }

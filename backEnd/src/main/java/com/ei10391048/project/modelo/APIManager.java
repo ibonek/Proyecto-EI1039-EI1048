@@ -1,48 +1,56 @@
 package com.ei10391048.project.modelo;
 
-import com.ei10391048.project.exception.NonActiveServiceException;
-import com.ei10391048.project.modelo.api.API;
-import com.ei10391048.project.modelo.api.APIsNames;
+import com.ei10391048.project.modelo.api.*;
 import com.ei10391048.project.modelo.information.APIInformation;
 
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class APIManager {
+public class APIManager implements ApiFacade{
 
 
     private List<API> apiList;
 
+    private List<List<APIInformation>> apiInformation;
+
     public APIManager() {
         apiList = new LinkedList<>();
+        apiList.add(APIsNames.WEATHER.getOrder(),new OpenWeather());
+        apiList.add(APIsNames.EVENTS.getOrder(),new TicketMaster());
+        apiList.add(APIsNames.NEWS.getOrder(),new NewsAPI());
     }
 
 
-    public void addAPI(API type){
-        apiList.add(type);
-    }
-
-    public API getAPI(APIsNames name)  throws NonActiveServiceException {
-
-        for (API api: apiList){
-            if (api.getAPIName().equals(name.getApiName())){
-                return api;
-            }
-        }
-
-        throw new NonActiveServiceException();
+    public void setApiList(List<API> list){
+        this.apiList=list;
     }
 
 
-    public List<List<APIInformation>> getInfo(String locationName) {
+    public void generateInfo(String locationName) {
         List<List<APIInformation>> list = new LinkedList<>();
         for (API api: apiList){
             List<APIInformation> info = api.generateInfo(locationName);
             if (info != null)
                 list.add(info);
         }
-        return list;
+        apiInformation = list;
+
+    }
+
+    @Override
+    public List<APIInformation> getWeatherInformation() {
+        return apiInformation.get(APIsNames.WEATHER.getOrder());
+    }
+
+    @Override
+    public List<APIInformation> getEventsInformation() {
+        return apiInformation.get(APIsNames.EVENTS.getOrder());
+    }
+
+    @Override
+    public List<APIInformation> getNewsInformation() {
+        return apiInformation.get(APIsNames.NEWS.getOrder());
 
     }
 }
