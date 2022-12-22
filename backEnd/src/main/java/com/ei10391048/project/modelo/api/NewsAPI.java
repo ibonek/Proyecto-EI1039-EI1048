@@ -48,7 +48,7 @@ public class NewsAPI extends API{
     @Override
     void insertImageURL() {
         JSONObject json;
-        for (int i=0; i<numberOfNews;i++){
+        for (int i=0; i<information.size();i++){
             NewsInformation info = (NewsInformation) information.get(i);
             json = new JSONObject(news.get(i).toString());
             String url = json.get("image").toString();
@@ -63,7 +63,7 @@ public class NewsAPI extends API{
     @Override
     void insertDate() {
         JSONObject json;
-        for (int i=0; i<numberOfNews;i++) {
+        for (int i=0; i<information.size();i++) {
             NewsInformation info = (NewsInformation) information.get(i);
             json = new JSONObject(news.get(i).toString());
             info.setDate(json.getString("dateTime"));
@@ -94,7 +94,7 @@ public class NewsAPI extends API{
 
     void insertAuthor(){
         JSONObject json;
-        for (int i=0; i<numberOfNews;i++) {
+        for (int i=0; i<information.size();i++) {
             NewsInformation info = (NewsInformation) information.get(i);
             json = new JSONObject(news.get(i).toString());
             info.setAuthor(json.getJSONObject("source").getString("title"));
@@ -104,26 +104,45 @@ public class NewsAPI extends API{
 
     void insertTitle(){
         JSONObject json;
-        for (int i=0; i<numberOfNews;i++) {
+        for (int i=0; i<information.size();i++) {
             NewsInformation info = (NewsInformation) information.get(i);
             json = new JSONObject(news.get(i).toString());
-            info.setTitle(json.getString("title"));
+            String title =json.getString("title");
+            info.setTitle(title);
 
+        }
+    }
+
+    private void avoidRepeatedNews(){
+        for (int i=0; i<information.size();i++){
+            NewsInformation info = (NewsInformation) information.get(i);
+            for (int j = i; j < information.size(); j++) {
+                NewsInformation info2 = (NewsInformation) information.get(j);
+                if (info2.getTitle().equals(info.getTitle())){
+                    information.remove(info2);
+                }
+            }
         }
     }
 
     void  insertDescription(){
         JSONObject json;
-        for (int i=0; i<numberOfNews;i++) {
+        for (int i=0; i<information.size();i++) {
             NewsInformation info = (NewsInformation) information.get(i);
             json = new JSONObject(news.get(i).toString());
-            info.setDescription(json.getString("body").split("\n")[0]);
+            String body = json.getString("body");
+            int j=200;
+            while (body.charAt(j) != ' '){
+                j++;
+            }
+            String subBody =body.substring(0,j);
+            info.setDescription(subBody+"...");
 
         }
     }
     void insertNewsUrl(){
         JSONObject json;
-        for (int i=0; i<numberOfNews;i++) {
+        for (int i=0; i<information.size();i++) {
             NewsInformation info = (NewsInformation) information.get(i);
             json = new JSONObject(news.get(i).toString());
             info.setNewsURL(json.getString("url"));
@@ -132,8 +151,9 @@ public class NewsAPI extends API{
     }
     @Override
     void insertBodyData() {
-        insertAuthor();
         insertTitle();
+        avoidRepeatedNews();
+        insertAuthor();
         insertDescription();
         insertNewsUrl();
 

@@ -4,4 +4,5 @@ export class NewsInformation extends APIInformation{
   author!: string;
   title!: string;
   description!: string;
+  newsURL !: string;
 }

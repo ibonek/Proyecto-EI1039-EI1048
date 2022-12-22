@@ -24,11 +24,11 @@ public abstract class API {
     private List<APIInformation> setInfoData(String locationName) {
 
         if (apiCall(locationName)){
+            insertBodyData();
             insertAPIName();
             insertLocationName();
             insertDate();
             insertImageURL();
-            insertBodyData();
             return getInfo();
         }
         return null;
