@@ -1,0 +1,10 @@
+<div>
+  <mat-form-field>
+    <mat-select placeholder="Filter your locations" (selectionChange)="filter($event.value)">
+      <mat-option *ngFor="let loc of this.filterList; let i=index" [value]="i">
+        {{loc}}
+      </mat-option>
+    </mat-select>
+
+  </mat-form-field>
+</div>

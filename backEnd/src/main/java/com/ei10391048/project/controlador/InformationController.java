@@ -35,6 +35,19 @@ public class InformationController {
 
         }
 
+    @GetMapping("/locationsNames")
+    public  List<String> getLocationsNames() {
+
+        List<String> list = new LinkedList<>();
+        LocationManager locationManager = LocationManager.getInstance();
+
+        list.add("All");
+        for (Location location: locationManager.getLocations()){
+            list.add(location.getName());
+        }
+        return list;
+
+    }
 
 
 }

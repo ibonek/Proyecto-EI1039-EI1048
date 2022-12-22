@@ -20,32 +20,40 @@ import {ConfirmationInputService} from "./location-form/confirmation-input.servi
 
 
 import { TopBarComponent } from './top-bar/top-bar.component';
-//import { LocationFromComponent } from './location-from/location-from.component';
-
+import {MatMenuModule} from "@angular/material/menu";
+import { MatSelectModule } from '@angular/material/select';
+import { FilterComponent } from './filter/filter.component';
+import {InformationService} from "./Infomation/information.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
     AppComponent,
     LocationFormComponent,
     TopBarComponent,
+    FilterComponent,
   ],
-  imports: [
-    FormsModule,
-    HttpClientModule,
-    BrowserModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatGridListModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
-    MatOptionModule,
-    AppRoutingModule
-  ],
+    imports: [
+      BrowserAnimationsModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatGridListModule,
+        MatListModule,
+        MatFormFieldModule,
+        MatAutocompleteModule,
+        ReactiveFormsModule,
+        MatOptionModule,
+        AppRoutingModule,
+        MatSelectModule,
+        MatMenuModule
+    ],
   providers: [FindingByNameService,
-              ConfirmationInputService],
+              ConfirmationInputService,
+              InformationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
