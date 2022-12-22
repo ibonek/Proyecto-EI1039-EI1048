@@ -1,13 +1,11 @@
 package com.ei10391048.project.modelo;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 
 public class Coordinates {
     private double lat;
     private double lon;
-    private Long id;
+
 
     public Coordinates(double lat, double lon) {
         this.lat = lat;
@@ -34,21 +32,12 @@ public class Coordinates {
         this.lon = lon;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Id
-    public Long getId() {
-        return id;
-    }
 
     @Override
     public String toString() {
         return "Coordinates{" +
                 "lat=" + lat +
                 ", lon=" + lon +
-                ", id=" + id +
                 '}';
     }
 }

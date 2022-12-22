@@ -14,8 +14,7 @@ public class ByCoordinates implements SearchInterface{
 
     public ByCoordinates(Coordinates coordinates) {
         openWeatherMapClient = new OpenWeatherMapClient(apiKey);
-        openWeatherMapClient.setReadTimeout(1000);
-        openWeatherMapClient.setReadTimeout(1000);
+        openWeatherMapClient.setReadTimeout(1500);
         this.coordinates = coordinates;
     }
     @Override

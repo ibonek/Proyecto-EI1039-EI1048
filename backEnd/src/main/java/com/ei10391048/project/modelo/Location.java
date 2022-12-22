@@ -4,7 +4,9 @@ package com.ei10391048.project.modelo;
 public class Location {
 
 
+
     private String name;
+    private boolean isActive=true;
 
 
     private ApiFacade apiManager;
@@ -15,8 +17,23 @@ public class Location {
 
     }
 
+    public Location(String teruel, double lat, double lon) {
+        this.name = teruel;
+        this.coordinates = new Coordinates(lat,lon);
+    }
+
     public String getName() {
         return name;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public void setName(String name) {
@@ -36,6 +53,7 @@ public class Location {
         return "Location{" +
                 ", name='" + name + '\'' +
                 ", coordinates=" + coordinates +
+                ", isActive="+ isActive+
                 '}';
     }
 

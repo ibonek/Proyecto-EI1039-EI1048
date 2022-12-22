@@ -13,10 +13,11 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatOptionModule} from "@angular/material/core";
 import {AppRoutingModule} from "./app-routing.module";
-import {RouterOutlet, Routes} from "@angular/router";
+import {RouterModule, RouterOutlet, Routes} from "@angular/router";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
 
+import Swal from "sweetalert2"
 
 import { TopBarComponent } from './top-bar/top-bar.component';
 import {MatMenuModule} from "@angular/material/menu";
@@ -25,12 +26,19 @@ import { FilterComponent } from './filter/filter.component';
 import {InformationService} from "./Infomation/information.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
+import { LocationListComponent } from './location-list/location-list.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+//import { LocationFromComponent } from './location-from/location-from.component';
+
+const routes: Routes=[];
 @NgModule({
   declarations: [
     AppComponent,
     LocationFormComponent,
     TopBarComponent,
     FilterComponent,
+    LocationListComponent,
+
   ],
     imports: [
       BrowserAnimationsModule,
@@ -52,6 +60,11 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     ],
   providers: [FindingByNameService,
               InformationService],
+  exports:[
+    RouterModule
+  ],
+  providers: [FindingByNameService
+              ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
