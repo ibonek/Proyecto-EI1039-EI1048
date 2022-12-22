@@ -16,7 +16,6 @@ import {AppRoutingModule} from "./app-routing.module";
 import {RouterOutlet, Routes} from "@angular/router";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
-import {ConfirmationInputService} from "./location-form/confirmation-input.service";
 
 
 import { TopBarComponent } from './top-bar/top-bar.component';
@@ -52,7 +51,6 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
         MatMenuModule
     ],
   providers: [FindingByNameService,
-              ConfirmationInputService,
               InformationService],
   bootstrap: [AppComponent]
 })

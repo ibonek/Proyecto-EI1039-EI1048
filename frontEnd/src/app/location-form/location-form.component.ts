@@ -46,7 +46,6 @@ export class LocationFormComponent implements OnInit {
 
   onSubmit() {
     this.findingByNameService.save(this.locationName).subscribe();
-
   }
 
 
