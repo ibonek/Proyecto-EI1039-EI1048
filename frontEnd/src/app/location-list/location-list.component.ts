@@ -23,6 +23,9 @@ export class LocationListComponent implements OnInit {
     });
   }
 
+  changeActiveEstate(location: Location | undefined) {
+    this.findingByNameService.changeActiveEstate(location).subscribe(data=> {
 
-
+    });
+  }
 }
