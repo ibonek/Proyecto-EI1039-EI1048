@@ -45,13 +45,11 @@ export class LocationFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.findingByNameService.save(this.locationName).subscribe(result=>
-      this.goToConfirmation());
+    this.findingByNameService.save(this.locationName).subscribe();
+
   }
 
-  goToConfirmation(){
-    this.router.navigate(['/confirmationInput']);
-  }
+
 
   setConfirmation(b: boolean){
     this.confirmation=b;
