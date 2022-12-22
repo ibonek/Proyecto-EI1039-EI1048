@@ -2,6 +2,8 @@ package com.ei10391048.project.controlador;
 
 import com.ei10391048.project.modelo.*;
 import com.ei10391048.project.modelo.ApiFacade;
+import com.ei10391048.project.modelo.api.API;
+import com.ei10391048.project.modelo.api.APIsNames;
 import com.ei10391048.project.modelo.information.APIInformation;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,15 +23,15 @@ public class InformationController {
         LocationManager locationManager = LocationManager.getInstance();
 
         for (Location location: locationManager.getLocations()){
+            List<List<APIInformation>> listAux = new LinkedList<>();
             ApiFacade manager = location.getApiManager();
             manager.generateInfo(location.getName());
 
-            List<List<APIInformation>> listAux = new LinkedList<>();
             listAux.add(manager.getWeatherInformation());
-            listAux.add(manager.getEventsInformation());
+            listAux.add( manager.getEventsInformation());
             listAux.add(manager.getNewsInformation());
-
             list.add(listAux);
+
         }
         return list;
 

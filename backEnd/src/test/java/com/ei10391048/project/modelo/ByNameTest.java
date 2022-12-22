@@ -1,6 +1,8 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.fireBase.CRUDFireBase;
 import com.github.prominence.openweathermap.api.OpenWeatherMapClient;
 import com.github.prominence.openweathermap.api.enums.Language;
 import com.github.prominence.openweathermap.api.enums.UnitSystem;
@@ -14,14 +16,17 @@ import org.mockito.Mockito;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class ByNameTest {
     private ByName byNameMock;
+    private CRUDFireBase firebaseMock;
 
     @BeforeEach
     public void setUp(){
         byNameMock= Mockito.mock(ByName.class);
+        firebaseMock = Mockito.mock(CRUDFireBase.class);
     }
     @Test
     public void registerLocation_invalidName() throws IncorrectLocationException {
@@ -35,7 +40,7 @@ public class ByNameTest {
         try {
             manager.addLocation();
             fail();
-        } catch (IncorrectLocationException ex){
+        } catch (IncorrectLocationException | NotSavedException ex){
             assertTrue(true);
         }finally {
             assertEquals(num,manager.getNumberOfLocations());
@@ -45,19 +50,22 @@ public class ByNameTest {
     }
 
     @Test
-    public void registerLocation_validName() throws IncorrectLocationException {
+    public void registerLocation_validName() throws IncorrectLocationException, NotSavedException {
         Location place = new Location();
-        place.setName("Valencia");
+        place.setName("Barcelona");
         when(byNameMock.search()).thenReturn(place);
 
+
+
         LocationManager manager = LocationManager.getInstance();
+        manager.setCrudFireBase(firebaseMock);
         int num = manager.getNumberOfLocations();
 
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(byNameMock);
         manager.setLocationApi(geoCodService);
         manager.addLocation();
-        assertEquals(num+1,manager.getNumberOfLocations());
+        assertEquals(num+1, manager.getNumberOfLocations());
         assertEquals(manager.getLocations().get(num), place);
     }
 

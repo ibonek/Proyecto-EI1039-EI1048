@@ -1,6 +1,8 @@
 package com.ei10391048.project.modelo;
 
 
+import java.util.Objects;
+
 public class Location {
 
 
@@ -55,6 +57,14 @@ public class Location {
                 ", coordinates=" + coordinates +
                 ", isActive="+ isActive+
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return isActive == location.isActive && Objects.equals(name, location.name) && Objects.equals(coordinates, location.coordinates);
     }
 
 

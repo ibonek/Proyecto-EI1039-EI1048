@@ -1,6 +1,7 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.NotSavedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,7 +18,7 @@ public class ByCoordinatesTest {
     }
 
     @Test
-    public void registerLocation_validCoords() throws IncorrectLocationException {
+    public void registerLocation_validCoords() throws IncorrectLocationException, NotSavedException {
         Location place = new Location();
         place.setCoordinates(new Coordinates(-3.7025600,40.4165000));
         when(byCoordinatesMock.search()).thenReturn(place);
@@ -45,7 +46,7 @@ public class ByCoordinatesTest {
         try {
             manager.addLocation();
             fail();
-        } catch (IncorrectLocationException ex){
+        } catch (IncorrectLocationException | NotSavedException ex){
             assertTrue(true);
         }finally {
             assertEquals(num,manager.getNumberOfLocations());

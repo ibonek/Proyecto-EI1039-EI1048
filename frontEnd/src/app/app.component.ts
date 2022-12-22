@@ -22,7 +22,6 @@ export class AppComponent implements OnInit{
   newsInfo! : NewsInformation
   eventInfo! : EventInformation
 
-  filter! : number;
   constructor(private informationService: InformationService) {
     this.title = 'Spring Boot - Angular Application';
     this.informationService.setAppComponent(this);

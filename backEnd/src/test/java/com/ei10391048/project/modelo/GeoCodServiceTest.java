@@ -11,9 +11,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class GeoCodServiceTest {
     /**
@@ -23,7 +23,7 @@ public class GeoCodServiceTest {
      * @throws IncorrectLocationException
      */
     @Test
-    public void addLocationByNameValid() throws IncorrectLocationException {
+    public void addLocationByNameValid() throws IncorrectLocationException, NotSavedException {
         GeoCodService geoCodSrv = new GeoCodService();
         String name = "Valencia";
         geoCodSrv.setSearch(new ByName(name));
@@ -58,7 +58,7 @@ public class GeoCodServiceTest {
      * @throws IncorrectLocationException
     */
      @Test
-     public void addLocationByCoordinatesValid() throws IncorrectLocationException {
+     public void addLocationByCoordinatesValid() throws IncorrectLocationException, NotSavedException {
          Coordinates coordinates = new Coordinates(-0.3773900,39.4697500);
          GeoCodService geoCodSrv = new GeoCodService();
          geoCodSrv.setSearch(new ByCoordinates(coordinates));

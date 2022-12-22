@@ -96,6 +96,7 @@ public class NewsAPI extends API{
             return true;
 
         } catch (IOException | InterruptedException ex){
+            ex.printStackTrace();
             return false;
         }
     }

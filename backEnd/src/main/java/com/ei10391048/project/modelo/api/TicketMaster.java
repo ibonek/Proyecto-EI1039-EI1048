@@ -20,14 +20,11 @@ public class TicketMaster extends API{
 
     private final List<APIInformation> information;
 
-    private final int numberOfEvents = 15;
+    private int numberOfEvents = 15;
     public TicketMaster(){
         apiKey = "0F9NRxxNHHARWvlAgkokiKrKFYVqEqM8";
         name = APIsNames.EVENTS.getApiName();
         information = super.information;
-        for (int i=0 ; i<numberOfEvents;i++){
-            information.add(new EventInformation());
-        }
     }
     @Override
     void insertAPIName() {
@@ -38,11 +35,19 @@ public class TicketMaster extends API{
 
     private void insertEventName(){
         JSONObject json;
-        for (int i=0; i<numberOfEvents;i++){
-            EventInformation info = (EventInformation) information.get(i);
+        int i=0;
+        try {
+            for (i = 0; i < numberOfEvents; i++) {
+                json = new JSONObject(events.get(i).toString());
+                information.add(new EventInformation());
+                EventInformation info = (EventInformation) information.get(i);
 
-            json = new JSONObject(events.get(i).toString());
-            info.setEventName(json.getString("name"));
+
+
+                info.setEventName(json.getString("name"));
+            }
+        }catch (JSONException ex){
+            numberOfEvents=i;
         }
     }
     @Override

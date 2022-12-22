@@ -1,6 +1,7 @@
 package com.ei10391048.project.modelo;
 
 
+import java.util.Objects;
 
 public class Coordinates {
     private double lat;
@@ -40,4 +41,13 @@ public class Coordinates {
                 ", lon=" + lon +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinates that = (Coordinates) o;
+        return Double.compare(that.lat, lat) == 0 && Double.compare(that.lon, lon) == 0;
+    }
+
 }

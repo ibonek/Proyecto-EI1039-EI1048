@@ -1,15 +1,16 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.NotSavedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.testng.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class APIManagerTest {
 
     @BeforeEach
-    public void setParams() throws IncorrectLocationException {
+    public void setParams() throws IncorrectLocationException, NotSavedException {
         LocationManager locationManager = LocationManager.getInstance();
         locationManager.clearLocations();
         GeoCodService geoCodSrv = new GeoCodService();

@@ -12,10 +12,11 @@ public class APIManager implements ApiFacade{
 
     private List<API> apiList;
 
-    private List<List<APIInformation>> apiInformation;
+    private final List<List<APIInformation>> apiInformation;
 
     public APIManager() {
         apiList = new LinkedList<>();
+        apiInformation = new LinkedList<>();
         apiList.add(APIsNames.WEATHER.getOrder(),new OpenWeather());
         apiList.add(APIsNames.EVENTS.getOrder(),new TicketMaster());
         apiList.add(APIsNames.NEWS.getOrder(),new NewsAPI());
@@ -28,13 +29,12 @@ public class APIManager implements ApiFacade{
 
 
     public void generateInfo(String locationName) {
-        List<List<APIInformation>> list = new LinkedList<>();
+
         for (API api: apiList){
             List<APIInformation> info = api.generateInfo(locationName);
             if (info != null)
-                list.add(info);
+                apiInformation.add(info);
         }
-        apiInformation = list;
 
     }
 
@@ -44,12 +44,13 @@ public class APIManager implements ApiFacade{
     }
 
     @Override
-    public List<APIInformation> getEventsInformation() {
+    public  List<APIInformation> getEventsInformation() {
         return apiInformation.get(APIsNames.EVENTS.getOrder());
     }
 
     @Override
-    public List<APIInformation> getNewsInformation() {
+    public  List<APIInformation> getNewsInformation() {
+
         return apiInformation.get(APIsNames.NEWS.getOrder());
 
     }

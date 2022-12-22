@@ -63,8 +63,6 @@ const routes: Routes=[];
   exports:[
     RouterModule
   ],
-  providers: [FindingByNameService
-              ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
