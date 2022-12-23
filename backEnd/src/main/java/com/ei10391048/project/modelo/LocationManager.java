@@ -59,13 +59,18 @@ public class LocationManager {
         return aux;
     }
 
-    public void activateLocation(String name) throws AlreadyActiveLocation {
+    public void activateLocation(String name) throws AlreadyActiveLocation, NotSavedException {
         for (Location location: locations) {
             if (location.getName().equals(name)){
                 if (location.getIsActive()) {
                     throw new AlreadyActiveLocation();
                 }
                 location.setActive(true);
+                try {
+                    crudFireBase.activateLocation(location);
+                } catch (NotSavedException e) {
+                    throw new NotSavedException();
+                }
             }
         }
     }

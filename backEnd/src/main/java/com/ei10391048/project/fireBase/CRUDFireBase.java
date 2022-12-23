@@ -1,6 +1,5 @@
 package com.ei10391048.project.fireBase;
 
-import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Coordinates;
 import com.ei10391048.project.modelo.Location;
@@ -78,6 +77,9 @@ public class CRUDFireBase {
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        if (document==null){
+            return null;
+        }
         Location location1 = new Location();
         location1.setName((String) document.getData().get("name"));
         Coordinates coordinates = new Coordinates();
@@ -95,12 +97,9 @@ public class CRUDFireBase {
         }
     }
 
-    public void activateLocation(Location location) throws NotSavedException, AlreadyActiveLocation {
+    public void activateLocation(Location location) throws NotSavedException {
         if (location==null){
             throw new NotSavedException();
-        }
-        if (location.getIsActive()){
-            throw new AlreadyActiveLocation();
         }
         QueryDocumentSnapshot document;
         try {
@@ -108,6 +107,14 @@ public class CRUDFireBase {
         } catch (ExecutionException | InterruptedException e) {
             throw new NotSavedException();
         }
+        if (document==null){
+            throw new NotSavedException();
+        }
         document.getReference().update("active",true);
+    }
+
+    public void deactivateLocation(Location location) throws NotSavedException {
+
+
     }
 }

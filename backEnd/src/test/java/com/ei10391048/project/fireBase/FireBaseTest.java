@@ -1,6 +1,5 @@
 package com.ei10391048.project.fireBase;
 
-import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Location;
 import org.junit.jupiter.api.AfterAll;
@@ -15,8 +14,8 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
+
 import java.util.stream.Stream;
 
 public class FireBaseTest {
@@ -119,7 +118,7 @@ public class FireBaseTest {
             crudFireBase.addLocation(location);
             crudFireBase.activateLocation(location);
             assertTrue(crudFireBase.getLocation(location).getIsActive());
-        } catch (NotSavedException | AlreadyActiveLocation exception) {
+        } catch (NotSavedException exception) {
             fail();
         }
     }
@@ -131,23 +130,30 @@ public class FireBaseTest {
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
-        } catch (AlreadyActiveLocation e) {
+        }
+    }
+
+    @Test
+    public void deactivateLocationFromBBDDValid(){
+        try {
+            crudFireBase.addLocation(location);
+            crudFireBase.deactivateLocation(location);
+            assertFalse(crudFireBase.getLocation(location).getIsActive());
+        } catch (NotSavedException exception) {
             fail();
         }
     }
 
     @Test
-    public void activateLocationFromBBDDInvalid2() {
-        location.setActive(true);
+    public void deactivateLocationFromBBDDInvalid() {
         try {
-            crudFireBase.activateLocation(location);
+            crudFireBase.deactivateLocation(null);
             fail();
         } catch (NotSavedException e) {
-            fail();
-        } catch (AlreadyActiveLocation e) {
             assertTrue(true);
         }
     }
+
     @AfterAll
     public static void tearDown() throws ExecutionException, InterruptedException {
         crudFireBase.deleteLocations();
