@@ -1,6 +1,6 @@
 package com.ei10391048.project.fireBase;
 
-import com.ei10391048.project.exception.AlreadyActiveLocation;
+import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Coordinates;
 import com.ei10391048.project.modelo.Location;
@@ -36,7 +36,7 @@ public class CRUDFireBase {
         }
     }
 
-    public List<Location> getLocations(){
+    public List<Location> getLocations() throws IncorrectLocationException {
         try {
             ApiFuture<QuerySnapshot> future=db.collection("Location").get();
             List<QueryDocumentSnapshot> documents=future.get().getDocuments();
@@ -52,11 +52,14 @@ public class CRUDFireBase {
             }
             return locations;
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            throw new IncorrectLocationException();
         }
     }
 
     private QueryDocumentSnapshot getDocument(Location location) throws ExecutionException, InterruptedException {
+        if (location==null){
+            return null;
+        }
         ApiFuture<QuerySnapshot> future=db.collection("Location").get();
         List<QueryDocumentSnapshot> documents=future.get().getDocuments();
         for (QueryDocumentSnapshot document:documents){
@@ -68,9 +71,9 @@ public class CRUDFireBase {
         }
         return null;
     }
-    public Location getLocation(Location location) throws NotSavedException{
+    public Location getLocation(Location location) {
         if (location==null){
-            throw new NotSavedException();
+            return null;
         }
         QueryDocumentSnapshot document;
         try {
@@ -78,14 +81,15 @@ public class CRUDFireBase {
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        if (document == null){
-            throw new NotSavedException();
+        if (document==null){
+            return null;
         }
         Location location1 = new Location();
         location1.setName((String) document.getData().get("name"));
         Coordinates coordinates = new Coordinates();
         coordinates.setLat((Double) document.getData().get("latitude"));
         coordinates.setLon((Double) document.getData().get("longitude"));
+        location1.setActive((Boolean) document.getData().get("active"));
         location1.setCoordinates(coordinates);
         return location1;
     }
@@ -98,19 +102,16 @@ public class CRUDFireBase {
         }
     }
 
-    public void activateLocation(Location location) throws NotSavedException, AlreadyActiveLocation {
-        if (location==null){
-            throw new NotSavedException();
-        }
-        if (location.getIsActive()){
-            throw new AlreadyActiveLocation();
-        }
+    public void changeStatus(Location location) throws NotSavedException {
         QueryDocumentSnapshot document;
         try {
             document = getDocument(location);
         } catch (ExecutionException | InterruptedException e) {
             throw new NotSavedException();
         }
-        document.getReference().update("active",true);
+        if (document==null){
+            throw new NotSavedException();
+        }
+        document.getReference().update("active",!location.getIsActive());
     }
 }

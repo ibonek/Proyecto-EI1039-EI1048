@@ -1,4 +1,5 @@
 package com.ei10391048.project.controlador;
+import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.modelo.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,9 +55,13 @@ public class LocationController {
     }
 
     @PostMapping("/changeActiveState")
-    public void changeActiveState(@RequestBody String location) {
+    public void changeActiveState(@RequestBody String location) throws IncorrectLocationException {
         LocationManager manager = LocationManager.getInstance();
-        manager.changeActiveState(location);
+        try {
+            manager.changeActiveState(location);
+        } catch (IncorrectLocationException e) {
+            throw new IncorrectLocationException();
+        }
     }
 
 }

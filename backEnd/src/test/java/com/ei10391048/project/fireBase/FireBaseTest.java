@@ -1,6 +1,6 @@
 package com.ei10391048.project.fireBase;
 
-import com.ei10391048.project.exception.AlreadyActiveLocation;
+import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Location;
 import org.junit.jupiter.api.AfterAll;
@@ -15,8 +15,8 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
+
 import java.util.stream.Stream;
 
 public class FireBaseTest {
@@ -62,19 +62,14 @@ public class FireBaseTest {
     @ParameterizedTest
     @MethodSource("locations")
     public void getLocationFromBBDDInvalid(Location location) {
-        try{
-            crudFireBase.getLocation(location);
-            fail();
-        } catch (NotSavedException ex){
-            assertTrue(true);
-        }
+        assertNull(crudFireBase.getLocation(location));
     }
 
     static Stream<Arguments> locations(){
         return Stream.of(
                 Arguments.of(new Location("Teruel", 40.345, -0.6687)),
                 Arguments.of(new Location("Valencia", 39.4697600, -0.3773900)),
-                Arguments.of(new Location("Madrid", 40.4167754, -3.7037902)),
+                Arguments.of(new Location("Madridd", 40.4167754, -3.7037902)),
                 Arguments.of((Object) null)
         );
     }
@@ -85,8 +80,10 @@ public class FireBaseTest {
             crudFireBase.addLocation(location);
             crudFireBase.deleteLocations();
             assertEquals(0, crudFireBase.getLocations().size());
-        } catch (ExecutionException | InterruptedException | NotSavedException exception){
+        } catch (ExecutionException | InterruptedException exception){
             fail();
+        } catch (NotSavedException | IncorrectLocationException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -97,6 +94,8 @@ public class FireBaseTest {
             assertEquals(0, crudFireBase.getLocations().size());
         } catch (ExecutionException | InterruptedException exception){
             fail();
+        } catch (IncorrectLocationException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -105,14 +104,18 @@ public class FireBaseTest {
         try {
             crudFireBase.addLocation(location);
             assertEquals(1, crudFireBase.getLocations().size());
-        } catch (NotSavedException e) {
+        } catch (NotSavedException | IncorrectLocationException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Test
     public void getLocationsFromBBDDInvalid(){
-        assertEquals(0, crudFireBase.getLocations().size());
+        try {
+            assertEquals(0, crudFireBase.getLocations().size());
+        } catch (IncorrectLocationException e) {
+            fail();
+        }
     }
 
     @Test
@@ -120,37 +123,53 @@ public class FireBaseTest {
         try {
             location.setActive(false);
             crudFireBase.addLocation(location);
-            crudFireBase.activateLocation(location);
+            crudFireBase.changeStatus(location);
             assertTrue(crudFireBase.getLocation(location).getIsActive());
-        } catch (NotSavedException | AlreadyActiveLocation exception) {
+        } catch (NotSavedException exception) {
             fail();
         }
     }
 
-    @Test
-    public void activateLocationFromBBDDInvalid() {
+    @ParameterizedTest
+    @MethodSource("status")
+    public void activateLocationFromBBDDInvalid(Location status) {
         try {
-            crudFireBase.activateLocation(null);
+            crudFireBase.changeStatus(status);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
-        } catch (AlreadyActiveLocation e) {
+        }
+    }
+
+    static Stream<Arguments> status(){
+        return Stream.of(
+                Arguments.of((Object) null),
+                Arguments.of(location)
+        );
+    }
+
+    @Test
+    public void deactivateLocationFromBBDDValid(){
+        try {
+            crudFireBase.addLocation(location);
+            crudFireBase.changeStatus(location);
+            assertFalse(crudFireBase.getLocation(location).getIsActive());
+        } catch (NotSavedException exception) {
             fail();
         }
     }
 
-    @Test
-    public void activateLocationFromBBDDInvalid2() {
-        location.setActive(true);
+    @ParameterizedTest
+    @MethodSource("status")
+    public void deactivateLocationFromBBDDInvalid(Location status) {
         try {
-            crudFireBase.activateLocation(location);
+            crudFireBase.changeStatus(status);
             fail();
         } catch (NotSavedException e) {
-            fail();
-        } catch (AlreadyActiveLocation e) {
             assertTrue(true);
         }
     }
+
     @AfterAll
     public static void tearDown() throws ExecutionException, InterruptedException {
         crudFireBase.deleteLocations();
