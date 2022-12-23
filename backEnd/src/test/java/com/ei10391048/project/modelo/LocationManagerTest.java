@@ -1,6 +1,7 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.AlreadyActiveLocation;
+import com.ei10391048.project.exception.IncorectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import org.junit.jupiter.api.BeforeEach;
@@ -171,6 +172,69 @@ class LocationManagerTest {
         return Stream.of(
                 Arguments.of(input),
                 Arguments.of(input2)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getValidAlias")
+    void getLocationsAliasValidCase(ArrayList<String[]> input, ArrayList<String> sol) throws IncorrectLocationException, NotSavedException, IncorectAliasException {
+
+            LocationManager manager = LocationManager.getInstance();
+            for (String[] name : input) {
+                GeoCodService geoCodService = new GeoCodService();
+                geoCodService.setSearch(new ByName(name[0]));
+                manager.setLocationApi(geoCodService);
+                manager.addLocation();
+                if (name.length==2) {
+                    manager.setAlias(name[0], name[1]);
+                }
+            }
+        assertEquals(manager.getLocationsAlias(),sol);
+    }
+
+    static Stream<Arguments> getValidAlias() {
+
+        ArrayList<String[]> input = new ArrayList<>();
+        addAll(input, new String[]{"Valencia", "casa"},new String[]{"Madrid", "abu"},new String[]{"Beijing"});
+        ArrayList<String[]> input2 = new ArrayList<>();
+        addAll(input2, new String[]{"Montevideo", "casa"},new String[]{"Castellon", "abu"},new String[]{"London"});
+        ArrayList<String> sol = new ArrayList<>();
+        addAll(sol, "casa","abu","Beijing");
+        ArrayList<String> sol2 = new ArrayList<>();
+        addAll(sol2, "casa", "abu","London");
+        return Stream.of(
+                Arguments.of(input, sol),
+                Arguments.of(input2, sol2)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getInvalidAlias")
+    void getLocationsAliasInvalidCase(ArrayList<String> sol) throws IncorrectLocationException, NotSavedException {
+        try {
+            LocationManager manager = LocationManager.getInstance();
+            for (String name : sol) {
+                GeoCodService geoCodService = new GeoCodService();
+                geoCodService.setSearch(new ByName(name));
+                manager.setLocationApi(geoCodService);
+                manager.addLocation();
+                manager.setAlias(name,"");
+            }
+            fail();
+        } catch (IncorectAliasException e){
+            assertTrue(true);
+        }
+    }
+
+    static Stream<Arguments> getInvalidAlias() {
+
+        ArrayList<String> sol = new ArrayList<>();
+        addAll(sol, "Valencia","Madrid","Beijing");
+        ArrayList<String> sol2 = new ArrayList<>();
+        addAll(sol2, "Montevideo","Castellon","London");
+        return Stream.of(
+                Arguments.of( sol),
+                Arguments.of( sol2)
         );
     }
 }

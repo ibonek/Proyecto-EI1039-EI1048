@@ -8,6 +8,7 @@ h1{
   height: fit-content;
   margin: 3rem auto;
   border-radius: 2px;
+  min-width: fit-content;
 }
 
 .inBox{
@@ -15,30 +16,52 @@ h1{
   padding: 1rem 3rem 2rem;
 }
 
-li{
+.rowList{
   font-size: 20px;
   line-height: 2rem;
   list-style: none;
   margin:0 0 0.6rem 0;
   display: flex;
   color: white;
+  justify-content: space-between;
   align-items: center;
 }
 
-.lista{
+.information{
+  background: white;
+  color: #303030;
   font-weight: bold;
   text-align: left;
-  /*background: white;*/
   border-radius: 2px;
-  width: 100%;
   padding: 0.2rem 1rem ;
+  box-shadow: 0.1rem 0.1rem 0 #303030;
+  width: 20rem;
+}
+
+.inputs{
+  display: flex;
+  align-items: center;
+}
+.alias{
+  font-weight: bold;
+  text-align: center;
+  border-radius: 2px;
+  min-width: 15.7rem;
+  padding: 0.2rem 1rem ;
+  display: flex;
+  justify-content: space-between;
+}
+.alias input{
+  font-size:medium;
+  padding: 0.3rem 0.4rem;
+  border: none;
+  box-shadow: 0.1rem 0.1rem 0 #303030;
+  width: 10rem;
+  border-radius: 2px;
 }
 
 .buttonList{
-  margin:0 0 0 0.6rem;
-  border-radius: 2px;
-  /*background: white;*/
-  border: none;
+  padding: 0.3rem 0.4rem;
 }
 
 
@@ -61,3 +84,5 @@ background: white ;
   opacity: 50%;
   border-radius: 2px;
 }
+
+

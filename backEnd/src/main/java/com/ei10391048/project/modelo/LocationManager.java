@@ -1,11 +1,13 @@
 package com.ei10391048.project.modelo;
 
 
+import com.ei10391048.project.exception.IncorectAliasException;
 import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,31 +40,31 @@ public class LocationManager {
         crudFireBase.addLocation(location);
     }
 
-    public List<Location> getLocations () {
+    public List<Location> getLocations() {
         return locations;
     }
 
 
-        public Location getLocation(String name) throws IncorrectLocationException {
-            for(Location loc : locations){
-                if (loc.getName().equals(name)){
-                   return loc;
-                }
+    public Location getLocation(String name) throws IncorrectLocationException {
+        for (Location loc : locations) {
+            if (loc.getName().equals(name)) {
+                return loc;
             }
-            throw new IncorrectLocationException();
         }
+        throw new IncorrectLocationException();
+    }
 
 
-    public int getNumberOfLocations () {
+    public int getNumberOfLocations() {
         return locations.size();
     }
 
 
-    public LocationApiInterface getLocationApi () {
+    public LocationApiInterface getLocationApi() {
         return locationApi;
     }
 
-    public List<String> getLocationsName () {
+    public List<String> getLocationsName() {
         List<String> aux = new LinkedList<>();
         for (Location location : locations) {
             aux.add(location.getName());
@@ -70,7 +72,7 @@ public class LocationManager {
         return aux;
     }
 
-    public List<String> getActiveLocationsName () {
+    public List<String> getActiveLocationsName() {
         List<String> aux = new LinkedList<>();
         for (Location location : locations) {
             if (location.getIsActive()) {
@@ -80,7 +82,15 @@ public class LocationManager {
         return aux;
     }
 
-    public void setLocationApi(LocationApiInterface locationApi){
+    public List<String> getLocationsAlias() {
+        List<String> aux = new ArrayList<>();
+        for (Location location : locations) {
+            aux.add(location.getAlias());
+        }
+        return aux;
+    }
+
+    public void setLocationApi(LocationApiInterface locationApi) {
         this.locationApi = locationApi;
     }
 
@@ -88,7 +98,7 @@ public class LocationManager {
         this.locations.clear();
     }
 
-    public void setLocations(List < Location > locations) {
+    public void setLocations(List<Location> locations) {
         this.locations = locations;
     }
 
@@ -104,6 +114,13 @@ public class LocationManager {
             throw new IncorrectLocationException();
         }
         loc.setActive(!loc.getIsActive());
+    }
+
+    public void setAlias(String name, String s) throws IncorectAliasException, IncorrectLocationException {
+        if (s.isEmpty()) throw new IncorectAliasException();
+        Location loc;
+        loc = getLocation(name);
+        loc.setAlias(s);
     }
 }
 
