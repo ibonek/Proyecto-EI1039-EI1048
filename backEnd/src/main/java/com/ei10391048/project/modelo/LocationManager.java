@@ -1,6 +1,7 @@
 package com.ei10391048.project.modelo;
 
 
+import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
@@ -52,9 +53,6 @@ public class LocationManager {
         return null;
         }
 
-        public int getNumberOfLocations () {
-            return locations.size();
-        }
 
     public int getNumberOfLocations () {
         return locations.size();

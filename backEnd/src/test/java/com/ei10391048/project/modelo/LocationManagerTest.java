@@ -77,6 +77,7 @@ class LocationManagerTest {
 
     @Test
     void activateLocationInvalidCase() throws IncorrectLocationException, NotSavedException, AlreadyActiveLocation {
+        try {
         LocationManager manager = LocationManager.getInstance();
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(new ByName("Castellón"));
@@ -86,7 +87,7 @@ class LocationManagerTest {
         manager.setLocationApi(geoCodService);
         manager.addLocation();
         manager.getLocations().get(1).setActive(false);
-        try {
+
             manager.activateLocation("Castellon");
             fail();
         } catch (AlreadyActiveLocation ex){

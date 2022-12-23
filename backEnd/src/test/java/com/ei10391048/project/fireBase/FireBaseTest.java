@@ -62,14 +62,19 @@ public class FireBaseTest {
     @ParameterizedTest
     @MethodSource("locations")
     public void getLocationFromBBDDInvalid(Location location) {
-        assertNull(crudFireBase.getLocation(location));
+        try{
+            crudFireBase.getLocation(location);
+            fail();
+        } catch (NotSavedException ex){
+            assertTrue(true);
+        }
     }
 
     static Stream<Arguments> locations(){
         return Stream.of(
                 Arguments.of(new Location("Teruel", 40.345, -0.6687)),
                 Arguments.of(new Location("Valencia", 39.4697600, -0.3773900)),
-                Arguments.of(new Location("Madridd", 40.4167754, -3.7037902)),
+                Arguments.of(new Location("Madrid", 40.4167754, -3.7037902)),
                 Arguments.of((Object) null)
         );
     }
@@ -80,10 +85,8 @@ public class FireBaseTest {
             crudFireBase.addLocation(location);
             crudFireBase.deleteLocations();
             assertEquals(0, crudFireBase.getLocations().size());
-        } catch (ExecutionException | InterruptedException exception){
+        } catch (ExecutionException | InterruptedException | NotSavedException exception){
             fail();
-        } catch (NotSavedException e) {
-            throw new RuntimeException(e);
         }
     }
 

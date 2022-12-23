@@ -68,15 +68,18 @@ public class CRUDFireBase {
         }
         return null;
     }
-    public Location getLocation(Location location) {
+    public Location getLocation(Location location) throws NotSavedException{
         if (location==null){
-            return null;
+            throw new NotSavedException();
         }
         QueryDocumentSnapshot document;
         try {
             document = getDocument(location);
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
+        }
+        if (document == null){
+            throw new NotSavedException();
         }
         Location location1 = new Location();
         location1.setName((String) document.getData().get("name"));
