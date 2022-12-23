@@ -4,7 +4,6 @@ import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Location;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -62,7 +61,7 @@ public class FireBaseTest {
 
     @ParameterizedTest
     @MethodSource("locations")
-    public void getLocationFromBBDDInvalid(Location location) throws ExecutionException, InterruptedException {
+    public void getLocationFromBBDDInvalid(Location location) {
         assertNull(crudFireBase.getLocation(location));
     }
 
@@ -127,9 +126,8 @@ public class FireBaseTest {
 
     @Test
     public void activateLocationFromBBDDInvalid() {
-        location=null;
         try {
-            crudFireBase.activateLocation(location);
+            crudFireBase.activateLocation(null);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
