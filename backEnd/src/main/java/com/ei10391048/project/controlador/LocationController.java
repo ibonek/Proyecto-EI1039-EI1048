@@ -53,10 +53,10 @@ public class LocationController {
         return manager.getLocations();
     }
 
-    @PostMapping("/changeActiveEstate")
-    public void chageActiveEstate(@RequestBody Location location) {
+    @PostMapping("/changeActiveState")
+    public void changeActiveState(@RequestBody String location) {
         LocationManager manager = LocationManager.getInstance();
-        manager.changeActiveEstate(location);
+        manager.changeActiveState(location);
     }
 
 }

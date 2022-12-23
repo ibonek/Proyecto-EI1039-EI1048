@@ -22,6 +22,7 @@ li{
   margin:0 0 0.6rem 0;
   display: flex;
   color: white;
+  align-items: center;
 }
 
 .lista{
@@ -40,9 +41,23 @@ li{
   border: none;
 }
 
+
+/deep/ .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background: rgba(255, 255, 255, 0.33);
+}
+/deep/ .mat-slide-toggle-bar{
+  background: rgba(255, 255, 255, 0.33);
+}
+/deep/ .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+background: white ;
+}
+/deep/  .mat-slide-toggle-thumb{
+  background: white ;
+}
 .active{
 
 }
 .inactive{
-  background: lightgrey;
+  opacity: 50%;
+  border-radius: 2px;
 }
