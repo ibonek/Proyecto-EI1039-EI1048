@@ -185,7 +185,9 @@ class LocationManagerTest {
                 geoCodService.setSearch(new ByName(name[0]));
                 manager.setLocationApi(geoCodService);
                 manager.addLocation();
-                manager.setAlias(name[0],name[1]);
+                if (name.length==2) {
+                    manager.setAlias(name[0], name[1]);
+                }
             }
         assertEquals(manager.getLocationsAlias(),sol);
     }
@@ -193,13 +195,13 @@ class LocationManagerTest {
     static Stream<Arguments> getValidAlias() {
 
         ArrayList<String[]> input = new ArrayList<>();
-        addAll(input, new String[]{"Valencia", "casa"},new String[]{"Madrid", "abu"},new String[]{"Beijing", ""});
+        addAll(input, new String[]{"Valencia", "casa"},new String[]{"Madrid", "abu"},new String[]{"Beijing"});
         ArrayList<String[]> input2 = new ArrayList<>();
-        addAll(input2, new String[]{"Montevideo", "casa"},new String[]{"Castellon", "abu"},new String[]{"London", ""});
+        addAll(input2, new String[]{"Montevideo", "casa"},new String[]{"Castellon", "abu"},new String[]{"London"});
         ArrayList<String> sol = new ArrayList<>();
         addAll(sol, "casa","abu","Beijing");
         ArrayList<String> sol2 = new ArrayList<>();
-        addAll(sol, "casa", "abu","London");
+        addAll(sol2, "casa", "abu","London");
         return Stream.of(
                 Arguments.of(input, sol),
                 Arguments.of(input2, sol2)
