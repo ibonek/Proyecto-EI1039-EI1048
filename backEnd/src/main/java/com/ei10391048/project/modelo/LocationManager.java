@@ -1,6 +1,7 @@
 package com.ei10391048.project.modelo;
 
 
+import com.ei10391048.project.exception.IncorectAliasException;
 import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
@@ -104,6 +105,9 @@ public class LocationManager {
             throw new IncorrectLocationException();
         }
         loc.setActive(!loc.getIsActive());
+    }
+
+    public void setAlias(String name, String s) throws IncorectAliasException {
     }
 }
 

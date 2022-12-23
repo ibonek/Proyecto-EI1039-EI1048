@@ -1,6 +1,7 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.AlreadyActiveLocation;
+import com.ei10391048.project.exception.IncorectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import org.junit.jupiter.api.BeforeEach;
@@ -171,6 +172,37 @@ class LocationManagerTest {
         return Stream.of(
                 Arguments.of(input),
                 Arguments.of(input2)
+        );
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("getInvalidAlias")
+    void getLocationsAliasInvalidCase(ArrayList<String> sol) throws IncorrectLocationException, NotSavedException {
+        try {
+            LocationManager manager = LocationManager.getInstance();
+            for (String name : sol) {
+                GeoCodService geoCodService = new GeoCodService();
+                geoCodService.setSearch(new ByName(name));
+                manager.setLocationApi(geoCodService);
+                manager.addLocation();
+                manager.setAlias(name,"");
+            }
+            fail();
+        } catch (IncorectAliasException e){
+            assertTrue(true);
+        }
+    }
+
+    static Stream<Arguments> getInvalidAlias() {
+
+        ArrayList<String> sol = new ArrayList<>();
+        addAll(sol, "Valencia","Madrid","Beijing");
+        ArrayList<String> sol2 = new ArrayList<>();
+        addAll(sol2, "Montevideo","Castellon","London");
+        return Stream.of(
+                Arguments.of( sol),
+                Arguments.of( sol2)
         );
     }
 }
