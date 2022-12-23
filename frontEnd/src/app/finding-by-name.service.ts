@@ -26,4 +26,9 @@ export class FindingByNameService {
   public getActiveLocationList(){
     return this.http.get<Location[]>("http://localhost:8080/giveLocations");
   }
+
+  public changeActiveState(location: Location | undefined){
+    console.log(location)
+    return this.http.post<string>("http://localhost:8080/changeActiveState",location?.name);
+  }
 }

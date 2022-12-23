@@ -28,6 +28,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import { LocationListComponent } from './location-list/location-list.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { LocationEventsComponent } from './location-events/location-events.component';
 //import { LocationFromComponent } from './location-from/location-from.component';
 
 const routes: Routes=[];
@@ -38,25 +39,27 @@ const routes: Routes=[];
     TopBarComponent,
     FilterComponent,
     LocationListComponent,
-
+    LocationEventsComponent
   ],
     imports: [
       BrowserAnimationsModule,
-        FormsModule,
-        HttpClientModule,
-        BrowserModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatGridListModule,
-        MatListModule,
-        MatFormFieldModule,
-        MatAutocompleteModule,
-        ReactiveFormsModule,
-        MatOptionModule,
-        AppRoutingModule,
-        MatSelectModule,
-        MatMenuModule
+      FormsModule,
+      HttpClientModule,
+      BrowserModule,
+      MatToolbarModule,
+      MatIconModule,
+      MatButtonModule,
+      MatGridListModule,
+      MatListModule,
+      MatFormFieldModule,
+      MatAutocompleteModule,
+      ReactiveFormsModule,
+      MatOptionModule,
+      AppRoutingModule,
+      MatSelectModule,
+      MatMenuModule,
+      MatSlideToggleModule,
+      ReactiveFormsModule
     ],
   providers: [FindingByNameService,
               InformationService],

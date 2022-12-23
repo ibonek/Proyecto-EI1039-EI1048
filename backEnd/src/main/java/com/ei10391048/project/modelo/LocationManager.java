@@ -1,7 +1,6 @@
 package com.ei10391048.project.modelo;
 
 
-import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
@@ -43,9 +42,24 @@ public class LocationManager {
         return locations;
     }
 
+
+        public Location getLocation(String name){
+            for(Location loc : locations){
+                if (loc.getName().equals(name)){
+                   return loc;
+                }
+            }
+        return null;
+        }
+
+        public int getNumberOfLocations () {
+            return locations.size();
+        }
+
     public int getNumberOfLocations () {
         return locations.size();
     }
+
 
     public LocationApiInterface getLocationApi () {
         return locationApi;
@@ -94,6 +108,11 @@ public class LocationManager {
 
     public void setCrudFireBase(CRUDFireBase crudFireBase) {
         this.crudFireBase = crudFireBase;
+    }
+
+    public void changeActiveState(String location) {
+        Location loc = getLocation(location);
+        loc.setActive(!loc.getIsActive());
     }
 }
 
