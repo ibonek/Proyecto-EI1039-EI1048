@@ -1,5 +1,6 @@
 package com.ei10391048.project.fireBase;
 
+import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Location;
 import org.junit.jupiter.api.AfterAll;
@@ -81,7 +82,7 @@ public class FireBaseTest {
             assertEquals(0, crudFireBase.getLocations().size());
         } catch (ExecutionException | InterruptedException exception){
             fail();
-        } catch (NotSavedException e) {
+        } catch (NotSavedException | IncorrectLocationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -93,6 +94,8 @@ public class FireBaseTest {
             assertEquals(0, crudFireBase.getLocations().size());
         } catch (ExecutionException | InterruptedException exception){
             fail();
+        } catch (IncorrectLocationException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -101,14 +104,18 @@ public class FireBaseTest {
         try {
             crudFireBase.addLocation(location);
             assertEquals(1, crudFireBase.getLocations().size());
-        } catch (NotSavedException e) {
+        } catch (NotSavedException | IncorrectLocationException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Test
     public void getLocationsFromBBDDInvalid(){
-        assertEquals(0, crudFireBase.getLocations().size());
+        try {
+            assertEquals(0, crudFireBase.getLocations().size());
+        } catch (IncorrectLocationException e) {
+            fail();
+        }
     }
 
     @Test
