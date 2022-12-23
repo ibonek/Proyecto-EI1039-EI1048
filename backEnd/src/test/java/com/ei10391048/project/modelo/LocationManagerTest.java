@@ -76,18 +76,22 @@ class LocationManagerTest {
 
     @Test
     void activateLocationInvalidCase() throws IncorrectLocationException, NotSavedException {
-        LocationManager manager = LocationManager.getInstance();
-        GeoCodService geoCodService = new GeoCodService();
-        geoCodService.setSearch(new ByName("Castellón"));
-        manager.setLocationApi(geoCodService);
-        manager.addLocation();
-        geoCodService.setSearch(new ByName("Madrid"));
-        manager.setLocationApi(geoCodService);
-        manager.addLocation();
-        manager.getLocations().get(1).setActive(false);
+        try {
+            LocationManager manager = LocationManager.getInstance();
+            GeoCodService geoCodService = new GeoCodService();
+            geoCodService.setSearch(new ByName("Castellón"));
+            manager.setLocationApi(geoCodService);
+            manager.addLocation();
+            geoCodService.setSearch(new ByName("Madrid"));
+            manager.setLocationApi(geoCodService);
+            manager.addLocation();
+            manager.getLocations().get(1).setActive(false);
 
-        manager.changeActiveState("Castellonn");
-        fail();
+            manager.changeActiveState("Castellonn");
+            fail();
+        } catch (IncorrectLocationException e){
+            assertTrue(true);
+        }
     }
 
     @ParameterizedTest
