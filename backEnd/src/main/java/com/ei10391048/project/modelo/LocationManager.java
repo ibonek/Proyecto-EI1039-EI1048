@@ -1,7 +1,6 @@
 package com.ei10391048.project.modelo;
 
 
-import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
@@ -44,13 +43,13 @@ public class LocationManager {
     }
 
 
-        public Location getLocation(String name){
+        public Location getLocation(String name) throws IncorrectLocationException {
             for(Location loc : locations){
                 if (loc.getName().equals(name)){
                    return loc;
                 }
             }
-        return null;
+            throw new IncorrectLocationException();
         }
 
 
@@ -69,22 +68,6 @@ public class LocationManager {
             aux.add(location.getName());
         }
         return aux;
-    }
-
-    public void activateLocation(String name) throws AlreadyActiveLocation, NotSavedException {
-        for (Location location: locations) {
-            if (location.getName().equals(name)){
-                if (location.getIsActive()) {
-                    throw new AlreadyActiveLocation();
-                }
-                location.setActive(true);
-                try {
-                    crudFireBase.activateLocation(location);
-                } catch (NotSavedException e) {
-                    throw new NotSavedException();
-                }
-            }
-        }
     }
 
     public List<String> getActiveLocationsName () {
@@ -113,8 +96,13 @@ public class LocationManager {
         this.crudFireBase = crudFireBase;
     }
 
-    public void changeActiveState(String location) {
-        Location loc = getLocation(location);
+    public void changeActiveState(String location) throws IncorrectLocationException {
+        Location loc;
+        try {
+            loc = getLocation(location);
+        } catch (IncorrectLocationException e) {
+            throw new IncorrectLocationException();
+        }
         loc.setActive(!loc.getIsActive());
     }
 }

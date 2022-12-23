@@ -102,7 +102,7 @@ public class CRUDFireBase {
         }
     }
 
-    public void activateLocation(Location location) throws NotSavedException {
+    public void changeStatus(Location location) throws NotSavedException {
         QueryDocumentSnapshot document;
         try {
             document = getDocument(location);
@@ -112,19 +112,6 @@ public class CRUDFireBase {
         if (document==null){
             throw new NotSavedException();
         }
-        document.getReference().update("active",true);
-    }
-
-    public void deactivateLocation(Location location) throws NotSavedException {
-        QueryDocumentSnapshot document;
-        try {
-            document = getDocument(location);
-        } catch (ExecutionException | InterruptedException e) {
-            throw new NotSavedException();
-        }
-        if (document==null){
-            throw new NotSavedException();
-        }
-        document.getReference().update("active",false);
+        document.getReference().update("active",!location.getIsActive());
     }
 }

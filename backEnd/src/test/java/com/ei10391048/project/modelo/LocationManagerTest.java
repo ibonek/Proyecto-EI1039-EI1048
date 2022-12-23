@@ -1,6 +1,5 @@
 package com.ei10391048.project.modelo;
 
-import com.ei10391048.project.controlador.InputValidator;
 import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
@@ -61,7 +60,7 @@ class LocationManagerTest {
     }
 
     @Test
-    void activateLocationValidCase() throws IncorrectLocationException, NotSavedException, AlreadyActiveLocation {
+    void activateLocationValidCase() throws IncorrectLocationException, NotSavedException{
         LocationManager manager = LocationManager.getInstance();
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(new ByName("Castellón"));
@@ -71,13 +70,12 @@ class LocationManagerTest {
         manager.setLocationApi(geoCodService);
         manager.addLocation();
         manager.getLocations().get(1).setActive(false);
-        manager.activateLocation("Madrid");
+        manager.changeActiveState("Madrid");
         assertTrue(manager.getLocations().get(1).getIsActive());
     }
 
     @Test
-    void activateLocationInvalidCase() throws IncorrectLocationException, NotSavedException, AlreadyActiveLocation {
-        try {
+    void activateLocationInvalidCase() throws IncorrectLocationException, NotSavedException {
         LocationManager manager = LocationManager.getInstance();
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(new ByName("Castellón"));
@@ -88,11 +86,8 @@ class LocationManagerTest {
         manager.addLocation();
         manager.getLocations().get(1).setActive(false);
 
-            manager.activateLocation("Castellon");
-            fail();
-        } catch (AlreadyActiveLocation ex){
-            assertTrue(true);
-        }
+        manager.changeActiveState("Castellonn");
+        fail();
     }
 
     @ParameterizedTest
@@ -122,7 +117,7 @@ class LocationManagerTest {
 
     @ParameterizedTest
     @MethodSource("getActiveLocationInvalid")
-    void getActiveLocationInvalidCase(ArrayList<String> input) throws IncorrectLocationException, AlreadyActiveLocation, NotSavedException {
+    void getActiveLocationInvalidCase(ArrayList<String> input) throws IncorrectLocationException, NotSavedException {
         LocationManager manager = LocationManager.getInstance();
         GeoCodService geoCodService = new GeoCodService();
         for (String name : input) {
@@ -150,7 +145,7 @@ class LocationManagerTest {
 
     @ParameterizedTest
     @MethodSource("getInactiveLocationValidCase")
-    void getInactiveLocationValidCase(ArrayList<String> input) throws IncorrectLocationException, AlreadyActiveLocation, NotSavedException {
+    void getInactiveLocationValidCase(ArrayList<String> input) throws IncorrectLocationException, NotSavedException {
         LocationManager manager = LocationManager.getInstance();
         GeoCodService geoCodService = new GeoCodService();
         for (String name : input) {

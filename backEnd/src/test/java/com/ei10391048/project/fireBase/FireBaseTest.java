@@ -123,38 +123,47 @@ public class FireBaseTest {
         try {
             location.setActive(false);
             crudFireBase.addLocation(location);
-            crudFireBase.activateLocation(location);
+            crudFireBase.changeStatus(location);
             assertTrue(crudFireBase.getLocation(location).getIsActive());
         } catch (NotSavedException exception) {
             fail();
         }
     }
 
-    @Test
-    public void activateLocationFromBBDDInvalid() {
+    @ParameterizedTest
+    @MethodSource("status")
+    public void activateLocationFromBBDDInvalid(Location status) {
         try {
-            crudFireBase.activateLocation(null);
+            crudFireBase.changeStatus(status);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
         }
     }
 
+    static Stream<Arguments> status(){
+        return Stream.of(
+                Arguments.of((Object) null),
+                Arguments.of(location)
+        );
+    }
+
     @Test
     public void deactivateLocationFromBBDDValid(){
         try {
             crudFireBase.addLocation(location);
-            crudFireBase.deactivateLocation(location);
+            crudFireBase.changeStatus(location);
             assertFalse(crudFireBase.getLocation(location).getIsActive());
         } catch (NotSavedException exception) {
             fail();
         }
     }
 
-    @Test
-    public void deactivateLocationFromBBDDInvalid() {
+    @ParameterizedTest
+    @MethodSource("status")
+    public void deactivateLocationFromBBDDInvalid(Location status) {
         try {
-            crudFireBase.deactivateLocation(null);
+            crudFireBase.changeStatus(status);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
