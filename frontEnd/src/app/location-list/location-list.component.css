@@ -38,6 +38,10 @@ h1{
   width: 20rem;
 }
 
+.inputs{
+  display: flex;
+  align-items: center;
+}
 .alias{
   font-weight: bold;
   text-align: center;
@@ -46,7 +50,6 @@ h1{
   padding: 0.2rem 1rem ;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 .alias input{
   font-size:medium;

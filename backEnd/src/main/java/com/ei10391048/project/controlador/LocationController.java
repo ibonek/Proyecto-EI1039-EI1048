@@ -1,4 +1,5 @@
 package com.ei10391048.project.controlador;
+import com.ei10391048.project.exception.IncorectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.modelo.*;
 import org.springframework.web.bind.annotation.*;
@@ -64,4 +65,14 @@ public class LocationController {
         }
     }
 
+    @PostMapping("/changeAlias")
+    public void changeAlias(@RequestBody String alias) throws IncorrectLocationException, IncorectAliasException {
+        LocationManager manager = LocationManager.getInstance();
+        try {
+            String[] vec = alias.split("#");
+            manager.setAlias(vec[0],vec[1]);
+        } catch ( IncorectAliasException e) {
+            throw new IncorectAliasException();
+        }
+    }
 }

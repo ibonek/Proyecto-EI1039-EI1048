@@ -31,7 +31,7 @@ export class FindingByNameService {
     return this.http.post<string>("http://localhost:8080/changeActiveState",location?.name);
   }
 
-  public changeAlias(alias: string) {
-    return this.http.post<string>("http://localhost:8080/changeAlias",alias);
+  public changeAlias(name: string, alias: string) {
+    return this.http.post<string>("http://localhost:8080/changeAlias",name+'#'+alias);
   }
 }
