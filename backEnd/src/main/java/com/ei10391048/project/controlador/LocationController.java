@@ -1,30 +1,22 @@
 package com.ei10391048.project.controlador;
+import com.ei10391048.project.exception.IncorectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.modelo.*;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-public class FindingLocationController {
+public class LocationController {
 
-    private final FindingLocationRepository findingLocationRepository;
 
     public Boolean confirmation=null;
 
-
-    public FindingLocationController(FindingLocationRepository findingLocationRepository) {
-        this.findingLocationRepository = findingLocationRepository;
-    }
-
-
     @PostMapping("/addLocation")
     public void createLocation(@RequestBody String location) {
-
+        try {
         location = location.trim();
         LocationManager locationManager = LocationManager.getInstance();
         locationManager.setLocationApi(new GeoCodService());
@@ -37,10 +29,10 @@ public class FindingLocationController {
 
             locationManager.getLocationApi().setSearch(new ByName(location));
         }
-        try {
+
             locationManager.addLocation();
             confirmation = true;
-        } catch (IncorrectLocationException ex) {
+        } catch (Exception ex) {
             confirmation = false;
         }
     }
@@ -52,9 +44,35 @@ public class FindingLocationController {
         return confirmation;
     }
 
-    @GetMapping("/giveLocations")
+    @GetMapping("/giveAutocompleteLocations")
     public List<String> giveCityList() throws IOException, InterruptedException {
-
         return InputValidator.generateAutocompleteList();
+    }
+
+    @GetMapping("/giveLocations")
+    public List<Location> getActiveLocationList() {
+        LocationManager manager = LocationManager.getInstance();
+        return manager.getLocations();
+    }
+
+    @PostMapping("/changeActiveState")
+    public void changeActiveState(@RequestBody String location) throws IncorrectLocationException {
+        LocationManager manager = LocationManager.getInstance();
+        try {
+            manager.changeActiveState(location);
+        } catch (IncorrectLocationException e) {
+            throw new IncorrectLocationException();
+        }
+    }
+
+    @PostMapping("/changeAlias")
+    public void changeAlias(@RequestBody String alias) throws IncorrectLocationException, IncorectAliasException {
+        LocationManager manager = LocationManager.getInstance();
+        try {
+            String[] vec = alias.split("#");
+            manager.setAlias(vec[0],vec[1]);
+        } catch ( IncorectAliasException e) {
+            throw new IncorectAliasException();
+        }
     }
 }

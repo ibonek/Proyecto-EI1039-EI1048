@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {Location} from "./location";
 
 @Injectable()
 export class FindingByNameService {
@@ -19,6 +20,18 @@ export class FindingByNameService {
   }
 
   public giveCityList(){
-    return this.http.get<string[]>("http://localhost:8080/giveLocations");
+    return this.http.get<string[]>("http://localhost:8080/giveAutocompleteLocations");
+  }
+
+  public getActiveLocationList(){
+    return this.http.get<Location[]>("http://localhost:8080/giveLocations");
+  }
+
+  public changeActiveState(location: Location | undefined){
+    return this.http.post<string>("http://localhost:8080/changeActiveState",location?.name);
+  }
+
+  public changeAlias(name: string, alias: string) {
+    return this.http.post<string>("http://localhost:8080/changeAlias",name+'#'+alias);
   }
 }

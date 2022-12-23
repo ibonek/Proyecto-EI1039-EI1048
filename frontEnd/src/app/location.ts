@@ -1,6 +1,9 @@
-export class Location {
-  name: String | undefined
+import {Coordinates} from "./coordinates";
 
-  constructor() {
-  }
+export class Location {
+  name!: string
+  alias!: string
+  coordinates!: Coordinates
+  isActive!: boolean
+
 }

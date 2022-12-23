@@ -1,39 +1,45 @@
 package com.ei10391048.project.modelo;
 
-import javax.persistence.*;
 
-@Entity
+import java.util.Objects;
+
 public class Location {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id", nullable = false)
-    private Long locationId;
+
+
+
     private String name;
-
-    @OneToOne
+    private String alias;
+    private boolean isActive=true;
+    private ApiFacade apiManager;
     private Coordinates coordinates;
-    public Location(String name) {
-        this.name = name;
-    }
-
-    public Location(Coordinates coordinates) {
-        this.coordinates=coordinates;
-    }
 
     public Location() {
 
     }
-    public Location(double lat, double lon) {
-        this.coordinates = new Coordinates(lat,lon);
 
+    public Location(String name, double lat, double lon) {
+        this.name = name;
+        this.alias = name;
+        this.coordinates = new Coordinates(lat,lon);
     }
 
     public String getName() {
         return name;
     }
 
+    public String getAlias() { return alias; }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     public void setName(String name) {
         this.name = name;
+        this.alias = name;
     }
 
     public Coordinates getCoordinates() {
@@ -47,9 +53,31 @@ public class Location {
     @Override
     public String toString() {
         return "Location{" +
-                "locationId=" + locationId +
-                ", name='" + name + '\'' +
+                ", name='" + name +
+                ", alias='"+ alias +
                 ", coordinates=" + coordinates +
+                ", isActive="+ isActive+
                 '}';
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return isActive == location.isActive && Objects.equals(name, location.name) && Objects.equals(alias, location.alias) && Objects.equals(coordinates, location.coordinates);
+    }
+
+
+    public ApiFacade getApiManager() {
+        return apiManager;
+    }
+
+    public void setApiManager(APIManager apiManager) {
+        this.apiManager = apiManager;
     }
 }

@@ -13,39 +13,59 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatOptionModule} from "@angular/material/core";
 import {AppRoutingModule} from "./app-routing.module";
-import {RouterOutlet, Routes} from "@angular/router";
+import {RouterModule, RouterOutlet, Routes} from "@angular/router";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
-import {ConfirmationInputService} from "./location-form/confirmation-input.service";
 
+import Swal from "sweetalert2"
 
 import { TopBarComponent } from './top-bar/top-bar.component';
+import {MatMenuModule} from "@angular/material/menu";
+import { MatSelectModule } from '@angular/material/select';
+import { FilterComponent } from './filter/filter.component';
+import {InformationService} from "./Infomation/information.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+import { LocationListComponent } from './location-list/location-list.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { LocationEventsComponent } from './location-events/location-events.component';
 //import { LocationFromComponent } from './location-from/location-from.component';
 
-
+const routes: Routes=[];
 @NgModule({
   declarations: [
     AppComponent,
     LocationFormComponent,
     TopBarComponent,
+    FilterComponent,
+    LocationListComponent,
+    LocationEventsComponent
   ],
-  imports: [
-    FormsModule,
-    HttpClientModule,
-    BrowserModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatGridListModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
-    MatOptionModule,
-    AppRoutingModule
-  ],
+    imports: [
+      BrowserAnimationsModule,
+      FormsModule,
+      HttpClientModule,
+      BrowserModule,
+      MatToolbarModule,
+      MatIconModule,
+      MatButtonModule,
+      MatGridListModule,
+      MatListModule,
+      MatFormFieldModule,
+      MatAutocompleteModule,
+      ReactiveFormsModule,
+      MatOptionModule,
+      AppRoutingModule,
+      MatSelectModule,
+      MatMenuModule,
+      MatSlideToggleModule,
+      ReactiveFormsModule
+    ],
   providers: [FindingByNameService,
-              ConfirmationInputService],
+              InformationService],
+  exports:[
+    RouterModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

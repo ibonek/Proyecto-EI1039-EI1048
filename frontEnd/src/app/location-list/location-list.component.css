@@ -1,0 +1,88 @@
+h1{
+  color: white;
+}
+
+.listBox{
+  background: #c2185b;
+  width: 80%;
+  height: fit-content;
+  margin: 3rem auto;
+  border-radius: 2px;
+  min-width: fit-content;
+}
+
+.inBox{
+  text-align: center;
+  padding: 1rem 3rem 2rem;
+}
+
+.rowList{
+  font-size: 20px;
+  line-height: 2rem;
+  list-style: none;
+  margin:0 0 0.6rem 0;
+  display: flex;
+  color: white;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.information{
+  background: white;
+  color: #303030;
+  font-weight: bold;
+  text-align: left;
+  border-radius: 2px;
+  padding: 0.2rem 1rem ;
+  box-shadow: 0.1rem 0.1rem 0 #303030;
+  width: 20rem;
+}
+
+.inputs{
+  display: flex;
+  align-items: center;
+}
+.alias{
+  font-weight: bold;
+  text-align: center;
+  border-radius: 2px;
+  min-width: 15.7rem;
+  padding: 0.2rem 1rem ;
+  display: flex;
+  justify-content: space-between;
+}
+.alias input{
+  font-size:medium;
+  padding: 0.3rem 0.4rem;
+  border: none;
+  box-shadow: 0.1rem 0.1rem 0 #303030;
+  width: 10rem;
+  border-radius: 2px;
+}
+
+.buttonList{
+  padding: 0.3rem 0.4rem;
+}
+
+
+/deep/ .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background: rgba(255, 255, 255, 0.33);
+}
+/deep/ .mat-slide-toggle-bar{
+  background: rgba(255, 255, 255, 0.33);
+}
+/deep/ .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+background: white ;
+}
+/deep/  .mat-slide-toggle-thumb{
+  background: white ;
+}
+.active{
+
+}
+.inactive{
+  opacity: 50%;
+  border-radius: 2px;
+}
+
+

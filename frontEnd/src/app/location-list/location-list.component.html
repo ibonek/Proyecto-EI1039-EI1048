@@ -1,0 +1,24 @@
+<div class="listBox">
+  <div class="inBox">
+    <h1>Active Location</h1>
+    <li *ngFor="let location of locations; let i = index" [ngClass]="location.isActive?'rowList':'rowList inactive'">
+      <div class="information" [textContent]="location.alias +' ( '+location.name+' )' "></div>
+      <div class="information" [textContent]="'Coordinates ( '+location.coordinates.lat+ ', '+location.coordinates.lon+' )' "></div>
+      <div class="inputs">
+        <form class="alias" [formGroup]="froms" (ngSubmit)="onSubmit()">
+          <div formArrayName="aliases">
+            <div *ngFor="let alias of aliases.controls; let j=index">
+              <div *ngIf="i==j">
+                <input type="text" placeholder="Change the alias" [formControlName]="i">
+                <button class="buttonWhite buttonList" type="submit" (click)="setPos(i)" >Change</button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <mat-slide-toggle [(ngModel)]="location.isActive" (click)="changeActiveState(location)"></mat-slide-toggle>
+        <button mat-icon-button><mat-icon >delete_forever</mat-icon></button>
+      </div>
+    </li>
+  </div>
+</div>
+

@@ -1,9 +1,12 @@
 package com.ei10391048.project.controlador;
 
+import com.ei10391048.project.modelo.Location;
+import com.ei10391048.project.modelo.LocationManager;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 
 import java.io.IOException;
 import java.net.URI;
@@ -43,11 +46,17 @@ public class InputValidator {
 
 
     public static double transformCoords(String coord){
+        coord = coord.trim();
+        coord = coord.toUpperCase();
         int multiplicador = 1;
         if (coord.toUpperCase().contains("W") ||  coord.toUpperCase().contains("S") ||  coord.toUpperCase().contains("O")) {
             multiplicador=-1;
         }
-        coord=coord.substring(0,coord.length()-1);
+        if (coord.charAt(0) == 'W' || coord.charAt(0) == 'E' || coord.charAt(0) == 'O' || coord.charAt(0) == 'N' || coord.charAt(0) == 'S')
+            coord = coord.substring(1);
+        else{
+            coord=coord.substring(0,coord.length()-1);
+        }
         double grados = Double.parseDouble(coord.substring(0,coord.indexOf("º")));
         double minutos = Double.parseDouble(coord.substring(coord.indexOf("º")+1,coord.indexOf("'")))/60;
         double segundos = Double.parseDouble(coord.substring(coord.indexOf("'")+1,coord.length()-1))/3600;
@@ -56,17 +65,26 @@ public class InputValidator {
 
 
 
-    public static boolean isCoordinates(String input){
+    public static boolean isCoordinates(String input) {
 
         String[] array = input.split(",");
-        if (array.length == 2 ){
+        if (array.length == 2) {
             return checkLatLonCorrect(array);
         }
         array = input.split(" ");
-        if (array.length == 2 ){
-            return checkLatLonCorrect(array);
+        if (array.length == 2) {
+
+            try {
+                Double.parseDouble(String.valueOf(array[0].charAt(1)));
+                Double.parseDouble(String.valueOf(array[1].charAt(1)));
+                return checkLatLonCorrect(array);
+            } catch (Exception ex) {
+                return false;
+            }
+
         }
         return false;
+
     }
 
     private static boolean checkLatLonCorrect(String[] array){
@@ -82,6 +100,7 @@ public class InputValidator {
 
             return true;
         } catch (Exception ex){
+
             return false;
         }
     }

@@ -4,7 +4,7 @@ import com.ei10391048.project.exception.IncorrectLocationException;
 import com.github.prominence.openweathermap.api.OpenWeatherMapClient;
 
 public interface SearchInterface {
-    final String apiKey = "4d8fb5b93d4af21d66a2948710284366";
+    final String apiKey = "96a01f139118d49f85a54068a7321e3d";
 
     public Location search()  throws IncorrectLocationException;
 }
