@@ -4,6 +4,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+[![Workflow][maven-shield]][maven-url]
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -137,9 +138,6 @@ David del Río López -
 
 Carlos Feliu Usó    - 
 
-Project Link: [https://github.com/ibonek/Proyecto-EI1039-EI1048](https://github.com/ibonek/Proyecto-EI1039-EI1048)
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- ACKNOWLEDGEMENTS -->
@@ -170,3 +168,5 @@ Project Link: [https://github.com/ibonek/Proyecto-EI1039-EI1048](https://github.
 [Angular-url]: https://angular.io/
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
+[maven-shield]: https://img.shields.io/github/workflow/status/ibonek/Proyecto-EI1039-EI1048/Java%20CI%20with%20Maven?&style=for-the-badge
+[maven-url]: https://github.com/ibonek/Proyecto-EI1039-EI1048/actions/workflows/maven.yml
