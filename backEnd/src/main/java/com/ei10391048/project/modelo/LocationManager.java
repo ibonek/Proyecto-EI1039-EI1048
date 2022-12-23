@@ -36,13 +36,12 @@ public class LocationManager {
         location.setApiManager(new APIManager());
         locations.add(location);
         crudFireBase.addLocation(location);
-
-
     }
 
-        public List<Location> getLocations () {
-            return locations;
-        }
+    public List<Location> getLocations () {
+        return locations;
+    }
+
 
         public Location getLocation(String name){
             for(Location loc : locations){
@@ -57,39 +56,55 @@ public class LocationManager {
             return locations.size();
         }
 
-        public LocationApiInterface getLocationApi () {
-            return locationApi;
-        }
+    public int getNumberOfLocations () {
+        return locations.size();
+    }
 
-        public List<String> getLocationsName () {
-            List<String> aux = new LinkedList<>();
-            for (Location location : locations) {
+
+    public LocationApiInterface getLocationApi () {
+        return locationApi;
+    }
+
+    public List<String> getLocationsName () {
+        List<String> aux = new LinkedList<>();
+        for (Location location : locations) {
+            aux.add(location.getName());
+        }
+        return aux;
+    }
+
+    public void activateLocation(String name) throws AlreadyActiveLocation {
+        for (Location location: locations) {
+            if (location.getName().equals(name)){
+                if (location.getIsActive()) {
+                    throw new AlreadyActiveLocation();
+                }
+                location.setActive(true);
+            }
+        }
+    }
+
+    public List<String> getActiveLocationsName () {
+        List<String> aux = new LinkedList<>();
+        for (Location location : locations) {
+            if (location.getIsActive()) {
                 aux.add(location.getName());
             }
-            return aux;
         }
+        return aux;
+    }
 
-        public List<String> getActiveLocationsName () {
-            List<String> aux = new LinkedList<>();
-            for (Location location : locations) {
-                if (location.getIsActive()) {
-                    aux.add(location.getName());
-                }
-            }
-            return aux;
-        }
+    public void setLocationApi(LocationApiInterface locationApi){
+        this.locationApi = locationApi;
+    }
 
-        public void setLocationApi(LocationApiInterface locationApi){
-            this.locationApi = locationApi;
-        }
+    public void clearLocations() {
+        this.locations.clear();
+    }
 
-        public void clearLocations() {
-            this.locations.clear();
-        }
-
-        public void setLocations(List < Location > locations) {
-            this.locations = locations;
-        }
+    public void setLocations(List < Location > locations) {
+        this.locations = locations;
+    }
 
     public void setCrudFireBase(CRUDFireBase crudFireBase) {
         this.crudFireBase = crudFireBase;

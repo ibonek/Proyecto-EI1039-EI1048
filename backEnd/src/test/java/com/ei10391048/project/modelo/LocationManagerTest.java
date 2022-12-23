@@ -56,8 +56,42 @@ class LocationManagerTest {
     @Test
     void getLocationsNameInvalidCase() {
         LocationManager manager = LocationManager.getInstance();
-        manager.setLocations(new LinkedList<Location>());
+        manager.setLocations(new LinkedList<>());
         assertEquals(manager.getLocations(), new LinkedList<Location>());
+    }
+
+    @Test
+    void activateLocationValidCase() throws IncorrectLocationException, NotSavedException, AlreadyActiveLocation {
+        LocationManager manager = LocationManager.getInstance();
+        GeoCodService geoCodService = new GeoCodService();
+        geoCodService.setSearch(new ByName("Castellón"));
+        manager.setLocationApi(geoCodService);
+        manager.addLocation();
+        geoCodService.setSearch(new ByName("Madrid"));
+        manager.setLocationApi(geoCodService);
+        manager.addLocation();
+        manager.getLocations().get(1).setActive(false);
+        manager.activateLocation("Madrid");
+        assertTrue(manager.getLocations().get(1).getIsActive());
+    }
+
+    @Test
+    void activateLocationInvalidCase() throws IncorrectLocationException, NotSavedException, AlreadyActiveLocation {
+        LocationManager manager = LocationManager.getInstance();
+        GeoCodService geoCodService = new GeoCodService();
+        geoCodService.setSearch(new ByName("Castellón"));
+        manager.setLocationApi(geoCodService);
+        manager.addLocation();
+        geoCodService.setSearch(new ByName("Madrid"));
+        manager.setLocationApi(geoCodService);
+        manager.addLocation();
+        manager.getLocations().get(1).setActive(false);
+        try {
+            manager.activateLocation("Castellon");
+            fail();
+        } catch (AlreadyActiveLocation ex){
+            assertTrue(true);
+        }
     }
 
     @ParameterizedTest
