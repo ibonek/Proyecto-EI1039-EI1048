@@ -34,6 +34,8 @@ public class APIManager implements ApiFacade{
             List<APIInformation> info = api.generateInfo(locationName);
             if (info != null)
                 apiInformation.add(info);
+            else
+                apiInformation.add(new LinkedList<>());
         }
 
     }
@@ -50,7 +52,6 @@ public class APIManager implements ApiFacade{
 
     @Override
     public  List<APIInformation> getNewsInformation() {
-
         return apiInformation.get(APIsNames.NEWS.getOrder());
 
     }

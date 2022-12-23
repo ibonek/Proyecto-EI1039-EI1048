@@ -6,6 +6,7 @@ import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.modelo.information.APIInformation;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -25,6 +26,14 @@ public class LocationManager {
         this.crudFireBase = new CRUDFireBase();
     }
 
+    public List<Location> getActiveLocations(){
+        List<Location> activeList = new LinkedList<>();
+        for (Location location: this.getLocations()){
+            if (location.getIsActive())
+                activeList.add(location);
+        }
+        return activeList;
+    }
     public static LocationManager getInstance() {
         if (locationManager == null) {
             locationManager = new LocationManager();
@@ -121,6 +130,22 @@ public class LocationManager {
         Location loc;
         loc = getLocation(name);
         loc.setAlias(s);
+    }
+
+    public List<List<List<APIInformation>>> getAllActivatedInfo(){
+        List<List<List<APIInformation>>> list = new LinkedList<>();
+        for (Location location: getActiveLocations()){
+            List<List<APIInformation>> listAux = new LinkedList<>();
+            ApiFacade manager = location.getApiManager();
+            manager.generateInfo(location.getName());
+
+            listAux.add(manager.getWeatherInformation());
+            listAux.add(manager.getEventsInformation());
+            listAux.add(manager.getNewsInformation());
+            list.add(listAux);
+
+        }
+        return list;
     }
 }
 

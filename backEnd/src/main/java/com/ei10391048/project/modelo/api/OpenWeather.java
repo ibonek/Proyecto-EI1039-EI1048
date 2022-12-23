@@ -19,6 +19,7 @@ public class OpenWeather extends API {
     public OpenWeather(){
         apiKey = "96a01f139118d49f85a54068a7321e3d";
         openWeatherMapClient = new OpenWeatherMapClient(apiKey);
+        openWeatherMapClient.setReadTimeout(2000);
         information  = super.information;
         information.add(new WeatherInformation());
         name = APIsNames.WEATHER.getApiName();
