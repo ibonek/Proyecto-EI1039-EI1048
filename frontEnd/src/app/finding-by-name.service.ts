@@ -28,7 +28,10 @@ export class FindingByNameService {
   }
 
   public changeActiveState(location: Location | undefined){
-    console.log(location)
     return this.http.post<string>("http://localhost:8080/changeActiveState",location?.name);
+  }
+
+  public changeAlias(alias: string) {
+    return this.http.post<string>("http://localhost:8080/changeAlias",alias);
   }
 }

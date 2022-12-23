@@ -12,15 +12,22 @@ import {Location} from "../location";
 export class LocationListComponent implements OnInit {
 
   locations!: Location[]
+  alias!: string
 
   constructor( private route: ActivatedRoute,
                private router: Router,
-               private findingByNameService: FindingByNameService) { }
+               private findingByNameService: FindingByNameService) {
+    this.alias=""
+  }
 
   ngOnInit(){
     this.findingByNameService.getActiveLocationList().subscribe(data => {
       this.locations=data;
     });
+  }
+
+  onSubmit(){
+    this.findingByNameService.changeAlias(this.alias).subscribe( data =>{})
   }
 
   changeActiveState(location: Location | undefined) {
