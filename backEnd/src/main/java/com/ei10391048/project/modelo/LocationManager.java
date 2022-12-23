@@ -43,9 +43,21 @@ public class LocationManager {
         return locations;
     }
 
+
+        public Location getLocation(String name){
+            for(Location loc : locations){
+                if (loc.getName().equals(name)){
+                   return loc;
+                }
+            }
+        return null;
+        }
+
+
     public int getNumberOfLocations () {
         return locations.size();
     }
+
 
     public LocationApiInterface getLocationApi () {
         return locationApi;
@@ -99,6 +111,11 @@ public class LocationManager {
 
     public void setCrudFireBase(CRUDFireBase crudFireBase) {
         this.crudFireBase = crudFireBase;
+    }
+
+    public void changeActiveState(String location) {
+        Location loc = getLocation(location);
+        loc.setActive(!loc.getIsActive());
     }
 }
 
