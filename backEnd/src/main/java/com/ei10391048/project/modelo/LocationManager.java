@@ -82,6 +82,14 @@ public class LocationManager {
         return aux;
     }
 
+    public List<String> getLocationsAlias() {
+        List<String> aux = new ArrayList<>();
+        for (Location location : locations) {
+            aux.add(location.getAlias() );
+        }
+        return aux;
+    }
+
     public void setLocationApi(LocationApiInterface locationApi){
         this.locationApi = locationApi;
     }
@@ -111,8 +119,5 @@ public class LocationManager {
     public void setAlias(String name, String s) throws IncorectAliasException {
     }
 
-    public ArrayList<String> getLocationsAlias() {
-        return null;
-    }
 }
 

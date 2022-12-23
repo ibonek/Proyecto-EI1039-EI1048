@@ -8,19 +8,18 @@ public class Location {
 
 
     private String name;
+    private String alias;
     private boolean isActive=true;
-
-
     private ApiFacade apiManager;
-
     private Coordinates coordinates;
 
     public Location() {
 
     }
 
-    public Location(String teruel, double lat, double lon) {
-        this.name = teruel;
+    public Location(String name, double lat, double lon) {
+        this.name = name;
+        this.alias = name;
         this.coordinates = new Coordinates(lat,lon);
     }
 
@@ -28,11 +27,11 @@ public class Location {
         return name;
     }
 
+    public String getAlias() { return alias; }
+
     public boolean getIsActive() {
         return isActive;
     }
-
-
 
     public void setActive(boolean active) {
         isActive = active;
@@ -40,6 +39,7 @@ public class Location {
 
     public void setName(String name) {
         this.name = name;
+        this.alias = name;
     }
 
     public Coordinates getCoordinates() {
@@ -53,7 +53,8 @@ public class Location {
     @Override
     public String toString() {
         return "Location{" +
-                ", name='" + name + '\'' +
+                ", name='" + name +
+                ", alias='"+ alias +
                 ", coordinates=" + coordinates +
                 ", isActive="+ isActive+
                 '}';
@@ -64,7 +65,7 @@ public class Location {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
-        return isActive == location.isActive && Objects.equals(name, location.name) && Objects.equals(coordinates, location.coordinates);
+        return isActive == location.isActive && Objects.equals(name, location.name) && Objects.equals(alias, location.alias) && Objects.equals(coordinates, location.coordinates);
     }
 
 
