@@ -80,10 +80,8 @@ public class FireBaseTest {
             crudFireBase.addLocation(location);
             crudFireBase.deleteLocations();
             assertEquals(0, crudFireBase.getLocations().size());
-        } catch (ExecutionException | InterruptedException exception){
+        } catch (ExecutionException | InterruptedException |NotSavedException | IncorrectLocationException e){
             fail();
-        } catch (NotSavedException | IncorrectLocationException e) {
-            throw new RuntimeException(e);
         }
     }
 
