@@ -7,6 +7,7 @@ import com.ei10391048.project.fireBase.CRUDFireBase;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -108,6 +109,10 @@ public class LocationManager {
     }
 
     public void setAlias(String name, String s) throws IncorectAliasException {
+    }
+
+    public ArrayList<String> getLocationsAlias() {
+        return null;
     }
 }
 

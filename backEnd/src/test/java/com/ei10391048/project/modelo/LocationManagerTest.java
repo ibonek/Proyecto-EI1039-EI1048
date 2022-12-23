@@ -175,6 +175,36 @@ class LocationManagerTest {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("getValidAlias")
+    void getLocationsAliasValidCase(ArrayList<String[]> input, ArrayList<String> sol) throws IncorrectLocationException, NotSavedException, IncorectAliasException {
+
+            LocationManager manager = LocationManager.getInstance();
+            for (String[] name : input) {
+                GeoCodService geoCodService = new GeoCodService();
+                geoCodService.setSearch(new ByName(name[0]));
+                manager.setLocationApi(geoCodService);
+                manager.addLocation();
+                manager.setAlias(name[0],name[1]);
+            }
+        assertEquals(manager.getLocationsAlias(),sol);
+    }
+
+    static Stream<Arguments> getValidAlias() {
+
+        ArrayList<String[]> input = new ArrayList<>();
+        addAll(input, new String[]{"Valencia", "casa"},new String[]{"Madrid", "abu"},new String[]{"Beijing", ""});
+        ArrayList<String[]> input2 = new ArrayList<>();
+        addAll(input2, new String[]{"Montevideo", "casa"},new String[]{"Castellon", "abu"},new String[]{"London", ""});
+        ArrayList<String> sol = new ArrayList<>();
+        addAll(sol, "casa","abu","Beijing");
+        ArrayList<String> sol2 = new ArrayList<>();
+        addAll(sol, "casa", "abu","London");
+        return Stream.of(
+                Arguments.of(input, sol),
+                Arguments.of(input2, sol2)
+        );
+    }
 
     @ParameterizedTest
     @MethodSource("getInvalidAlias")
