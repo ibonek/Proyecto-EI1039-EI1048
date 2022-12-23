@@ -44,6 +44,15 @@ public class LocationManager {
             return locations;
         }
 
+        public Location getLocation(String name){
+            for(Location loc : locations){
+                if (loc.getName().equals(name)){
+                   return loc;
+                }
+            }
+        return null;
+        }
+
         public int getNumberOfLocations () {
             return locations.size();
         }
@@ -86,13 +95,9 @@ public class LocationManager {
         this.crudFireBase = crudFireBase;
     }
 
-    public void changeActiveEstate(Location location) {
-        for(Location loc : locations){
-            if (loc.getName().equals(location.getName())){
-                loc.setActive(location.getIsActive());
-                System.out.println(location.getName()+"   "+location.getIsActive());
-            }
-        }
+    public void changeActiveState(String location) {
+        Location loc = getLocation(location);
+        loc.setActive(!loc.getIsActive());
     }
 }
 

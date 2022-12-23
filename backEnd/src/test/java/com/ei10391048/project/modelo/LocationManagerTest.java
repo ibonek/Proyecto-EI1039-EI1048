@@ -112,4 +112,6 @@ class LocationManagerTest {
                 Arguments.of(input2)
         );
     }
+
+
 }
