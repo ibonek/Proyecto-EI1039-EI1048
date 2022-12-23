@@ -113,5 +113,30 @@ class LocationManagerTest {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("getInactiveLocationValidCase")
+    void getInactiveLocationValidCase(ArrayList<String> input) throws IncorrectLocationException, AlreadyActiveLocation, NotSavedException {
+        LocationManager manager = LocationManager.getInstance();
+        GeoCodService geoCodService = new GeoCodService();
+        for (String name : input) {
+            geoCodService.setSearch(new ByName(name));
+            manager.setLocationApi(geoCodService);
+            manager.addLocation();
+            manager.changeActiveState(name);
+            assertNotEquals(manager.getLocation(name).getIsActive(), true);
+        }
 
+    }
+
+    static Stream<Arguments> getInactiveLocationValidCase() {
+
+        ArrayList<String> input = new ArrayList<>();
+        addAll(input, "Valencia","Madrid","Beijing");
+        ArrayList<String> input2 = new ArrayList<>();
+        addAll(input2, "Montevideo","Castellon","London");
+        return Stream.of(
+                Arguments.of(input),
+                Arguments.of(input2)
+        );
+    }
 }
