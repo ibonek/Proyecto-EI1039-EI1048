@@ -239,12 +239,18 @@ class LocationManagerTest {
 
     @Test
     void deleteLocationValidCase(){
-        LocationManager manager = LocationManager.getInstance();
         try {
+            LocationManager manager = LocationManager.getInstance();
+            GeoCodService geoCodService = new GeoCodService();
+            geoCodService.setSearch(new ByName("Valencia"));
+            manager.setLocationApi(geoCodService);
+            manager.addLocation();
             manager.deleteLocation("Valencia");
             assertTrue(true);
         } catch (IncorrectLocationException e) {
             fail();
+        } catch (NotSavedException e) {
+            throw new RuntimeException(e);
         }
     }
 
