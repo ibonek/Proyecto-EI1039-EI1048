@@ -1,4 +1,4 @@
 export class Coordinates {
-  lat!: String ;
-  lon!: String ;
+  lat!: string ;
+  lon!: string ;
 }

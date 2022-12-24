@@ -50,7 +50,7 @@ public class LocationController {
     }
 
     @GetMapping("/giveLocations")
-    public List<Location> getActiveLocationList() {
+    public List<Location> getLocationList() {
         LocationManager manager = LocationManager.getInstance();
         return manager.getLocations();
     }

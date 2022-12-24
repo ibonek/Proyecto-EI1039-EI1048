@@ -6,24 +6,27 @@ import {Location} from "./location";
 @Injectable()
 export class FindingByNameService {
 
-  private url: string;
   constructor(private http: HttpClient) {
-    this.url  = "http://localhost:8080/addLocation";
   }
 
   public save(name: string | undefined){
-    return this.http.post<string>(this.url,name);
+    return this.http.post<string>("http://localhost:8080/addLocation",name);
   }
 
   public giveConfirmation(){
-    return this.http.get<boolean>(this.url);
+    return this.http.get<boolean>("http://localhost:8080/addLocation");
+  }
+
+  public giveRepeatedConfirmation(){
+    return this.http.get<boolean>("http://localhost:8080/repeatedLocation");
+
   }
 
   public giveCityList(){
     return this.http.get<string[]>("http://localhost:8080/giveAutocompleteLocations");
   }
 
-  public getActiveLocationList(){
+  public getLocationList(){
     return this.http.get<Location[]>("http://localhost:8080/giveLocations");
   }
 
