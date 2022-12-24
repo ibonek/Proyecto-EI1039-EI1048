@@ -24,8 +24,8 @@ export class InformationService {
     return this.http.get<APIInformation[][][]>(this.infoUrl);
 
   }
-  public giveLocationsNameList(){
-    return this.http.get<string[]>("http://localhost:8080/locationsNames");
+  public giveActiveLocationsNameList(){
+    return this.http.get<string[]>("http://localhost:8080/activeLocationsNames");
   }
 
   public setAppComponent(appComponent: LocationEventsComponent){

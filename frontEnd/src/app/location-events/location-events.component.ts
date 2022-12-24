@@ -31,11 +31,6 @@ export class LocationEventsComponent implements OnInit {
         this.info = data;
         this.completeInfo = data;
       });
-    } else {
-      this.informationService.findAll().subscribe(data => {
-        // @ts-ignore
-        this.info = [data[this.informationService.filterSelected]]
-      });
     }
   }
 

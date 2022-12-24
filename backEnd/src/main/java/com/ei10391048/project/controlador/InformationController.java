@@ -18,34 +18,20 @@ public class InformationController {
 
     @GetMapping("/apiInfo")
     public  List<List<List<APIInformation>>> getAPIsInfo() {
-
-        List<List<List<APIInformation>>> list = new LinkedList<>();
         LocationManager locationManager = LocationManager.getInstance();
 
-        for (Location location: locationManager.getLocations()){
-            List<List<APIInformation>> listAux = new LinkedList<>();
-            ApiFacade manager = location.getApiManager();
-            manager.generateInfo(location.getName());
-
-            listAux.add(manager.getWeatherInformation());
-            listAux.add( manager.getEventsInformation());
-            listAux.add(manager.getNewsInformation());
-            list.add(listAux);
-
-        }
-        return list;
-
+        return locationManager.getAllActivatedInfo();
         }
 
-    @GetMapping("/locationsNames")
+    @GetMapping("/activeLocationsNames")
     public  List<String> getLocationsNames() {
 
         List<String> list = new LinkedList<>();
         LocationManager locationManager = LocationManager.getInstance();
 
         list.add("All");
-        for (Location location: locationManager.getLocations()){
-            list.add(location.getName());
+        for (Location location: locationManager.getActiveLocations()){
+            list.add(location.getAlias());
         }
         return list;
 

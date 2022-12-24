@@ -16,7 +16,7 @@ public class ByName implements  SearchInterface{
 
         this.name = name;
         openWeatherMapClient = new OpenWeatherMapClient(apiKey);
-        openWeatherMapClient.setReadTimeout(1500);
+        openWeatherMapClient.setReadTimeout(2000);
 
     }
 
