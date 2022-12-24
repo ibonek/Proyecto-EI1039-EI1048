@@ -8,13 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.testng.Assert;
 
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.testng.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.stream.Stream;
 
@@ -52,7 +49,7 @@ public class FireBaseTest {
         try {
             crudFireBase.addLocation(location);
             Location location2 = crudFireBase.getLocation(location);
-            Assert.assertEquals(location, location2);
+            assertEquals(location, location2);
         } catch (NotSavedException e) {
             throw new RuntimeException(e);
         }

@@ -55,12 +55,12 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>[6.11]</version>
             <scope>test</scope>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>com.github.prominence</groupId>
             <artifactId>openweathermap-api</artifactId>
