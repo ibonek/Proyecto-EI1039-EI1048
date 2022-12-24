@@ -75,4 +75,14 @@ public class LocationController {
             throw new IncorectAliasException();
         }
     }
+
+    @PostMapping("/deleteLocation")
+    public void deleteLocation(@RequestBody String location) throws IncorrectLocationException {
+        LocationManager manager = LocationManager.getInstance();
+        try {
+            manager.deleteLocation(location);
+        } catch (IncorrectLocationException e) {
+            throw new IncorrectLocationException();
+        }
+    }
 }

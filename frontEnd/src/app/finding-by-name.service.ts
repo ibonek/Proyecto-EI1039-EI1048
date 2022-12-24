@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
 import {Location} from "./location";
 
 @Injectable()
@@ -33,5 +32,9 @@ export class FindingByNameService {
 
   public changeAlias(name: string, alias: string) {
     return this.http.post<string>("http://localhost:8080/changeAlias",name+'#'+alias);
+  }
+
+  public deleteLocation(name: string | undefined) {
+    return this.http.post<string>("http://localhost:8080/deleteLocation",name);
   }
 }
