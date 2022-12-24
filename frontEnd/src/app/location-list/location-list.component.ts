@@ -25,7 +25,7 @@ export class LocationListComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.findingByNameService.getActiveLocationList().subscribe(data => {
+    this.findingByNameService.getLocationList().subscribe(data => {
       this.locations=data;
       for(let i=0; i<this.locations.length; i++){
         this.aliases.push(this.fb.control(''));

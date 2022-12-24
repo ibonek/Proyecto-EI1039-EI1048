@@ -23,7 +23,7 @@ export class FindingByNameService {
     return this.http.get<string[]>("http://localhost:8080/giveAutocompleteLocations");
   }
 
-  public getActiveLocationList(){
+  public getLocationList(){
     return this.http.get<Location[]>("http://localhost:8080/giveLocations");
   }
 
