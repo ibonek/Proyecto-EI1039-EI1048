@@ -11,13 +11,10 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class CRUDFireBase {
-    private static Firestore db=null;
+    private static Firestore db;
 
     public CRUDFireBase() {
-        if (db==null) {
-            FireBaseConnection fireBaseConnection = new FireBaseConnection();
-            db = fireBaseConnection.initializeFireBase();
-        }
+        db = FireBaseConnection.getInstance();
     }
 
     public void addLocation(Location location) throws NotSavedException {
