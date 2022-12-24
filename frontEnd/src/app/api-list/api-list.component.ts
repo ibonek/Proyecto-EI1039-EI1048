@@ -21,7 +21,8 @@ export class ApiListComponent implements OnInit {
 
   ngOnInit(): void {
     this.findingByNameService.giveAvailableApis().subscribe(data => {
-      this.apis=data;}
+      this.apis=data;
+    }
     );
   }
 

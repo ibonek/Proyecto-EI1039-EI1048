@@ -62,4 +62,23 @@ public abstract class API {
 
     abstract void insertBodyData();
 
+    public String getName() {
+        return name;
+    }
+
+    public List<APIInformation> getInformation() {
+        return information;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }
