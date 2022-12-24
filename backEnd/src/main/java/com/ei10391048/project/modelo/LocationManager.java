@@ -6,10 +6,13 @@ import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.modelo.api.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static java.util.Collections.addAll;
 
 public class LocationManager {
     private List<Location> locations;
@@ -18,11 +21,19 @@ public class LocationManager {
     private static LocationManager locationManager;
 
     private LocationApiInterface locationApi;
+    private List<API> apiList;
 
     private LocationManager() {
+
         this.locations = new LinkedList<>();
         this.locationApi = new GeoCodService();
         this.crudFireBase = new CRUDFireBase();
+        this.apiList = new LinkedList<>();
+
+        apiList.add(APIsNames.WEATHER.getOrder(),new OpenWeather());
+        apiList.add(APIsNames.EVENTS.getOrder(),new TicketMaster());
+        apiList.add(APIsNames.NEWS.getOrder(),new NewsAPI());
+
     }
 
     public static LocationManager getInstance() {
@@ -44,6 +55,7 @@ public class LocationManager {
         return locations;
     }
 
+    public List<API> getApis() { return null; }
 
     public Location getLocation(String name) throws IncorrectLocationException {
         for (Location loc : locations) {
@@ -58,7 +70,6 @@ public class LocationManager {
     public int getNumberOfLocations() {
         return locations.size();
     }
-
 
     public LocationApiInterface getLocationApi() {
         return locationApi;
@@ -122,5 +133,6 @@ public class LocationManager {
         loc = getLocation(name);
         loc.setAlias(s);
     }
+
 }
 
