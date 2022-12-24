@@ -111,9 +111,7 @@ public class LocationManager {
         this.locationApi = locationApi;
     }
 
-    public List<API> getApis() {
-        return apiList;
-    }
+    public List<API> getApis() { return apiList; }
 
     public void clearLocations() {
         this.locations.clear();

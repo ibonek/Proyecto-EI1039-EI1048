@@ -12,9 +12,9 @@ public abstract class API {
 
     protected String name;
 
-
     protected List<APIInformation> information= new LinkedList<>();;
     protected String apiKey=null;
+    protected boolean isActive=true;
 
 
     public List<APIInformation> generateInfo(String locationName)  {
