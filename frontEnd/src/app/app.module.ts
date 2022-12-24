@@ -29,6 +29,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { LocationListComponent } from './location-list/location-list.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { LocationEventsComponent } from './location-events/location-events.component';
+import { ApiListComponent } from './api-list/api-list.component';
 //import { LocationFromComponent } from './location-from/location-from.component';
 
 const routes: Routes=[];
@@ -39,7 +40,8 @@ const routes: Routes=[];
     TopBarComponent,
     FilterComponent,
     LocationListComponent,
-    LocationEventsComponent
+    LocationEventsComponent,
+    ApiListComponent
   ],
     imports: [
       BrowserAnimationsModule,

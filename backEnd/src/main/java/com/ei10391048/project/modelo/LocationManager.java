@@ -6,6 +6,7 @@ import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.modelo.api.*;
 import com.ei10391048.project.modelo.information.APIInformation;
 
 import java.util.ArrayList;
@@ -19,11 +20,18 @@ public class LocationManager {
     private static LocationManager locationManager;
 
     private LocationApiInterface locationApi;
+    List<API> apiList;
 
     private LocationManager() {
         this.locations = new LinkedList<>();
         this.locationApi = new GeoCodService();
         this.crudFireBase = new CRUDFireBase();
+
+        this.apiList = new LinkedList<>();
+
+        apiList.add(APIsNames.WEATHER.getOrder(),new OpenWeather());
+        apiList.add(APIsNames.EVENTS.getOrder(),new TicketMaster());
+        apiList.add(APIsNames.NEWS.getOrder(),new NewsAPI());
     }
 
     public List<Location> getActiveLocations(){
@@ -103,6 +111,8 @@ public class LocationManager {
         this.locationApi = locationApi;
     }
 
+    public List<API> getApis() { return apiList; }
+
     public void clearLocations() {
         this.locations.clear();
     }
@@ -153,5 +163,6 @@ public class LocationManager {
         if (!locations.remove(location))
             throw new IncorrectLocationException();
     }
+
 }
 

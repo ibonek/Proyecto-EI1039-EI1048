@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Location} from "./location";
+import {Api} from "./api";
 
 @Injectable()
 export class FindingByNameService {
@@ -39,5 +40,13 @@ export class FindingByNameService {
 
   public deleteLocation(name: string | undefined) {
     return this.http.post<string>("http://localhost:8080/deleteLocation",name);
+  }
+
+  public giveAvailableApis(){
+    return this.http.get<Api[]>("http://localhost:8080/giveAvailableApis");
+  }
+
+  public changeActiveStateApi(api: Api | undefined){
+    return this.http.post<string>("http://localhost:8080/changeActiveState",api?.name);
   }
 }

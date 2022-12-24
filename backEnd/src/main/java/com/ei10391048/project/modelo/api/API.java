@@ -12,9 +12,9 @@ public abstract class API {
 
     protected String name;
 
-
     protected List<APIInformation> information= new LinkedList<>();;
     protected String apiKey=null;
+    protected boolean isActive=true;
 
 
     public List<APIInformation> generateInfo(String locationName)  {
@@ -62,4 +62,23 @@ public abstract class API {
 
     abstract void insertBodyData();
 
+    public String getName() {
+        return name;
+    }
+
+    public List<APIInformation> getInformation() {
+        return information;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }
