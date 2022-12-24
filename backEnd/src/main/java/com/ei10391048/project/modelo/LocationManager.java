@@ -6,6 +6,7 @@ import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.information.APIInformation;
 
 import java.util.ArrayList;
@@ -103,6 +104,10 @@ public class LocationManager {
         this.locationApi = locationApi;
     }
 
+    public List<API> getApis() {
+        return null;
+    }
+
     public void clearLocations() {
         this.locations.clear();
     }
@@ -153,5 +158,6 @@ public class LocationManager {
         if (!locations.remove(location))
             throw new IncorrectLocationException();
     }
+
 }
 
