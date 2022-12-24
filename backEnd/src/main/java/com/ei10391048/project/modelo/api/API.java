@@ -18,8 +18,11 @@ public abstract class API {
 
 
     public List<APIInformation> generateInfo(String locationName)  {
-        return setInfoData(locationName);
-
+        if (!information.isEmpty()){
+            return information;
+        } else {
+            return setInfoData(locationName);
+        }
     }
     private List<APIInformation> setInfoData(String locationName) {
 

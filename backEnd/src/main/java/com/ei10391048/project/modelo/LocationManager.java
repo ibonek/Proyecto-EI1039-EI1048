@@ -132,7 +132,7 @@ public class LocationManager {
         loc.setAlias(s);
     }
 
-    public List<List<List<APIInformation>>> getAllActivatedInfo(){
+    public List<List<List<APIInformation>>> getAllActivatedInfo() throws IndexOutOfBoundsException{
         List<List<List<APIInformation>>> list = new LinkedList<>();
         for (Location location: getActiveLocations()){
             List<List<APIInformation>> listAux = new LinkedList<>();
