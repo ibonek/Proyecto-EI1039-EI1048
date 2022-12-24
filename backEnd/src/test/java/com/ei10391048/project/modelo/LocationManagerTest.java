@@ -276,7 +276,7 @@ class LocationManagerTest {
         assertEquals(apilist.size(), sol.length);
 
         for (int i = 0; i<apilist.size(); i++){
-            assertEquals(apilist.get(i), sol[i]);
+            assertEquals(apilist.get(i).getAPIName(), sol[i]);
         }
     }
 }

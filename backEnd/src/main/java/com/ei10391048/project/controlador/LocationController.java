@@ -2,6 +2,7 @@ package com.ei10391048.project.controlador;
 import com.ei10391048.project.exception.IncorectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.modelo.*;
+import com.ei10391048.project.modelo.api.API;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -84,5 +85,11 @@ public class LocationController {
         } catch (IncorrectLocationException e) {
             throw new IncorrectLocationException();
         }
+    }
+
+    @GetMapping("/giveAvailableApis")
+    public List<API> giveAvailableApis() {
+        LocationManager manager = LocationManager.getInstance();
+        return manager.getApis();
     }
 }
