@@ -9,13 +9,20 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class FireBaseConnection {
-    private Firestore db=null;
+    private static Firestore db;
 
     private boolean test = false;
 
-    public Firestore initializeFireBase(){
-        try {
+    static Firestore getInstance() {
+        if (db == null) {
+            db = initializeFireBase();
+        }
+        return db;
+    }
 
+    public static Firestore initializeFireBase(){
+        Firestore db;
+        try {
             String filePath = "src/main/java/com/ei10391048/project/fireBase/proyectoei1039-1048-firebase-adminsdk-k0u0g-61d7b914e4.json";
             if (!System.getProperty("user.dir").contains("backEnd")){
                 filePath= "backEnd/"+filePath;

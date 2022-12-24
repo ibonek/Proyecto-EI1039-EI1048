@@ -1,6 +1,5 @@
 package com.ei10391048.project.modelo;
 
-import com.ei10391048.project.exception.AlreadyActiveLocation;
 import com.ei10391048.project.exception.IncorectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
@@ -76,7 +75,7 @@ class LocationManagerTest {
     }
 
     @Test
-    void activateLocationInvalidCase() throws IncorrectLocationException, NotSavedException {
+    void activateLocationInvalidCase() throws NotSavedException {
         try {
             LocationManager manager = LocationManager.getInstance();
             GeoCodService geoCodService = new GeoCodService();
@@ -236,5 +235,33 @@ class LocationManagerTest {
                 Arguments.of( sol),
                 Arguments.of( sol2)
         );
+    }
+
+    @Test
+    void deleteLocationValidCase(){
+        try {
+            LocationManager manager = LocationManager.getInstance();
+            GeoCodService geoCodService = new GeoCodService();
+            geoCodService.setSearch(new ByName("Valencia"));
+            manager.setLocationApi(geoCodService);
+            manager.addLocation();
+            manager.deleteLocation("Valencia");
+            assertTrue(true);
+        } catch (IncorrectLocationException e) {
+            fail();
+        } catch (NotSavedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void deleteLocationInvalidCase(){
+        LocationManager manager = LocationManager.getInstance();
+        try {
+            manager.deleteLocation("Valencia");
+            fail();
+        } catch (IncorrectLocationException e) {
+            assertTrue(true);
+        }
     }
 }
