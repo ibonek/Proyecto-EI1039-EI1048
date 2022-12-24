@@ -3,7 +3,6 @@ package com.ei10391048.project.fireBase;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Location;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,15 +20,14 @@ import java.util.stream.Stream;
 
 public class FireBaseTest {
     private static CRUDFireBase crudFireBase;
-    private static Location location;
     @BeforeEach
     public void setUp() throws ExecutionException, InterruptedException {
-        location = new Location("Teruel", 40.345, -0.6667);
         crudFireBase = new CRUDFireBase();
         crudFireBase.deleteLocations();
     }
     @Test
     public void addLocationToBBDDValid(){
+        Location location = new Location("Teruel", 40.345, -0.6667);
         try {
             crudFireBase.addLocation(location);
             assertTrue(true);
@@ -50,6 +48,7 @@ public class FireBaseTest {
 
     @Test
     public void getLocationFromBBDDValid(){
+        Location location = new Location("Teruel", 40.345, -0.6667);
         try {
             crudFireBase.addLocation(location);
             Location location2 = crudFireBase.getLocation(location);
@@ -76,6 +75,7 @@ public class FireBaseTest {
 
     @Test
     public void deleteLocationsFromBBDDValid(){
+        Location location = new Location("Teruel", 40.345, -0.6667);
         try {
             crudFireBase.addLocation(location);
             crudFireBase.deleteLocations();
@@ -99,6 +99,7 @@ public class FireBaseTest {
 
     @Test
     public void getLocationsFromBBDDValid(){
+        Location location = new Location("Teruel", 40.345, -0.6667);
         try {
             crudFireBase.addLocation(location);
             assertEquals(1, crudFireBase.getLocations().size());
@@ -118,6 +119,7 @@ public class FireBaseTest {
 
     @Test
     public void activateLocationFromBBDDValid(){
+        Location location = new Location("Teruel", 40.345, -0.6667);
         try {
             location.setActive(false);
             crudFireBase.addLocation(location);
@@ -142,14 +144,13 @@ public class FireBaseTest {
     static Stream<Arguments> status(){
         return Stream.of(
                 Arguments.of((Object) null),
-                Arguments.of(location)
+                Arguments.of(new Location("Teruel", 40.345, -0.6667))
         );
     }
 
-    /*
-    Corregir este test, lo commiteo porque tengo que seguir avanzando, monica solucionalo
     @Test
     public void deactivateLocationFromBBDDValid(){
+        Location location = new Location("Teruel", 40.345, -0.6667);
         try {
             crudFireBase.addLocation(location);
             crudFireBase.changeStatus(location);
@@ -158,7 +159,7 @@ public class FireBaseTest {
             fail();
         }
     }
-*/
+
     @ParameterizedTest
     @MethodSource("status")
     public void deactivateLocationFromBBDDInvalid(Location status) {
@@ -169,9 +170,9 @@ public class FireBaseTest {
             assertTrue(true);
         }
     }
-
+/*
     @AfterAll
     public static void tearDown() throws ExecutionException, InterruptedException {
         crudFireBase.deleteLocations();
-    }
+    }*/
 }

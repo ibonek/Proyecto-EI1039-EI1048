@@ -147,5 +147,8 @@ public class LocationManager {
         }
         return list;
     }
+
+    public void deleteLocation(String valencia) throws IncorrectLocationException{
+    }
 }
 
