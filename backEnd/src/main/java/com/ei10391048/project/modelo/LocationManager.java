@@ -174,7 +174,7 @@ public class LocationManager {
         if (order < 0 || order >= apiList.size())
             throw new NonExistingAPIException();
         API api=apiList.get(order);
-        api.setActive(!api.getIsActive());
+        api.setActive(false);
     }
 
 }
