@@ -305,6 +305,25 @@ class LocationManagerTest {
         }
     }
 
+    @Test
+    public void changeApiStateTest() throws NotSavedException, IncorrectLocationException, NonExistingAPIException {
+        LocationManager locationManager = LocationManager.getInstance();
+        GeoCodService geoCodSrv = new GeoCodService();
+        String name = "Valencia";
+        geoCodSrv.setSearch(new ByName(name));
+        locationManager.setLocationApi(geoCodSrv);
+        locationManager.addLocation();
+        List<API> apiList = locationManager.getApis();
+        for (int i = 0; i<apiList.size();i++){
+            API api = apiList.get(i);
+            Location location = locationManager.getActiveLocations().get(0);
+            assertEquals(api.getIsActive(), location.getApiManager().getApiList().get(i).getIsActive());
+            locationManager.changeApiState(i);
+            assertEquals(api.getIsActive(), location.getApiManager().getApiList().get(i).getIsActive());
+            locationManager.changeApiState(i);
+        }
+    }
+
     /**
      * Test que comprueba la historia de usuario 22:  Como usuario quiero desactivar un servicio de información que haya dejado de interesar,
      * con el fin de evitar interfaces de usuario sobrecargadas.
