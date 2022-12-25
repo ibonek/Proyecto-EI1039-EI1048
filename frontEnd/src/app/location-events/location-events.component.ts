@@ -18,6 +18,7 @@ export class LocationEventsComponent implements OnInit {
   weatherInfo! : WeatherInformation
   newsInfo! : NewsInformation
   eventInfo! : EventInformation
+  mylocations !: string[]
 
   constructor(private informationService: InformationService,
               private route: ActivatedRoute,
@@ -30,9 +31,11 @@ export class LocationEventsComponent implements OnInit {
     if (this.informationService.filterSelected == undefined) {
 
       this.informationService.findAll().subscribe(data => {
-
         this.info = data;
         this.completeInfo = data;
+        this.informationService.giveActiveLocationsNameList().subscribe(data2 => {
+          this.mylocations = data2;
+        });
       });
     }
   }

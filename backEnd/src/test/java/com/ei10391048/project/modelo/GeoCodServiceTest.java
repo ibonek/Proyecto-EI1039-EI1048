@@ -63,6 +63,7 @@ public class GeoCodServiceTest {
          GeoCodService geoCodSrv = new GeoCodService();
          geoCodSrv.setSearch(new ByCoordinates(coordinates));
          LocationManager locations = LocationManager.getInstance();
+         locations.setLocationApi(geoCodSrv);
          int num = locations.getNumberOfLocations();
          locations.addLocation();
          assertEquals(locations.getNumberOfLocations(), num + 1);

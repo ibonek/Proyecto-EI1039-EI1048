@@ -28,6 +28,16 @@ public class APIManager implements ApiFacade{
     }
 
 
+    @Override
+    public List<APIInformation> getInformation(int order) {
+        APIsNames api = APIsNames.values()[order];
+        return switch (api) {
+            case WEATHER -> this.getWeatherInformation();
+            case EVENTS -> this.getEventsInformation();
+            case NEWS -> this.getNewsInformation();
+        };
+    }
+
     public void generateInfo(String locationName) {
         apiInformation = new LinkedList<>();
         for (API api: apiList){
@@ -40,17 +50,15 @@ public class APIManager implements ApiFacade{
 
     }
 
-    @Override
+
     public List<APIInformation> getWeatherInformation() {
         return apiInformation.get(APIsNames.WEATHER.getOrder());
     }
 
-    @Override
     public  List<APIInformation> getEventsInformation() {
         return apiInformation.get(APIsNames.EVENTS.getOrder());
     }
 
-    @Override
     public  List<APIInformation> getNewsInformation() {
         return apiInformation.get(APIsNames.NEWS.getOrder());
 

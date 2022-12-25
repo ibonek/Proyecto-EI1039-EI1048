@@ -51,9 +51,9 @@ public class APIManagerTest {
 
         for (int i=0;i<list.size();i++){
             Location location = manager.getActiveLocations().get(i);
-            assertEquals(location.getApiManager().getWeatherInformation(), list.get(i).get(APIsNames.WEATHER.getOrder()));
-            assertEquals(location.getApiManager().getNewsInformation(), list.get(i).get(APIsNames.NEWS.getOrder()));
-            assertEquals(location.getApiManager().getEventsInformation(), list.get(i).get(APIsNames.EVENTS.getOrder()));
+            assertEquals(location.getApiManager().getInformation(APIsNames.WEATHER.getOrder()), list.get(i).get(APIsNames.WEATHER.getOrder()));
+            assertEquals(location.getApiManager().getInformation(APIsNames.NEWS.getOrder()), list.get(i).get(APIsNames.NEWS.getOrder()));
+            assertEquals(location.getApiManager().getInformation(APIsNames.EVENTS.getOrder()), list.get(i).get(APIsNames.EVENTS.getOrder()));
 
         }
 
@@ -73,7 +73,7 @@ public class APIManagerTest {
         Location location = locationManager.getLocations().get(index);
         ApiFacade manager = location.getApiManager();
         manager.generateInfo(location.getName());
-        assertEquals(manager.getWeatherInformation().get(0).getLocationName(), locationManager.getLocations().get(index).getName());
+        assertEquals(manager.getInformation(APIsNames.WEATHER.getOrder()).get(0).getLocationName(), locationManager.getLocations().get(index).getName());
 
     }
 

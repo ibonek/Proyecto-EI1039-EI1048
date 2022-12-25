@@ -2,6 +2,7 @@ package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.NonExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.api.API;
 import org.junit.jupiter.api.BeforeEach;
@@ -279,4 +280,32 @@ class LocationManagerTest {
             assertEquals(apilist.get(i).getAPIName(), sol[i]);
         }
     }
+
+    /**
+     * Test que comprueba la historia de usuario 22:  Como usuario quiero desactivar un servicio de información que haya dejado de interesar,
+     * con el fin de evitar interfaces de usuario sobrecargadas.
+     *
+     */
+
+    @Test
+    public void deactivateAPIValidCase() throws NonExistingAPIException {
+        LocationManager locationManager = LocationManager.getInstance();
+        List<API> apiList = locationManager.getApis();
+        for (int i=0;i<apiList.size();i++){
+            locationManager.changeApiState(i);
+            assertFalse(apiList.get(i).getIsActive());
+        }
+    }
+
+    @Test
+    public void deactivateAPIInvalidCase(){
+        LocationManager locationManager = LocationManager.getInstance();
+        try{
+            locationManager.changeApiState(locationManager.getApis().size());
+            fail();
+        }catch(NonExistingAPIException ex){
+            assertTrue(true);
+        }
+    }
+
 }

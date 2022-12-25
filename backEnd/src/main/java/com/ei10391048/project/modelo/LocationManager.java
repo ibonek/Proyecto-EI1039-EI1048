@@ -2,6 +2,7 @@ package com.ei10391048.project.modelo;
 
 
 import com.ei10391048.project.exception.IncorectAliasException;
+import com.ei10391048.project.exception.NonExistingAPIException;
 import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
@@ -20,7 +21,7 @@ public class LocationManager {
     private static LocationManager locationManager;
 
     private LocationApiInterface locationApi;
-    List<API> apiList;
+    private List<API> apiList;
 
     private LocationManager() {
         this.locations = new LinkedList<>();
@@ -149,9 +150,14 @@ public class LocationManager {
             ApiFacade manager = location.getApiManager();
             manager.generateInfo(location.getName());
 
-            listAux.add(manager.getWeatherInformation());
-            listAux.add(manager.getEventsInformation());
-            listAux.add(manager.getNewsInformation());
+            for (int i=0;i<apiList.size();i++){
+                API api = apiList.get(i);
+                if (!api.getIsActive()){
+                    listAux.add(new LinkedList<>());
+                }else {
+                    listAux.add(manager.getInformation(i));
+                }
+            }
             list.add(listAux);
 
         }
@@ -162,6 +168,13 @@ public class LocationManager {
         Location location = getLocation(name);
         if (!locations.remove(location))
             throw new IncorrectLocationException();
+    }
+
+    public void changeApiState(int order) throws NonExistingAPIException {
+        if (order < 0 || order >= apiList.size())
+            throw new NonExistingAPIException();
+        API api=apiList.get(order);
+        api.setActive(false);
     }
 
 }

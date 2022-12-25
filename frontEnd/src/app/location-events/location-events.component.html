@@ -1,37 +1,41 @@
 <button class="buttonWhite" (click)="goApiList()"> List events subscriptions</button>
 
 <app-filter></app-filter>
-<div class="infoBody" *ngFor="let infoPakage of this.info">
-  <div class="backgroundMain"><h1>{{infoPakage[0][0].locationName}}</h1></div>
+<div class="infoBody" *ngFor="let infoPakage of this.info; let i=index">
+  <div class="backgroundMain"><h1>{{mylocations[i+1]}}</h1></div>
   <div class="timeBody">
-    <div class="backgroundMain"><h2>Weather</h2></div>
-    <div class="timeContent"> {{castWeatherInfo(infoPakage[0][0])}}
-      <div class="temperature">
-        <h1>{{this.weatherInfo.temperature}}ºC</h1>
-        <img src="{{this.weatherInfo.imageURL}}">
-      </div>
-      <div class="weatherData">
-        <div class="">
-          <h3>Humidity</h3>
-          <h3>{{this.weatherInfo.humidity}}</h3>
+    <div *ngIf="infoPakage[0].length != 0">
+      <div class="backgroundMain"><h2>Weather</h2></div>
+      <div class="timeContent"> {{castWeatherInfo(infoPakage[0][0])}}
+        <div class="temperature">
+          <h1>{{this.weatherInfo.temperature}}ºC</h1>
+          <img src="{{this.weatherInfo.imageURL}}">
         </div>
-        <div class="">
-          <h3>Weather State</h3>
-          <h3>{{this.weatherInfo.weatherState}}</h3>
-        </div>
-        <div class="">
-          <h3>Wind</h3>
-          <h3>{{this.weatherInfo.wind}}</h3>
-        </div>
-        <div class="">
-          <h3>Date</h3>
-          <h3>{{this.weatherInfo.date}}</h3>
+        <div class="weatherData">
+          <div class="">
+            <h3>Humidity</h3>
+            <h3>{{this.weatherInfo.humidity}}</h3>
+          </div>
+          <div class="">
+            <h3>Weather State</h3>
+            <h3>{{this.weatherInfo.weatherState}}</h3>
+          </div>
+          <div class="">
+            <h3>Wind</h3>
+            <h3>{{this.weatherInfo.wind}}</h3>
+          </div>
+          <div class="">
+            <h3>Date</h3>
+            <h3>{{this.weatherInfo.date}}</h3>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="extrasBody">
+    <div *ngIf="infoPakage[2].length != 0">
     <div class="newsBody" >
+
       <div class="backgroundMain"><h3>News</h3></div>
       <div class="new" *ngFor="let news of infoPakage[2]"> {{castNewsInfo(news)}}
         <div>
@@ -42,7 +46,11 @@
           <a href="{{this.newsInfo.newsURL}}">More info</a>
         </div>
       </div>
+      </div>
     </div>
+
+    <div *ngIf="infoPakage[1].length != 0">
+
     <div class="eventBody">
       <div class="backgroundMain"><h3>Events</h3></div>
       <div *ngFor="let event of infoPakage[1]"> {{castEventsInfo(event)}}
@@ -53,6 +61,9 @@
           <p>{{this.eventInfo.address}}</p>
         </div>
       </div>
+      </div>
     </div>
   </div>
+  <br>
 </div>
+

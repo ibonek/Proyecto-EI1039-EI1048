@@ -46,7 +46,11 @@ export class FindingByNameService {
     return this.http.get<Api[]>("http://localhost:8080/giveAvailableApis");
   }
 
-  public changeActiveStateApi(api: Api | undefined){
-    return this.http.post<string>("http://localhost:8080/changeActiveState",api?.name);
+  public changeActiveStateApi(order : number | undefined){
+    return this.http.post<string>("http://localhost:8080/changeActiveApiState",order);
+  }
+
+  public giveAPIConfirmation(){
+    return this.http.get<boolean>("http://localhost:8080/changeActiveApiState");
   }
 }
