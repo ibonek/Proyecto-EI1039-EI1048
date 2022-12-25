@@ -174,28 +174,6 @@ class LocationManagerTest {
         );
     }
 
-    @ParameterizedTest
-    @MethodSource("getInactiveLocationValidCase")
-    void getInactiveLocationValidCase(ArrayList<String> input) throws IncorrectLocationException, NotSavedException {
-        for (String name : input) {
-            manager.addLocation(name);
-            manager.getActivationManager().changeActiveState(name);
-            assertFalse(manager.getLocation(name).getIsActive());
-        }
-
-    }
-
-    static Stream<Arguments> getInactiveLocationValidCase() {
-
-        ArrayList<String> input = new ArrayList<>();
-        addAll(input, "Valencia","Madrid","Beijing");
-        ArrayList<String> input2 = new ArrayList<>();
-        addAll(input2, "Montevideo","Castellon","London");
-        return Stream.of(
-                Arguments.of(input),
-                Arguments.of(input2)
-        );
-    }
 
     @Test
     void deleteLocationValidCase(){

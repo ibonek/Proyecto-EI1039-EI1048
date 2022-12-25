@@ -14,27 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class InformationLocationManagerTest {
 
     LocationManagerFacade manager =  LocationManager.getInstance();
-    InformationLocationManagerFacade informationLocationManager = manager.getActivationManager();
+    InformationLocationManagerFacade informationLocationManager = InformationLocationManager.getInstance();
     @BeforeEach
     void setUp() throws NotSavedException, IncorrectLocationException {
+        manager.clearLocations();
         manager.addLocation("Castellón");
         manager.addLocation("Madrid");
-        manager.clearLocations();
-    }
-    @Test
-    void activateLocationValidCase() throws IncorrectLocationException{
-    informationLocationManager.changeActiveState(manager.getLocations().get(1).getAlias());
-    assertFalse(manager.getLocations().get(1).getIsActive());
-    }
-
-    @Test
-    void activateLocationInvalidCase(){
-        try {
-            informationLocationManager.changeActiveState("Castellonn");
-            fail();
-        } catch (IncorrectLocationException e){
-            assertTrue(true);
-        }
     }
 
     @Test
@@ -71,8 +56,9 @@ public class InformationLocationManagerTest {
             informationLocationManager.changeApiState(-1);
             fail();
         }catch(NonExistingAPIException ex){
-            for(API api:informationLocationManager.getApis()){
-                assertFalse(api.getIsActive());
+            for(int i=0;i<informationLocationManager.getApis().size();i++){
+                assertFalse(informationLocationManager.getApis().get(i).getIsActive());
+                informationLocationManager.changeApiState(i);
             }
         }
     }

@@ -7,9 +7,9 @@ import com.ei10391048.project.fireBase.CRUDFireBase;
 import java.util.List;
 
 public interface LocationManagerFacade {
-    void addLocation(String name) throws IncorrectLocationException, NotSavedException;
+    Location addLocation(String name) throws IncorrectLocationException, NotSavedException;
 
-    void addLocation(Coordinates coords) throws IncorrectLocationException, NotSavedException;
+    Location addLocation(Coordinates coords) throws IncorrectLocationException, NotSavedException;
 
     int getNumberOfLocations();
 
@@ -22,8 +22,6 @@ public interface LocationManagerFacade {
     List<String> getActiveLocationsName();
 
     Location getLocation(String name) throws IncorrectLocationException;
-
-    InformationLocationManagerFacade getActivationManager();
 
     void deleteLocation(String name) throws IncorrectLocationException;
 

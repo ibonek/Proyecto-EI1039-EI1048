@@ -24,12 +24,10 @@ public class LocationManager implements LocationManagerFacade{
         this.locations = new LinkedList<>();
         this.crudFireBase = new CRUDFireBase();
         this.locationApi = new GeoCodService();
+        InformationLocationManager.getInstance();
 
     }
 
-    public InformationLocationManagerFacade getActivationManager() {
-        return InformationLocationManager.getInstance();
-    }
 
     public List<Location> getActiveLocations(){
         List<Location> activeList = new LinkedList<>();
@@ -66,7 +64,7 @@ public class LocationManager implements LocationManagerFacade{
 
     public Location getLocation(String name) throws IncorrectLocationException {
         for (Location loc : locations) {
-            if (loc.getName().equals(name)) {
+            if (loc.getAlias().equals(name)) {
                 return loc;
             }
         }
@@ -79,32 +77,16 @@ public class LocationManager implements LocationManagerFacade{
     }
 
 
-
-    public List<String> getLocationsName() {
-        List<String> aux = new LinkedList<>();
-        for (Location location : locations) {
-            aux.add(location.getName());
-        }
-        return aux;
-    }
-
     public List<String> getActiveLocationsName() {
         List<String> aux = new LinkedList<>();
         for (Location location : locations) {
             if (location.getIsActive()) {
-                aux.add(location.getName());
+                aux.add(location.getAlias());
             }
         }
         return aux;
     }
 
-    public List<String> getLocationsAlias() {
-        List<String> aux = new ArrayList<>();
-        for (Location location : locations) {
-            aux.add(location.getAlias());
-        }
-        return aux;
-    }
 
     public void clearLocations() {
         this.locations.clear();
@@ -119,12 +101,6 @@ public class LocationManager implements LocationManagerFacade{
     }
 
 
-    public void setAlias(String name, String s) throws IncorrectAliasException, IncorrectLocationException {
-        if (s.isEmpty()) throw new IncorrectAliasException();
-        Location loc;
-        loc = getLocation(name);
-        loc.setAlias(s);
-    }
 
 
     public void deleteLocation(String name) throws IncorrectLocationException{
@@ -133,26 +109,47 @@ public class LocationManager implements LocationManagerFacade{
             throw new IncorrectLocationException();
     }
 
+    public LocationApiInterface generateApiInterface(String name){
+        LocationApiInterface geoCod = new GeoCodService();
+        geoCod.setSearch(new ByName(name));
 
+        return geoCod;
+    }
 
-    @Override
-    public void addLocation(String name) throws IncorrectLocationException, NotSavedException {
-        GeoCodService geoCodSrv = new GeoCodService();
-        geoCodSrv.setSearch(new ByName(name));
-        Location location = geoCodSrv.findLocation();
-        location.setApiManager(new APIManager());
-        locations.add(location);
-        crudFireBase.addLocation(location);
+    public LocationApiInterface generateApiInterface(Coordinates coordinates){
+        LocationApiInterface geoCod = new GeoCodService();
+        geoCod.setSearch(new ByCoordinates(coordinates));
+        return geoCod;
     }
 
     @Override
-    public void addLocation(Coordinates coords) throws IncorrectLocationException, NotSavedException {
-        GeoCodService geoCodSrv = new GeoCodService();
-        geoCodSrv.setSearch(new ByCoordinates(coords));
-        Location location = geoCodSrv.findLocation();
+    public Location addLocation(String name) throws IncorrectLocationException, NotSavedException {
+        LocationApiInterface geoCod = generateApiInterface(name);
+        Location location = geoCod.findLocation();
+
         location.setApiManager(new APIManager());
+        if (locations == null || crudFireBase == null){
+            locations = new LinkedList<>();
+            crudFireBase = new CRUDFireBase();
+        }
         locations.add(location);
         crudFireBase.addLocation(location);
+        return location;
+    }
+
+    @Override
+    public Location addLocation(Coordinates coords) throws IncorrectLocationException, NotSavedException {
+        LocationApiInterface geoCod = generateApiInterface(coords);
+        Location location = geoCod.findLocation();
+        location.setApiManager(new APIManager());
+        insertLocation(location);
+        return location;
+    }
+
+    public boolean insertLocation(Location location) throws NotSavedException {
+        locations.add(location);
+        crudFireBase.addLocation(location);
+        return true;
     }
 }
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class InformationLocationManager implements InformationLocationManagerFacade {
     private List<API> apiList;
-    private static InformationLocationManagerFacade activationManager;
+    private static InformationLocationManagerFacade informationLocationManager;
 
 
     private InformationLocationManager() {
@@ -22,10 +22,10 @@ public class InformationLocationManager implements InformationLocationManagerFac
     }
 
     public static InformationLocationManagerFacade getInstance() {
-        if (activationManager == null) {
-            activationManager = new InformationLocationManager();
+        if ( informationLocationManager== null) {
+            informationLocationManager = new InformationLocationManager();
         }
-        return activationManager;
+        return informationLocationManager;
 
     }
     public void changeApiState(int order) throws NonExistingAPIException {
@@ -58,16 +58,15 @@ public class InformationLocationManager implements InformationLocationManagerFac
         return list;
     }
 
-    public void changeActiveState(String location) throws IncorrectLocationException {
-        Location loc;
-        try {
-            loc = getLocation(location);
-        } catch (IncorrectLocationException e) {
-            throw new IncorrectLocationException();
+    @Override
+    public void changeAllAPIs(boolean active) {
+        for (API api: apiList){
+            api.setActive(active);
         }
-        loc.setActive(!loc.getIsActive());
-
     }
+
+
     public List<API> getApis() { return apiList; }
+
 
 }

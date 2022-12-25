@@ -9,9 +9,11 @@ import java.util.List;
 
 public interface InformationLocationManagerFacade {
     List<API> getApis();
-    void changeActiveState(String location) throws IncorrectLocationException;
 
     void changeApiState(int order) throws NonExistingAPIException;
 
     List<List<List<APIInformation>>> getAllActivatedInfo();
+
+    void changeAllAPIs(boolean active);
+
 }

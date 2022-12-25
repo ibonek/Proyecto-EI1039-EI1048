@@ -5,5 +5,5 @@ import com.ei10391048.project.exception.IncorrectLocationException;
 public interface LocationApiInterface {
     public Location findLocation() throws IncorrectLocationException;
     public SearchInterface getSearch();
-    public void setSearch(SearchInterface search);
+    public SearchInterface setSearch(SearchInterface search);
 }

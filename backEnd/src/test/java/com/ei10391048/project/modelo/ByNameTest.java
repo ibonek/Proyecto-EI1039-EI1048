@@ -3,17 +3,14 @@ package com.ei10391048.project.modelo;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.fireBase.CRUDFireBase;
-import com.github.prominence.openweathermap.api.OpenWeatherMapClient;
-import com.github.prominence.openweathermap.api.enums.Language;
-import com.github.prominence.openweathermap.api.enums.UnitSystem;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
-import java.util.stream.Stream;
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,31 +18,32 @@ import static org.mockito.Mockito.when;
 
 public class ByNameTest {
     private ByName byNameMock;
-    private CRUDFireBase firebaseMock;
+    private LocationApiInterface geoCodMock;
+
+    private LocationManager managerMock;
+    private CRUDFireBase crudFireBaseMock;
 
     @BeforeEach
     public void setUp(){
         byNameMock= Mockito.mock(ByName.class);
-        firebaseMock = Mockito.mock(CRUDFireBase.class);
+        geoCodMock = Mockito.mock(GeoCodService.class);
+        managerMock = Mockito.mock(LocationManager.class);
+        crudFireBaseMock = Mockito.mock(CRUDFireBase.class);
     }
     @Test
     public void registerLocation_invalidName() throws IncorrectLocationException {
         when(byNameMock.search()).thenThrow(new IncorrectLocationException());
-        LocationManagerFacade manager = LocationManager.getInstance();
-        manager.setCrudFireBase(firebaseMock);
-        int num = manager.getNumberOfLocations();
 
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(byNameMock);
-        manager.setLocationApi(geoCodService);
+        when(managerMock.generateApiInterface(any(String.class))).thenReturn(geoCodService);
         try {
-            manager.addLocation("null");
+        when(managerMock.addLocation(any(String.class))).thenCallRealMethod();
+
+            managerMock.addLocation("null");
             fail();
         } catch (IncorrectLocationException | NotSavedException ex){
             assertTrue(true);
-        }finally {
-            assertEquals(num,manager.getNumberOfLocations());
-
         }
 
     }
@@ -53,21 +51,19 @@ public class ByNameTest {
     @Test
     public void registerLocation_validName() throws IncorrectLocationException, NotSavedException {
         Location place = new Location();
+        geoCodMock.setSearch(byNameMock);
         place.setName("Barcelona");
+        LocationManager manager = (LocationManager) Mockito.spy(LocationManager.getInstance());
         when(byNameMock.search()).thenReturn(place);
+        when(manager.generateApiInterface(any(String.class))).thenReturn(geoCodMock);
+        Location location =manager.addLocation("Barcelona");
+
+        Mockito.verify(manager).addLocation("Barcelona");
 
 
 
-        LocationManagerFacade manager = LocationManager.getInstance();
-        manager.setCrudFireBase(firebaseMock);
-        int num = manager.getNumberOfLocations();
 
-        GeoCodService geoCodService = new GeoCodService();
-        geoCodService.setSearch(byNameMock);
-        manager.setLocationApi(geoCodService);
-        manager.addLocation("Barcelona");
-        assertEquals(num+1, manager.getNumberOfLocations());
-        assertEquals(manager.getLocations().get(num), place);
+        assertEquals(location, place);
     }
 
 

@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LocationTest {
     Location location;
+    LocationManagerFacade manager = LocationManager.getInstance();
     @BeforeEach
     public void setUp(){
         location = new Location();
@@ -34,7 +35,7 @@ public class LocationTest {
 
 
     @Test
-    void getLocationsAliasInvalidCase() throws IncorrectAliasException{
+    void getLocationsAliasInvalidCase(){
         try {
             String name = "Valencia";
             String alias = "";
@@ -45,6 +46,15 @@ public class LocationTest {
             assertTrue(true);
         }
     }
+    @Test
+    void activateLocationValidCase() throws IncorrectLocationException, NotSavedException {
+        manager.addLocation("Valencia");
+        Location location = manager.getLocations().get(0);
+        location.setActive(!location.getIsActive());
+        assertFalse(manager.getLocations().get(0).getIsActive());
+        location.setActive(!location.getIsActive());
+    }
+
 
 
 }

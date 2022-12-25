@@ -17,10 +17,11 @@ public class APIManagerTest {
 
 
     LocationManagerFacade manager = LocationManager.getInstance();
-    InformationLocationManagerFacade informationLocationManager = manager.getActivationManager();
+    InformationLocationManagerFacade informationLocationManager = InformationLocationManager.getInstance();
     @BeforeEach
     public void setParams() throws IncorrectLocationException, NotSavedException {
         manager.clearLocations();
+        informationLocationManager.changeAllAPIs(true);
 
         String toponimo = "Valencia";
         manager.addLocation(toponimo);
@@ -31,6 +32,7 @@ public class APIManagerTest {
         toponimo = "Castellón";
 
         manager.addLocation(toponimo);
+
 
     }
     /**
