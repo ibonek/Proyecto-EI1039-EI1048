@@ -31,14 +31,15 @@ public class ByNameTest {
     @Test
     public void registerLocation_invalidName() throws IncorrectLocationException {
         when(byNameMock.search()).thenThrow(new IncorrectLocationException());
-        LocationManager manager = LocationManager.getInstance();
+        LocationManagerFacade manager = LocationManager.getInstance();
+        manager.setCrudFireBase(firebaseMock);
         int num = manager.getNumberOfLocations();
 
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(byNameMock);
         manager.setLocationApi(geoCodService);
         try {
-            manager.addLocation();
+            manager.addLocation("null");
             fail();
         } catch (IncorrectLocationException | NotSavedException ex){
             assertTrue(true);
@@ -57,14 +58,14 @@ public class ByNameTest {
 
 
 
-        LocationManager manager = LocationManager.getInstance();
+        LocationManagerFacade manager = LocationManager.getInstance();
         manager.setCrudFireBase(firebaseMock);
         int num = manager.getNumberOfLocations();
 
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(byNameMock);
         manager.setLocationApi(geoCodService);
-        manager.addLocation();
+        manager.addLocation("Barcelona");
         assertEquals(num+1, manager.getNumberOfLocations());
         assertEquals(manager.getLocations().get(num), place);
     }

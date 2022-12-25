@@ -1,6 +1,8 @@
 package com.ei10391048.project.modelo;
 
 
+import com.ei10391048.project.exception.IncorrectAliasException;
+
 import java.util.Objects;
 
 public class Location {
@@ -60,7 +62,9 @@ public class Location {
                 '}';
     }
 
-    public void setAlias(String alias) {
+    public void setAlias(String alias) throws IncorrectAliasException {
+        if (alias == null || alias.length()==0)
+            throw new IncorrectAliasException();
         this.alias = alias;
     }
 

@@ -23,13 +23,13 @@ public class ByCoordinatesTest {
         place.setCoordinates(new Coordinates(-3.7025600,40.4165000));
         when(byCoordinatesMock.search()).thenReturn(place);
 
-        LocationManager manager = LocationManager.getInstance();
+        LocationManagerFacade manager = LocationManager.getInstance();
         int num = manager.getNumberOfLocations();
 
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(byCoordinatesMock);
         manager.setLocationApi(geoCodService);
-        manager.addLocation();
+        manager.addLocation(new Coordinates(-3.7025600,40.4165000));
         assertEquals(num+1,manager.getNumberOfLocations());
         assertEquals(manager.getLocations().get(num), place);
     }
@@ -37,14 +37,14 @@ public class ByCoordinatesTest {
     @Test
     public void registerLocation_invalidCoords() throws IncorrectLocationException{
         when(byCoordinatesMock.search()).thenThrow(new IncorrectLocationException());
-        LocationManager manager = LocationManager.getInstance();
+        LocationManagerFacade manager = LocationManager.getInstance();
         int num = manager.getNumberOfLocations();
 
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(byCoordinatesMock);
         manager.setLocationApi(geoCodService);
         try {
-            manager.addLocation();
+            manager.addLocation(new Coordinates(-3.7025600,40.4165000));
             fail();
         } catch (IncorrectLocationException | NotSavedException ex){
             assertTrue(true);

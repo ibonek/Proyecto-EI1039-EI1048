@@ -1,38 +1,34 @@
 package com.ei10391048.project.modelo;
 
 
-import com.ei10391048.project.exception.IncorectAliasException;
-import com.ei10391048.project.exception.NonExistingAPIException;
+import com.ei10391048.project.exception.IncorrectAliasException;
 import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
-import com.ei10391048.project.modelo.api.*;
-import com.ei10391048.project.modelo.information.APIInformation;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LocationManager {
+public class LocationManager implements LocationManagerFacade{
     private List<Location> locations;
     private CRUDFireBase crudFireBase;
 
-    private static LocationManager locationManager;
+    private static InformationLocationManagerFacade informationLocationManager;
 
     private LocationApiInterface locationApi;
-    private List<API> apiList;
+    private static LocationManagerFacade locationManager;
 
     private LocationManager() {
         this.locations = new LinkedList<>();
-        this.locationApi = new GeoCodService();
         this.crudFireBase = new CRUDFireBase();
+        this.locationApi = new GeoCodService();
 
-        this.apiList = new LinkedList<>();
+    }
 
-        apiList.add(APIsNames.WEATHER.getOrder(),new OpenWeather());
-        apiList.add(APIsNames.EVENTS.getOrder(),new TicketMaster());
-        apiList.add(APIsNames.NEWS.getOrder(),new NewsAPI());
+    public InformationLocationManagerFacade getActivationManager() {
+        return InformationLocationManager.getInstance();
     }
 
     public List<Location> getActiveLocations(){
@@ -43,7 +39,18 @@ public class LocationManager {
         }
         return activeList;
     }
-    public static LocationManager getInstance() {
+
+    @Override
+    public void setLocationApi(LocationApiInterface locationApi) {
+        this.locationApi = locationApi;
+    }
+
+    @Override
+    public LocationApiInterface getLocationApi() {
+        return locationApi;
+    }
+
+    public static LocationManagerFacade getInstance() {
         if (locationManager == null) {
             locationManager = new LocationManager();
         }
@@ -51,12 +58,6 @@ public class LocationManager {
 
     }
 
-    public void addLocation() throws IncorrectLocationException, NotSavedException {
-        Location location = locationApi.findLocation();
-        location.setApiManager(new APIManager());
-        locations.add(location);
-        crudFireBase.addLocation(location);
-    }
 
     public List<Location> getLocations() {
         return locations;
@@ -78,9 +79,6 @@ public class LocationManager {
     }
 
 
-    public LocationApiInterface getLocationApi() {
-        return locationApi;
-    }
 
     public List<String> getLocationsName() {
         List<String> aux = new LinkedList<>();
@@ -108,12 +106,6 @@ public class LocationManager {
         return aux;
     }
 
-    public void setLocationApi(LocationApiInterface locationApi) {
-        this.locationApi = locationApi;
-    }
-
-    public List<API> getApis() { return apiList; }
-
     public void clearLocations() {
         this.locations.clear();
     }
@@ -126,43 +118,14 @@ public class LocationManager {
         this.crudFireBase = crudFireBase;
     }
 
-    public void changeActiveState(String location) throws IncorrectLocationException {
-        Location loc;
-        try {
-            loc = getLocation(location);
-        } catch (IncorrectLocationException e) {
-            throw new IncorrectLocationException();
-        }
-        loc.setActive(!loc.getIsActive());
-    }
 
-    public void setAlias(String name, String s) throws IncorectAliasException, IncorrectLocationException {
-        if (s.isEmpty()) throw new IncorectAliasException();
+    public void setAlias(String name, String s) throws IncorrectAliasException, IncorrectLocationException {
+        if (s.isEmpty()) throw new IncorrectAliasException();
         Location loc;
         loc = getLocation(name);
         loc.setAlias(s);
     }
 
-    public List<List<List<APIInformation>>> getAllActivatedInfo() throws IndexOutOfBoundsException{
-        List<List<List<APIInformation>>> list = new LinkedList<>();
-        for (Location location: getActiveLocations()){
-            List<List<APIInformation>> listAux = new LinkedList<>();
-            ApiFacade manager = location.getApiManager();
-            manager.generateInfo(location.getName());
-
-            for (int i=0;i<apiList.size();i++){
-                API api = apiList.get(i);
-                if (!api.getIsActive()){
-                    listAux.add(new LinkedList<>());
-                }else {
-                    listAux.add(manager.getInformation(i));
-                }
-            }
-            list.add(listAux);
-
-        }
-        return list;
-    }
 
     public void deleteLocation(String name) throws IncorrectLocationException{
         Location location = getLocation(name);
@@ -170,15 +133,26 @@ public class LocationManager {
             throw new IncorrectLocationException();
     }
 
-    public void changeApiState(int order) throws NonExistingAPIException {
-        if (order < 0 || order >= apiList.size())
-            throw new NonExistingAPIException();
-        API api=apiList.get(order);
-        for (Location location: locations){
-            location.getApiManager().getApiList().get(order).setActive(!api.getIsActive());
-        }
-        api.setActive(!api.getIsActive());
+
+
+    @Override
+    public void addLocation(String name) throws IncorrectLocationException, NotSavedException {
+        GeoCodService geoCodSrv = new GeoCodService();
+        geoCodSrv.setSearch(new ByName(name));
+        Location location = geoCodSrv.findLocation();
+        location.setApiManager(new APIManager());
+        locations.add(location);
+        crudFireBase.addLocation(location);
     }
 
+    @Override
+    public void addLocation(Coordinates coords) throws IncorrectLocationException, NotSavedException {
+        GeoCodService geoCodSrv = new GeoCodService();
+        geoCodSrv.setSearch(new ByCoordinates(coords));
+        Location location = geoCodSrv.findLocation();
+        location.setApiManager(new APIManager());
+        locations.add(location);
+        crudFireBase.addLocation(location);
+    }
 }
 
