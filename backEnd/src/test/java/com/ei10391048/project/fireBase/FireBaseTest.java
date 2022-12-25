@@ -86,6 +86,7 @@ public class FireBaseTest {
     public void deleteLocationsFromBBDDInvalid(){
         try {
             crudFireBase.deleteLocations();
+            System.out.println(crudFireBase.getLocations());
             assertEquals(0, crudFireBase.getLocations().size());
         } catch (ExecutionException | InterruptedException exception){
             fail();
@@ -105,14 +106,6 @@ public class FireBaseTest {
         }
     }
 
-    @Test
-    public void getLocationsFromBBDDInvalid(){
-        try {
-            assertEquals(0, crudFireBase.getLocations().size());
-        } catch (IncorrectLocationException e) {
-            fail();
-        }
-    }
 
     @Test
     public void activateLocationFromBBDDValid(){
@@ -151,6 +144,7 @@ public class FireBaseTest {
         try {
             crudFireBase.addLocation(location);
             crudFireBase.changeStatus(location);
+
             assertFalse(crudFireBase.getLocation(location).getIsActive());
         } catch (NotSavedException exception) {
             fail();

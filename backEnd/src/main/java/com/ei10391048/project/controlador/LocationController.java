@@ -1,5 +1,5 @@
 package com.ei10391048.project.controlador;
-import com.ei10391048.project.exception.IncorectAliasException;
+import com.ei10391048.project.exception.IncorrectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.modelo.*;
 import com.ei10391048.project.modelo.api.API;
@@ -19,19 +19,16 @@ public class LocationController {
     public void createLocation(@RequestBody String location) {
         try {
         location = location.trim();
-        LocationManager locationManager = LocationManager.getInstance();
-        locationManager.setLocationApi(new GeoCodService());
+        LocationManagerFacade locationManager = LocationManager.getInstance();
         if (InputValidator.isCoordinates(location)) {
             double[] coordinateInput = InputValidator.formatingInputCoords(location);
             Coordinates coordinates = new Coordinates(coordinateInput[0], coordinateInput[1]);
-            locationManager.getLocationApi().setSearch(new ByCoordinates(coordinates));
+            locationManager.addLocation(coordinates);
         } else {
             location = InputValidator.formatingInputName(location);
+            locationManager.addLocation(location);
 
-            locationManager.getLocationApi().setSearch(new ByName(location));
         }
-
-            locationManager.addLocation();
             confirmation = true;
         } catch (Exception ex) {
             confirmation = false;
@@ -52,34 +49,36 @@ public class LocationController {
 
     @GetMapping("/giveLocations")
     public List<Location> getLocationList() {
-        LocationManager manager = LocationManager.getInstance();
+        LocationManagerFacade manager = LocationManager.getInstance();
         return manager.getLocations();
     }
 
     @PostMapping("/changeActiveState")
     public void changeActiveState(@RequestBody String location) throws IncorrectLocationException {
-        LocationManager manager = LocationManager.getInstance();
+        LocationManagerFacade manager = LocationManager.getInstance();
         try {
-            manager.changeActiveState(location);
+            Location loc = manager.getLocation(location);
+            loc.setActive(!loc.getIsActive());
         } catch (IncorrectLocationException e) {
             throw new IncorrectLocationException();
         }
     }
 
     @PostMapping("/changeAlias")
-    public void changeAlias(@RequestBody String alias) throws IncorrectLocationException, IncorectAliasException {
-        LocationManager manager = LocationManager.getInstance();
+    public void changeAlias(@RequestBody String alias) throws IncorrectLocationException, IncorrectAliasException {
+        LocationManagerFacade manager = LocationManager.getInstance();
         try {
             String[] vec = alias.split("#");
-            manager.setAlias(vec[0],vec[1]);
-        } catch ( IncorectAliasException e) {
-            throw new IncorectAliasException();
+            Location location = manager.getLocation(vec[0]);
+            location.setAlias(vec[1]);
+        } catch ( IncorrectAliasException e) {
+            throw new IncorrectAliasException();
         }
     }
 
     @PostMapping("/deleteLocation")
     public void deleteLocation(@RequestBody String location) throws IncorrectLocationException {
-        LocationManager manager = LocationManager.getInstance();
+        LocationManagerFacade manager = LocationManager.getInstance();
         try {
             manager.deleteLocation(location);
         } catch (IncorrectLocationException e) {
@@ -89,7 +88,7 @@ public class LocationController {
 
     @GetMapping("/giveAvailableApis")
     public List<API> giveAvailableApis() {
-        LocationManager manager = LocationManager.getInstance();
+        InformationLocationManagerFacade manager = InformationLocationManager.getInstance();
         return manager.getApis();
     }
 }

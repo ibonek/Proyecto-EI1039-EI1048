@@ -19,7 +19,7 @@ public class InformationController {
     private Boolean confirmation =  null;
     @GetMapping("/apiInfo")
     public  List<List<List<APIInformation>>> getAPIsInfo() {
-        LocationManager locationManager = LocationManager.getInstance();
+        InformationLocationManagerFacade locationManager = InformationLocationManager.getInstance();
 
         return locationManager.getAllActivatedInfo();
         }
@@ -28,7 +28,7 @@ public class InformationController {
     public  List<String> getLocationsNames() {
 
         List<String> list = new LinkedList<>();
-        LocationManager locationManager = LocationManager.getInstance();
+        LocationManagerFacade locationManager = LocationManager.getInstance();
 
         list.add("All");
         for (Location location: locationManager.getActiveLocations()){
@@ -40,7 +40,7 @@ public class InformationController {
 
     @PostMapping("/changeActiveApiState")
     public void changeActiveApiState(@RequestBody int order) {
-        LocationManager manager = LocationManager.getInstance();
+        InformationLocationManagerFacade manager = InformationLocationManager.getInstance();
         try {
             manager.changeApiState(order);
             confirmation = true;

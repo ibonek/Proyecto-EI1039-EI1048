@@ -15,26 +15,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class APIManagerTest {
 
+
+    LocationManagerFacade manager = LocationManager.getInstance();
+    InformationLocationManagerFacade informationLocationManager = InformationLocationManager.getInstance();
     @BeforeEach
     public void setParams() throws IncorrectLocationException, NotSavedException {
-        LocationManager locationManager = LocationManager.getInstance();
-        locationManager.clearLocations();
-        GeoCodService geoCodSrv = new GeoCodService();
-        String toponimo = "Valencia";
-        geoCodSrv.setSearch(new ByName(toponimo));
-        locationManager.setLocationApi(geoCodSrv);
+        manager.clearLocations();
+        informationLocationManager.changeAllAPIs(true);
 
-        locationManager.addLocation();
+        String toponimo = "Valencia";
+        manager.addLocation(toponimo);
 
         toponimo = "Madrid";
-        geoCodSrv.setSearch(new ByName(toponimo));
-
-        locationManager.addLocation();
+        manager.addLocation(toponimo);
 
         toponimo = "Castellón";
-        geoCodSrv.setSearch(new ByName(toponimo));
 
-        locationManager.addLocation();
+        manager.addLocation(toponimo);
+
 
     }
     /**
@@ -45,8 +43,7 @@ public class APIManagerTest {
 
     @Test
     public void getInfoFromAllLocationsValidTest(){
-        LocationManager manager = LocationManager.getInstance();
-        List<List<List<APIInformation>>> list = manager.getAllActivatedInfo();
+        List<List<List<APIInformation>>> list = informationLocationManager.getAllActivatedInfo();
         assertEquals(list.size(),manager.getActiveLocations().size());
 
         for (int i=0;i<list.size();i++){
@@ -69,11 +66,10 @@ public class APIManagerTest {
     @Test
     public void getInfoFrom1LocationValidTest() {
         int index = 0;
-        LocationManager locationManager = LocationManager.getInstance();
-        Location location = locationManager.getLocations().get(index);
-        ApiFacade manager = location.getApiManager();
-        manager.generateInfo(location.getName());
-        assertEquals(manager.getInformation(APIsNames.WEATHER.getOrder()).get(0).getLocationName(), locationManager.getLocations().get(index).getName());
+        Location location = manager.getLocations().get(index);
+        ApiFacade apiManager = location.getApiManager();
+        apiManager.generateInfo(location.getName());
+        assertEquals(apiManager.getInformation(APIsNames.WEATHER.getOrder()).get(0).getLocationName(), manager.getLocations().get(index).getName());
 
     }
 

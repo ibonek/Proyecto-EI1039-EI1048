@@ -1,6 +1,5 @@
 package com.ei10391048.project.modelo;
 
-import com.ei10391048.project.exception.IncorectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NonExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
@@ -21,22 +20,90 @@ import static java.util.Collections.addAll;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LocationManagerTest {
+    LocationManagerFacade manager =  LocationManager.getInstance();
     @BeforeEach
     void setUp(){
-        LocationManager manager = LocationManager.getInstance();
         manager.clearLocations();
+    }
+
+    /**
+     * Test que comprueba la historia de usuario 6: Como usuario quiero dar de alta una ubicación a partir de un
+     * topónimo, con el fin de tenerla disponible en el sistema.
+     *
+     * @throws IncorrectLocationException
+     */
+    @Test
+    public void addLocationByNameValid() throws IncorrectLocationException, NotSavedException {
+        String name = "Valencia";
+
+        LocationManagerFacade locations = LocationManager.getInstance();
+        int num = locations.getNumberOfLocations();
+        locations.addLocation(name);
+
+        assertEquals( locations.getNumberOfLocations(), num + 1);
+    }
+
+
+    @Test
+    public void addLocationByNameInvalid() {
+        String name = "";
+        try {
+            manager.addLocation(name);
+            fail();
+        } catch (IncorrectLocationException ex){
+            int num = manager.getNumberOfLocations();
+            assertEquals(0,num);
+        } catch (NotSavedException e) {
+            fail();
+        }
+    }
+
+
+    /**
+     * Test que comprueba la historia de usuario 7: Como usuario quiero dar de alta una ubicación a partir de unas
+     * coordenadas geográficas, con el fin de tenerla disponible en el sistema.
+     *
+     * @throws IncorrectLocationException
+     */
+    @Test
+    public void addLocationByCoordinatesValid() throws IncorrectLocationException, NotSavedException {
+        Coordinates coordinates = new Coordinates(-0.3773900,39.4697500);
+        int num = manager.getNumberOfLocations();
+        manager.addLocation(coordinates);
+        assertEquals(manager.getNumberOfLocations(), num + 1);
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("coords")
+    public void addLocationByCoordinatesInvalid(double lat, double lon){
+        LocationManagerFacade locationManager = LocationManager.getInstance();
+        try {
+            Coordinates coordinates = new Coordinates(lat,lon);
+            locationManager.addLocation(coordinates);
+        } catch (IncorrectLocationException ex){
+            int num = locationManager.getNumberOfLocations();
+            assertEquals(0,num);
+        } catch (NotSavedException e) {
+            fail();
+        }
+    }
+
+    static Stream<Arguments> coords(){
+        return Stream.of(
+                Arguments.of(-190,100),
+                Arguments.of(190,100),
+                Arguments.of(100,190),
+                Arguments.of(100,-190)
+        );
     }
 
 
     @ParameterizedTest
     @MethodSource("getName")
     void getLocationsNameValidCase(ArrayList<String> sol) throws IncorrectLocationException, NotSavedException {
-        LocationManager manager = LocationManager.getInstance();
         for (String name : sol) {
-            GeoCodService geoCodService = new GeoCodService();
-            geoCodService.setSearch(new ByName(name));
-            manager.setLocationApi(geoCodService);
-            manager.addLocation();
+            manager.addLocation(name);
 
         }
 
@@ -57,55 +124,16 @@ class LocationManagerTest {
 
     @Test
     void getLocationsNameInvalidCase() {
-        LocationManager manager = LocationManager.getInstance();
         manager.setLocations(new LinkedList<>());
         assertEquals(manager.getLocations(), new LinkedList<Location>());
     }
 
-    @Test
-    void activateLocationValidCase() throws IncorrectLocationException, NotSavedException{
-        LocationManager manager = LocationManager.getInstance();
-        GeoCodService geoCodService = new GeoCodService();
-        geoCodService.setSearch(new ByName("Castellón"));
-        manager.setLocationApi(geoCodService);
-        manager.addLocation();
-        geoCodService.setSearch(new ByName("Madrid"));
-        manager.setLocationApi(geoCodService);
-        manager.addLocation();
-        manager.getLocations().get(1).setActive(false);
-        manager.changeActiveState("Madrid");
-        assertTrue(manager.getLocations().get(1).getIsActive());
-    }
-
-    @Test
-    void activateLocationInvalidCase() throws NotSavedException {
-        try {
-            LocationManager manager = LocationManager.getInstance();
-            GeoCodService geoCodService = new GeoCodService();
-            geoCodService.setSearch(new ByName("Castellón"));
-            manager.setLocationApi(geoCodService);
-            manager.addLocation();
-            geoCodService.setSearch(new ByName("Madrid"));
-            manager.setLocationApi(geoCodService);
-            manager.addLocation();
-            manager.getLocations().get(1).setActive(false);
-
-            manager.changeActiveState("Castellonn");
-            fail();
-        } catch (IncorrectLocationException e){
-            assertTrue(true);
-        }
-    }
 
     @ParameterizedTest
     @MethodSource("getActiveLocation")
     void getActiveLocationValidCase(ArrayList<String> sol) throws IncorrectLocationException,  NotSavedException {
-        LocationManager manager = LocationManager.getInstance();
-        GeoCodService geoCodService = new GeoCodService();
         for (String name : sol) {
-            geoCodService.setSearch(new ByName(name));
-            manager.setLocationApi(geoCodService);
-            manager.addLocation();
+            manager.addLocation(name);
         }
         assertEquals(manager.getActiveLocationsName(), sol);
     }
@@ -125,12 +153,8 @@ class LocationManagerTest {
     @ParameterizedTest
     @MethodSource("getActiveLocationInvalid")
     void getActiveLocationInvalidCase(ArrayList<String> input) throws IncorrectLocationException, NotSavedException {
-        LocationManager manager = LocationManager.getInstance();
-        GeoCodService geoCodService = new GeoCodService();
         for (String name : input) {
-            geoCodService.setSearch(new ByName(name));
-            manager.setLocationApi(geoCodService);
-            manager.addLocation();
+            manager.addLocation(name);
         }
 
 
@@ -150,104 +174,11 @@ class LocationManagerTest {
         );
     }
 
-    @ParameterizedTest
-    @MethodSource("getInactiveLocationValidCase")
-    void getInactiveLocationValidCase(ArrayList<String> input) throws IncorrectLocationException, NotSavedException {
-        LocationManager manager = LocationManager.getInstance();
-        GeoCodService geoCodService = new GeoCodService();
-        for (String name : input) {
-            geoCodService.setSearch(new ByName(name));
-            manager.setLocationApi(geoCodService);
-            manager.addLocation();
-            manager.changeActiveState(name);
-            assertNotEquals(manager.getLocation(name).getIsActive(), true);
-        }
-
-    }
-
-    static Stream<Arguments> getInactiveLocationValidCase() {
-
-        ArrayList<String> input = new ArrayList<>();
-        addAll(input, "Valencia","Madrid","Beijing");
-        ArrayList<String> input2 = new ArrayList<>();
-        addAll(input2, "Montevideo","Castellon","London");
-        return Stream.of(
-                Arguments.of(input),
-                Arguments.of(input2)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("getValidAlias")
-    void getLocationsAliasValidCase(ArrayList<String[]> input, ArrayList<String> sol) throws IncorrectLocationException, NotSavedException, IncorectAliasException {
-
-            LocationManager manager = LocationManager.getInstance();
-            for (String[] name : input) {
-                GeoCodService geoCodService = new GeoCodService();
-                geoCodService.setSearch(new ByName(name[0]));
-                manager.setLocationApi(geoCodService);
-                manager.addLocation();
-                if (name.length==2) {
-                    manager.setAlias(name[0], name[1]);
-                }
-            }
-        assertEquals(manager.getLocationsAlias(),sol);
-    }
-
-    static Stream<Arguments> getValidAlias() {
-
-        ArrayList<String[]> input = new ArrayList<>();
-        addAll(input, new String[]{"Valencia", "casa"},new String[]{"Madrid", "abu"},new String[]{"Beijing"});
-        ArrayList<String[]> input2 = new ArrayList<>();
-        addAll(input2, new String[]{"Montevideo", "casa"},new String[]{"Castellon", "abu"},new String[]{"London"});
-        ArrayList<String> sol = new ArrayList<>();
-        addAll(sol, "casa","abu","Beijing");
-        ArrayList<String> sol2 = new ArrayList<>();
-        addAll(sol2, "casa", "abu","London");
-        return Stream.of(
-                Arguments.of(input, sol),
-                Arguments.of(input2, sol2)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("getInvalidAlias")
-    void getLocationsAliasInvalidCase(ArrayList<String> sol) throws IncorrectLocationException, NotSavedException {
-        try {
-            LocationManager manager = LocationManager.getInstance();
-            for (String name : sol) {
-                GeoCodService geoCodService = new GeoCodService();
-                geoCodService.setSearch(new ByName(name));
-                manager.setLocationApi(geoCodService);
-                manager.addLocation();
-                manager.setAlias(name,"");
-            }
-            fail();
-        } catch (IncorectAliasException e){
-            assertTrue(true);
-        }
-    }
-
-    static Stream<Arguments> getInvalidAlias() {
-
-        ArrayList<String> sol = new ArrayList<>();
-        addAll(sol, "Valencia","Madrid","Beijing");
-        ArrayList<String> sol2 = new ArrayList<>();
-        addAll(sol2, "Montevideo","Castellon","London");
-        return Stream.of(
-                Arguments.of( sol),
-                Arguments.of( sol2)
-        );
-    }
 
     @Test
     void deleteLocationValidCase(){
         try {
-            LocationManager manager = LocationManager.getInstance();
-            GeoCodService geoCodService = new GeoCodService();
-            geoCodService.setSearch(new ByName("Valencia"));
-            manager.setLocationApi(geoCodService);
-            manager.addLocation();
+            manager.addLocation("Valencia");
             manager.deleteLocation("Valencia");
             assertTrue(true);
         } catch (IncorrectLocationException e) {
@@ -259,51 +190,10 @@ class LocationManagerTest {
 
     @Test
     void deleteLocationInvalidCase(){
-        LocationManager manager = LocationManager.getInstance();
         try {
             manager.deleteLocation("Valencia");
             fail();
         } catch (IncorrectLocationException e) {
-            assertTrue(true);
-        }
-    }
-
-    @Test
-    void getApiList(){
-        LocationManager manager = LocationManager.getInstance();
-        List<API> apilist = manager.getApis();
-        String[] sol = {"OpenWeather", "TicketMaster", "NewsAPI"};
-
-        assertEquals(apilist.size(), sol.length);
-
-        for (int i = 0; i<apilist.size(); i++){
-            assertEquals(apilist.get(i).getAPIName(), sol[i]);
-        }
-    }
-
-    /**
-     * Test que comprueba la historia de usuario 22:  Como usuario quiero desactivar un servicio de información que haya dejado de interesar,
-     * con el fin de evitar interfaces de usuario sobrecargadas.
-     *
-     */
-
-    @Test
-    public void deactivateAPIValidCase() throws NonExistingAPIException {
-        LocationManager locationManager = LocationManager.getInstance();
-        List<API> apiList = locationManager.getApis();
-        for (int i=0;i<apiList.size();i++){
-            locationManager.changeApiState(i);
-            assertFalse(apiList.get(i).getIsActive());
-        }
-    }
-
-    @Test
-    public void deactivateAPIInvalidCase(){
-        LocationManager locationManager = LocationManager.getInstance();
-        try{
-            locationManager.changeApiState(locationManager.getApis().size());
-            fail();
-        }catch(NonExistingAPIException ex){
             assertTrue(true);
         }
     }
