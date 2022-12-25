@@ -292,7 +292,7 @@ class LocationManagerTest {
         LocationManager locationManager = LocationManager.getInstance();
         List<API> apiList = locationManager.getApis();
         for (int i=0;i<apiList.size();i++){
-            locationManager.changeState(i);
+            locationManager.changeApiState(i);
             assertFalse(apiList.get(i).getIsActive());
         }
     }
@@ -301,7 +301,7 @@ class LocationManagerTest {
     public void deactivateAPIInvalidCase(){
         LocationManager locationManager = LocationManager.getInstance();
         try{
-            locationManager.changeState(locationManager.getApis().size());
+            locationManager.changeApiState(locationManager.getApis().size());
             fail();
         }catch(NonExistingAPIException ex){
             assertTrue(true);

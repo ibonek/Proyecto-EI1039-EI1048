@@ -165,9 +165,11 @@ public class LocationManager {
             throw new IncorrectLocationException();
     }
 
-    public void changeState(int order) throws NonExistingAPIException {
-
-        throw new NonExistingAPIException();
+    public void changeApiState(int order) throws NonExistingAPIException {
+        if (order < 0 || order >= apiList.size())
+            throw new NonExistingAPIException();
+        API api=apiList.get(order);
+        api.setActive(!api.getIsActive());
     }
 
 }
