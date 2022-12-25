@@ -111,4 +111,7 @@ public class CRUDFireBase {
         }
         document.getReference().update("active",!location.getIsActive());
     }
+
+    public void deleteLocation(Location location) throws IncorrectLocationException{
+    }
 }
