@@ -150,9 +150,14 @@ public class LocationManager {
             ApiFacade manager = location.getApiManager();
             manager.generateInfo(location.getName());
 
-            listAux.add(manager.getWeatherInformation());
-            listAux.add(manager.getEventsInformation());
-            listAux.add(manager.getNewsInformation());
+            for (int i=0;i<apiList.size();i++){
+                API api = apiList.get(i);
+                if (!api.getIsActive()){
+                    listAux.add(new LinkedList<>());
+                }else {
+                    listAux.add(manager.getInformation(i));
+                }
+            }
             list.add(listAux);
 
         }
