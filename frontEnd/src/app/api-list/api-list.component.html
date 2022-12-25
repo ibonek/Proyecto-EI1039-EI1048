@@ -4,7 +4,7 @@
     <li *ngFor="let api of apis; let i = index" [ngClass]="api.isActive?'rowList':'rowList inactive'">
       <div class="information" [textContent]="api.name"></div>
       <div class="inputs">
-        <mat-slide-toggle [(ngModel)]="api.isActive" (click)="changeActiveState(api)"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="api.isActive" (click)="this.changeActiveState(i)"></mat-slide-toggle>
       </div>
     </li>
   </div>
