@@ -280,6 +280,30 @@ class LocationManagerTest {
             assertEquals(apilist.get(i).getAPIName(), sol[i]);
         }
     }
+    /**
+    Test que comprueba la historia de usuario 20: Como usuario quiero activar un servicio de información (API), entre aquellos disponibles
+     */
+    @Test
+    public void activateAPIValidCase() throws NonExistingAPIException{
+        LocationManager locationManager = LocationManager.getInstance();
+        List<API> apiList = locationManager.getApis();
+        for (int i=0;i<apiList.size();i++){
+            assertTrue(apiList.get(i).getIsActive());
+            locationManager.changeApiState(i);
+            locationManager.changeApiState(i);
+            assertTrue(apiList.get(i).getIsActive());
+        }
+    }
+    @Test
+    public void activateAPIInvalidCase(){
+        LocationManager locationManager = LocationManager.getInstance();
+        try{
+            locationManager.changeApiState(-1);
+            fail();
+        }catch(NonExistingAPIException ex){
+            assertTrue(true);
+        }
+    }
 
     /**
      * Test que comprueba la historia de usuario 22:  Como usuario quiero desactivar un servicio de información que haya dejado de interesar,
@@ -294,6 +318,7 @@ class LocationManagerTest {
         for (int i=0;i<apiList.size();i++){
             locationManager.changeApiState(i);
             assertFalse(apiList.get(i).getIsActive());
+            locationManager.changeApiState(i);
         }
     }
 
