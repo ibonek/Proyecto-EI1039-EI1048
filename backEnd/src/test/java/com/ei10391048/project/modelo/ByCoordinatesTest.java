@@ -12,6 +12,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class ByCoordinatesTest {
+    /*
     private ByCoordinates byCoordinatesMock;
     private LocationApiInterface geoCodMock;
 
@@ -70,4 +71,6 @@ public class ByCoordinatesTest {
 
         }
     }
+
+     */
 }

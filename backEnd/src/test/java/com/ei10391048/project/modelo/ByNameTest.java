@@ -30,6 +30,7 @@ public class ByNameTest {
         managerMock = Mockito.mock(LocationManager.class);
         crudFireBaseMock = Mockito.mock(CRUDFireBase.class);
     }
+    /*
     @Test
     public void registerLocation_invalidName() throws IncorrectLocationException {
         when(byNameMock.search()).thenThrow(new IncorrectLocationException());
@@ -66,7 +67,7 @@ public class ByNameTest {
         assertEquals(location, place);
     }
 
-
+*/
 
 }
 
