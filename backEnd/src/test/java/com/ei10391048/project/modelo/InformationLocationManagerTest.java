@@ -4,9 +4,11 @@ import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.api.API;
+import com.ei10391048.project.modelo.api.APIsNames;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,12 +27,15 @@ public class InformationLocationManagerTest {
     @Test
     void getApiList(){
         List<API> apilist = informationLocationManager.getApis();
-        String[] sol = {"OpenWeather", "TicketMaster", "NewsAPI"};
+        List<String> list = new LinkedList<>();
+        for(APIsNames api: APIsNames.values()){
+            list.add(api.getOrder(),api.getApiName());
+        }
 
-        assertEquals(apilist.size(), sol.length);
+        assertEquals(apilist.size(), list.size());
 
         for (int i = 0; i<apilist.size(); i++){
-            assertEquals(apilist.get(i).getAPIName(), sol[i]);
+            assertEquals(apilist.get(i).getAPIName(), list.get(i));
         }
     }
 
