@@ -1,25 +1,25 @@
-<form class="fromBody" (ngSubmit)="onSubmit()" #locationForm="ngForm">
-  <div class="fromInterno">
-    <div class="lavelInput">
-      <label class="title"> Locations selector  </label>
-      <div class="separator"></div>
-      <input
-        type="text" [(ngModel)]="locationName"
-        placeholder="Search for a Location"
-        [formControl]="control"
-        [matAutocomplete]="auto"
-      />
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let location of filteredLocations | async" [value]="location">
-          {{location}}
-        </mat-option>
-      </mat-autocomplete>
-      <div class="separator"></div>
-      <div class="buttons">
-        <button (click)="goToList()"  class="buttonWhite">Active locations</button>
-        <button type="submit" class="buttonWhite">Search</button>
-      </div>
+<div class="fromBody">
+<div class="fromInterno">
+  <div class="lavelInput">
+    <label class="title"> Locations selector  </label>
+    <div class="separator"></div>
+    <input
+      type="text" [(ngModel)]="locationName"
+      placeholder="Search for a Location"
+      [formControl]="control"
+      [matAutocomplete]="auto"
+    />
+    <button mat-icon-button (click)="this.currentLocation()"><mat-icon>location_on</mat-icon></button>
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let location of filteredLocations | async" [value]="location">
+        {{location}}
+      </mat-option>
+    </mat-autocomplete>
+    <div class="separator"></div>
+    <div class="buttons">
+      <button (click)="goToList()"  class="buttonWhite">Active locations</button>
+      <button (click)="onSubmit()" type="submit" class="buttonWhite">Search</button>
     </div>
   </div>
-</form>
-
+</div>
+</div>

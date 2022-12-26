@@ -16,7 +16,7 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.informationService.giveLocationsNameList().subscribe(data=>{
+    this.informationService.giveActiveLocationsNameList().subscribe(data=>{
       this.filterList = data;
     });
   }

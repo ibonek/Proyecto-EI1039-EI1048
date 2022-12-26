@@ -1,13 +1,9 @@
 package com.ei10391048.project.controlador;
 
+import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.modelo.*;
-import com.ei10391048.project.modelo.ApiFacade;
-import com.ei10391048.project.modelo.api.API;
-import com.ei10391048.project.modelo.api.APIsNames;
 import com.ei10391048.project.modelo.information.APIInformation;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,40 +12,43 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class InformationController {
 
+    private Boolean confirmation =  null;
     @GetMapping("/apiInfo")
     public  List<List<List<APIInformation>>> getAPIsInfo() {
+        InformationLocationManagerFacade locationManager = InformationLocationManager.getInstance();
 
-        List<List<List<APIInformation>>> list = new LinkedList<>();
-        LocationManager locationManager = LocationManager.getInstance();
-
-        for (Location location: locationManager.getLocations()){
-            List<List<APIInformation>> listAux = new LinkedList<>();
-            ApiFacade manager = location.getApiManager();
-            manager.generateInfo(location.getName());
-
-            listAux.add(manager.getWeatherInformation());
-            listAux.add( manager.getEventsInformation());
-            listAux.add(manager.getNewsInformation());
-            list.add(listAux);
-
-        }
-        return list;
-
+        return locationManager.getAllActivatedInfo();
         }
 
-    @GetMapping("/locationsNames")
+    @GetMapping("/activeLocationsNames")
     public  List<String> getLocationsNames() {
 
         List<String> list = new LinkedList<>();
-        LocationManager locationManager = LocationManager.getInstance();
+        LocationManagerFacade locationManager = LocationManager.getInstance();
 
         list.add("All");
-        for (Location location: locationManager.getLocations()){
-            list.add(location.getName());
+        for (Location location: locationManager.getActiveLocations()){
+            list.add(location.getAlias());
         }
         return list;
 
     }
 
+    @PostMapping("/changeActiveApiState")
+    public void changeActiveApiState(@RequestBody int order) {
+        InformationLocationManagerFacade manager = InformationLocationManager.getInstance();
+        try {
+            manager.changeApiState(order);
+            confirmation = true;
+        } catch (NotExistingAPIException e) {
+            confirmation = false;
+        }
+    }
 
+    @GetMapping("/changeActiveApiState")
+    public Boolean giveConfirmation(){
+        while (confirmation==null);
+
+        return confirmation;
+    }
 }

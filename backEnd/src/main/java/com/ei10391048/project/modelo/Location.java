@@ -1,6 +1,8 @@
 package com.ei10391048.project.modelo;
 
 
+import com.ei10391048.project.exception.IncorrectAliasException;
+
 import java.util.Objects;
 
 public class Location {
@@ -9,18 +11,21 @@ public class Location {
 
     private String name;
     private String alias;
-    private boolean isActive=true;
+    private boolean isActive;
     private ApiFacade apiManager;
     private Coordinates coordinates;
 
     public Location() {
-
+        apiManager = new APIManager();
+        isActive=true;
     }
 
     public Location(String name, double lat, double lon) {
         this.name = name;
         this.alias = name;
         this.coordinates = new Coordinates(lat,lon);
+        apiManager = new APIManager();
+        isActive=true;
     }
 
     public String getName() {
@@ -60,7 +65,9 @@ public class Location {
                 '}';
     }
 
-    public void setAlias(String alias) {
+    public void setAlias(String alias) throws IncorrectAliasException {
+        if (alias == null || alias.length()==0)
+            throw new IncorrectAliasException();
         this.alias = alias;
     }
 

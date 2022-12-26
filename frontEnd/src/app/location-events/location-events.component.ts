@@ -4,6 +4,7 @@ import {WeatherInformation} from "../Infomation/weather-information";
 import {NewsInformation} from "../Infomation/news-information";
 import {EventInformation} from "../Infomation/event-information";
 import {InformationService} from "../Infomation/information.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-location-events',
@@ -17,8 +18,11 @@ export class LocationEventsComponent implements OnInit {
   weatherInfo! : WeatherInformation
   newsInfo! : NewsInformation
   eventInfo! : EventInformation
+  mylocations !: string[]
 
-  constructor(private informationService: InformationService) {
+  constructor(private informationService: InformationService,
+              private route: ActivatedRoute,
+              private router: Router) {
     this.title = 'Spring Boot - Angular Application';
     this.informationService.setAppComponent(this);
   }
@@ -27,14 +31,11 @@ export class LocationEventsComponent implements OnInit {
     if (this.informationService.filterSelected == undefined) {
 
       this.informationService.findAll().subscribe(data => {
-
         this.info = data;
         this.completeInfo = data;
-      });
-    } else {
-      this.informationService.findAll().subscribe(data => {
-        // @ts-ignore
-        this.info = [data[this.informationService.filterSelected]]
+        this.informationService.giveActiveLocationsNameList().subscribe(data2 => {
+          this.mylocations = data2;
+        });
       });
     }
   }
@@ -59,5 +60,9 @@ export class LocationEventsComponent implements OnInit {
 
   castEventsInfo(information: APIInformation){
     this.eventInfo = information as EventInformation
+  }
+
+  goApiList(){
+    this.router.navigate(['/apisList']);
   }
 }

@@ -16,11 +16,10 @@ import {Location} from "../location";
 })
 export class LocationFormComponent implements OnInit {
   control = new FormControl();
-  locations: string[] | undefined;
+  locations!: string[];
   filteredLocations: Observable<string[]> | undefined;
   locationName!: string;
   mylocations !: string[]
-
 
 
   constructor(    private route: ActivatedRoute,
@@ -31,10 +30,10 @@ export class LocationFormComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.getMyLocations()
+    this.findingByNameService.giveCityList().subscribe(data => {
+      this.locations = data;
 
-    await this.findingByNameService.giveCityList().subscribe(data => {
-      this.locations=data;
+
       this.filteredLocations = this.control.valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value))
@@ -44,14 +43,6 @@ export class LocationFormComponent implements OnInit {
 
   }
 
-  private getMyLocations(){
-    this.findingByNameService.getActiveLocationList().subscribe(data => {
-      for (let i=0; i<data.length; i++){
-        this.mylocations[i] = data[i].name
-      }
-
-    });
-  }
 
   private _filter(value: string): string[] {
     const filterValue = this._normalizeValue(value);
@@ -63,32 +54,47 @@ export class LocationFormComponent implements OnInit {
     return value.toLowerCase().replace(/\s/g, '');
   }
 
-  onSubmit() {
-    this.findingByNameService.getActiveLocationList().subscribe(data =>{
-      for (let i= 0;i<data.length;i++){
-        if (data[i].name === this.locationName){
-          this.tinyFailAlert("Your location "+this.locationName+" has been added previously");
+  public async currentLocation() {
+    navigator.geolocation.watchPosition(async (position) => {
+      let mylocation = position.coords.latitude.toFixed(4) + ', ' + position.coords.longitude.toFixed(4);
+
+      await this.findingByNameService.getLocationList().subscribe(data =>  {
+        for (let i=0;i<data.length;i++){
+          if (data[i].name === mylocation || data[i].coordinates.lat+", "+data[i].coordinates.lon === mylocation){
+            this.tinyFailAlert("Your current location has been added previously");
+            return;
+          }
+          }
+        this.tinyQuestionAlert(mylocation);
+        return;
+
+      });
+
+
+  });
+  }
+
+  private async submitLocation(){
+    this.findingByNameService.save(this.locationName).subscribe(data => {
+      this.findingByNameService.giveConfirmation().subscribe(confirmation => {
+        if (confirmation) {
+          this.tinySuccessAlert();
+        } else {
+          this.tinyFailAlert("Your location " + this.locationName + " does not exist");
+        }
+      });
+    });
+  }
+  async onSubmit() {
+    this.findingByNameService.getLocationList().subscribe(data => {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].name.toUpperCase() === this.locationName.trim().toUpperCase() || data[i].coordinates.lat + ", " + data[i].coordinates.lon === this.locationName) {
+          this.tinyFailAlert("Your location "+this.locationName+ " has been added previously");
           return;
         }
       }
-      this.findingByNameService.save(this.locationName).subscribe(data=> {
-        this.findingByNameService.giveConfirmation().subscribe(confirmation=> {
-          if (confirmation){
-            this.tinySuccessAlert();
-            this.mylocations[this.mylocations.length] = this.locationName;
-          } else {
-            this.tinyFailAlert("Your location "+this.locationName+" does not exist")
-          }
-
-
-        });
-      });
-
+      this.submitLocation();
     });
-
-
-
-
   }
 
 
@@ -97,8 +103,7 @@ export class LocationFormComponent implements OnInit {
     this.router.navigate(['/locationList']);
   }
 
-  tinySuccessAlert() {
-      //Swal.fire('Good job!','Your location '+this.locationName+ " has been added!", "success");
+  async tinySuccessAlert() {
       Swal.fire({
         title: 'Good job!',
         text: 'Your location '+this.locationName+" has been added!",
@@ -106,16 +111,34 @@ export class LocationFormComponent implements OnInit {
         showCancelButton: false,
         confirmButtonColor: '#c2185b',
         confirmButtonText: 'Ok'
-      }).then((result =>{
-        if (result.isConfirmed){
-          window.location.reload()
+      }).then(( result => {
+        if (result.isConfirmed) {
+           window.location.reload()
         }
       }))
 
   }
 
-  tinyFailAlert(reason: string){
+  async tinyQuestionAlert(mylocation: string){
     Swal.fire({
+      title: 'Do you want to register your current location?',
+      icon: 'question',
+      confirmButtonColor: '#c2185b',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      cancelButtonColor: '#ff0421',
+      reverseButtons: true
+    }).then(( result => {
+      if (result.isConfirmed) {
+        this.locationName = mylocation;
+        this.submitLocation();
+      }
+    }))
+  }
+
+  async tinyFailAlert(reason: string){
+    await Swal.fire({
       title: 'Ooops',
       text: reason,
       icon: 'error',

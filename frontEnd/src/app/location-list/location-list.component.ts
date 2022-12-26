@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {map, startWith} from "rxjs/operators";
 import {FindingByNameService} from "../finding-by-name.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "../location";
-import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormArray, FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-location-list',
@@ -25,7 +24,7 @@ export class LocationListComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.findingByNameService.getActiveLocationList().subscribe(data => {
+    this.findingByNameService.getLocationList().subscribe(data => {
       this.locations=data;
       for(let i=0; i<this.locations.length; i++){
         this.aliases.push(this.fb.control(''));
@@ -47,6 +46,9 @@ export class LocationListComponent implements OnInit {
   setPos(i: number){
     this.pos = i
   }
-
+  deleteLocation(location: Location | undefined) {
+    this.findingByNameService.deleteLocation(location?.name).subscribe(data => {});
+    window.location.reload();
+  }
 
 }
