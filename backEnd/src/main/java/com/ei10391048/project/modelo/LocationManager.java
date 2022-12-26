@@ -1,19 +1,17 @@
 package com.ei10391048.project.modelo;
 
 
-import com.ei10391048.project.exception.IncorrectAliasException;
 import com.ei10391048.project.fireBase.CRUDFireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class LocationManager implements LocationManagerFacade{
     private List<Location> locations;
-    private CRUDFireBase crudFireBase;
+    private final CRUDFireBase crudFireBase;
     private static LocationManagerFacade locationManager;
 
     private LocationManager() {
@@ -25,6 +23,7 @@ public class LocationManager implements LocationManagerFacade{
         } catch (IncorrectLocationException e) {
             throw new RuntimeException(e);
         }
+    }
 
     public List<Location> getActiveLocations(){
         List<Location> activeList = new LinkedList<>();
