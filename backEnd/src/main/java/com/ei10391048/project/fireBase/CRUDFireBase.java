@@ -238,4 +238,17 @@ public class CRUDFireBase {
             throw new RuntimeException(e);
         }
     }
+
+    public void deleteLocation(Location location) throws IncorrectLocationException{
+        QueryDocumentSnapshot document;
+        try {
+            document = getDocument(location);
+        } catch (ExecutionException | InterruptedException e) {
+            throw new IncorrectLocationException();
+        }
+        if (document==null){
+            throw new IncorrectLocationException();
+        }
+        document.getReference().delete();
+    }
 }

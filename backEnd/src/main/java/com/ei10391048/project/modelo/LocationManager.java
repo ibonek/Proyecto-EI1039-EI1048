@@ -18,8 +18,12 @@ public class LocationManager implements LocationManagerFacade{
         this.locations = new LinkedList<>();
         this.crudFireBase = new CRUDFireBase();
         InformationLocationManager.getInstance();
+        try {
+            this.locations = crudFireBase.getLocations();
+        } catch (IncorrectLocationException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 
     public List<Location> getActiveLocations(){
         List<Location> activeList = new LinkedList<>();
@@ -84,6 +88,7 @@ public class LocationManager implements LocationManagerFacade{
         Location location = getLocation(name);
         if (!locations.remove(location))
             throw new IncorrectLocationException();
+        crudFireBase.deleteLocation(location);
     }
 
     public LocationApiInterface generateApiInterface(String name){
