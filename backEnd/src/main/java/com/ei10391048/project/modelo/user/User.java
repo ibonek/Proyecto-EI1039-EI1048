@@ -4,6 +4,7 @@ import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.*;
+import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.information.APIInformation;
 
 import java.util.List;
@@ -92,5 +93,15 @@ public class User implements UserFacade{
     @Override
     public List<String> getActiveLocationsName() {
         return locationManager.getActiveLocationsName();
+    }
+
+    @Override
+    public Location getLocation(String name) throws IncorrectLocationException {
+        return locationManager.getLocation(name);
+    }
+
+    @Override
+    public List<API> getApis() {
+        return informationLocationManager.getApis();
     }
 }

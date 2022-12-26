@@ -7,6 +7,7 @@ import com.ei10391048.project.modelo.Coordinates;
 import com.ei10391048.project.modelo.InformationLocationManager;
 import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.LocationManager;
+import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.information.APIInformation;
 
 import java.util.List;
@@ -37,4 +38,9 @@ public interface UserFacade {
     int getNumberOfLocations();
 
     List<String> getActiveLocationsName();
+
+    Location getLocation(String name) throws IncorrectLocationException;
+
+    List<API> getApis();
+
 }

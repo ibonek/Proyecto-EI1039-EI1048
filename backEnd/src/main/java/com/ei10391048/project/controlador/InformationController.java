@@ -41,10 +41,13 @@ public class InformationController {
     }
 
     @PostMapping("/changeActiveApiState")
-    public void changeActiveApiState(@RequestBody Map<String, Object> body) throws IncorrectUserException {
-        UserFacade user = UserManager.getInstance().getUser((String) body.get("user"));
+    public void changeActiveApiState(@RequestBody String body) throws IncorrectUserException {
+        String[] aux = body.split("#");
+        int order = Integer.parseInt(aux[1]);
+        String email = aux[0];
+        UserFacade user = UserManager.getInstance().getUser(email);
         try {
-            user.changeAPIState((int) body.get("order"));
+            user.changeAPIState(order);
             confirmation = true;
         } catch (NotExistingAPIException e) {
             confirmation = false;
