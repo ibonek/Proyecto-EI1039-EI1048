@@ -1,24 +1,26 @@
 package com.ei10391048.project.modelo.user;
 
-import com.ei10391048.project.modelo.InformationLocationManager;
-import com.ei10391048.project.modelo.InformationLocationManagerFacade;
-import com.ei10391048.project.modelo.LocationManager;
-import com.ei10391048.project.modelo.LocationManagerFacade;
+import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.NotExistingAPIException;
+import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.modelo.*;
+import com.ei10391048.project.modelo.information.APIInformation;
 
-public class User {
+import java.util.List;
+
+public class User implements UserFacade{
 
     private String email;
 
     private String password;
 
-    private LocationManagerFacade locationManager;
+    private LocationManager locationManager;
 
-    private InformationLocationManagerFacade informationLocationManager;
+    private InformationLocationManager informationLocationManager;
 
     public User(){
         locationManager = new LocationManager();
         informationLocationManager = new InformationLocationManager();
-        informationLocationManager.setLocationManager(locationManager);
     }
 
     public String getEmail() {
@@ -37,19 +39,58 @@ public class User {
         this.password = password;
     }
 
-    public LocationManagerFacade getLocationManager() {
+    public LocationManager getLocationManager() {
         return locationManager;
     }
 
-    public void setLocationManager(LocationManagerFacade locationManager) {
+    public void setLocationManager(LocationManager locationManager) {
         this.locationManager = locationManager;
     }
 
-    public InformationLocationManagerFacade getInformationLocationManager() {
+    public InformationLocationManager getInformationLocationManager() {
         return informationLocationManager;
     }
 
-    public void setInformationLocationManager(InformationLocationManagerFacade informationLocationManagerFacade) {
+    public void setInformationLocationManager(InformationLocationManager informationLocationManagerFacade) {
         this.informationLocationManager = informationLocationManagerFacade;
+    }
+
+    public List<Location> getMyLocations(){
+        return locationManager.getLocations();
+    }
+
+    @Override
+    public void changeAPIState(int order) throws NotExistingAPIException {
+        informationLocationManager.changeApiState(order,this);
+    }
+
+    @Override
+    public List<List<List<APIInformation>>> getAllActivatedInfo() {
+        return informationLocationManager.getAllActivatedInfo(this);
+    }
+
+    @Override
+    public void addLocation(String name) throws NotSavedException, IncorrectLocationException {
+        locationManager.addLocation(name);
+    }
+
+    @Override
+    public void addLocation(Coordinates coords) throws NotSavedException, IncorrectLocationException {
+        locationManager.addLocation(coords);
+    }
+
+    @Override
+    public void deleteLocation(String name) throws IncorrectLocationException {
+        locationManager.deleteLocation(name);
+    }
+
+    @Override
+    public int getNumberOfLocations() {
+        return locationManager.getLocations().size();
+    }
+
+    @Override
+    public List<String> getActiveLocationsName() {
+        return locationManager.getActiveLocationsName();
     }
 }

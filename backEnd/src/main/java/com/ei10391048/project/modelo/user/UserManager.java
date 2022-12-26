@@ -5,7 +5,7 @@ import com.ei10391048.project.exception.IncorrectUserException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserManager implements UserFacade{
+public class UserManager implements UserManagerFacade {
 
     private static UserManager userManager = null;
 
@@ -33,12 +33,31 @@ public class UserManager implements UserFacade{
     }
 
     @Override
-    public void registerUser(String email, String password) throws IncorrectUserException{
+    public User registerUser(String email, String password) throws IncorrectUserException{
 
+        if (password == null ||email == null ||email.length() == 0 ||password.length() == 0){
+            throw new IncorrectUserException();
+        }
+        for (User user: userList){
+            if (email.equalsIgnoreCase(user.getEmail())){
+                throw new IncorrectUserException();
+            }
+        }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        this.userList.add(user);
+        return user;
     }
+
 
     @Override
     public int getNumberOfUsers() {
         return userList.size();
+    }
+
+    @Override
+    public void deleteAllUsers() {
+        userList.removeAll(userList);
     }
 }
