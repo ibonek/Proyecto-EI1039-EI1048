@@ -96,6 +96,37 @@ public class FireBaseTest {
     }
 
     @Test
+    public void deleteLocationValid() {
+        Location location = new Location("Teruel", 40.345, -0.6667);
+        try {
+            crudFireBase.addLocation(location);
+            int size = crudFireBase.getLocations().size();
+            crudFireBase.deleteLocation(location);
+            assertEquals(size-1, crudFireBase.getLocations().size());
+        } catch (NotSavedException | IncorrectLocationException e) {
+            fail();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("deleteLocations")
+    public void deleteLocationInvalid(Location location) {
+        try {
+            crudFireBase.deleteLocation(location);
+            fail();
+        } catch (IncorrectLocationException e) {
+            assertTrue(true);
+        }
+    }
+
+    public static Stream<Arguments> deleteLocations() {
+        return Stream.of(
+                Arguments.of(new Location("Teruel", 40.345, -0.6667)),
+                Arguments.of((Object) null)
+        );
+    }
+
+    @Test
     public void getLocationsFromBBDDValid(){
         Location location = new Location("Teruel", 40.345, -0.6667);
         try {
