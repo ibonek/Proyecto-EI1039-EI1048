@@ -49,8 +49,7 @@ public class FireBaseTest {
         Location location = new Location("Teruel", 40.345, -0.6667);
         try {
             crudFireBase.addLocation(location);
-            Location location2 = crudFireBase.getLocation(location);
-            assertEquals(location, location2);
+            assertEquals(location, crudFireBase.getLocation(location));
         } catch (NotSavedException e) {
             fail();
         }
@@ -174,7 +173,6 @@ public class FireBaseTest {
         try {
             crudFireBase.addLocation(location);
             crudFireBase.changeLocationStatus(location);
-
             assertFalse(crudFireBase.getLocation(location).getIsActive());
         } catch (NotSavedException exception) {
             fail();
@@ -234,6 +232,85 @@ public class FireBaseTest {
         } catch (NotSavedException e) {
             assertTrue(true);
         }
+    }
+
+    @Test
+    public void deactivateAPIValid(){
+        API api= new OpenWeather();
+        try {
+            crudFireBase.addAPI(api);
+            crudFireBase.changeAPIStatus(api);
+            assertFalse(crudFireBase.getAPI(api).getIsActive());
+        } catch (NotSavedException exception) {
+            fail();
+        }
+    }
+
+    @Test
+    public void deactivateAPIInvalid() {
+        try {
+            crudFireBase.changeAPIStatus(null);
+            fail();
+        } catch (NotSavedException e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void activateAPILocationValid(){
+        API api= new OpenWeather();
+        Location location = new Location("Teruel", 40.345, -0.6667);
+        try {
+            crudFireBase.addLocation(location);
+            api.setActive(false);
+            crudFireBase.changeAPILocationStatus(api, location);
+            assertTrue(crudFireBase.getAPILocation(location).get(location.getName()).get(0).getIsActive());
+        } catch (NotSavedException exception) {
+            fail();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("APILocation")
+    public void activateAPILocationInvalid(API api, Location location) {
+        try {
+            crudFireBase.changeAPILocationStatus(api, location);
+            fail();
+        } catch (NotSavedException e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void deactivateAPILocationValid(){
+        API api= new OpenWeather();
+        Location location = new Location("Teruel", 40.345, -0.6667);
+        try {
+            crudFireBase.addLocation(location);
+            crudFireBase.changeAPILocationStatus(api, location);
+            assertFalse(crudFireBase.getAPILocation(location).get(location.getName()).get(0).getIsActive());
+        } catch (NotSavedException exception) {
+            fail();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("APILocation")
+    public void deactivateAPILocationInvalid(API api, Location location) {
+        try {
+            crudFireBase.changeAPILocationStatus(api, location);
+            fail();
+        } catch (NotSavedException e) {
+            assertTrue(true);
+        }
+    }
+
+    static Stream<Arguments> APILocation(){
+        return Stream.of(
+                Arguments.of(null, new Location("Teruel", 40.345, -0.6667)),
+                Arguments.of(new OpenWeather(), null),
+                Arguments.of(null, null)
+        );
     }
 /*
     @AfterAll
