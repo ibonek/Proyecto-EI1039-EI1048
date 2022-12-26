@@ -11,8 +11,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.concurrent.ExecutionException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.stream.Stream;
@@ -20,7 +18,7 @@ import java.util.stream.Stream;
 public class FireBaseTest {
     private static CRUDFireBase crudFireBase;
     @BeforeEach
-    public void setUp() throws ExecutionException, InterruptedException {
+    public void setUp() {
         crudFireBase = new CRUDFireBase();
         crudFireBase.deleteLocations();
         crudFireBase.deleteAPIs();
@@ -54,7 +52,7 @@ public class FireBaseTest {
             Location location2 = crudFireBase.getLocation(location);
             assertEquals(location, location2);
         } catch (NotSavedException e) {
-            throw new RuntimeException(e);
+            fail();
         }
     }
 
@@ -80,7 +78,7 @@ public class FireBaseTest {
             crudFireBase.addLocation(location);
             crudFireBase.deleteLocations();
             assertEquals(0, crudFireBase.getLocations().size());
-        } catch (ExecutionException | InterruptedException |NotSavedException | IncorrectLocationException e){
+        } catch (NotSavedException | IncorrectLocationException e){
             fail();
         }
     }
@@ -91,10 +89,8 @@ public class FireBaseTest {
             crudFireBase.deleteLocations();
             System.out.println(crudFireBase.getLocations());
             assertEquals(0, crudFireBase.getLocations().size());
-        } catch (ExecutionException | InterruptedException exception){
-            fail();
         } catch (IncorrectLocationException e) {
-            throw new RuntimeException(e);
+            fail();
         }
     }
 

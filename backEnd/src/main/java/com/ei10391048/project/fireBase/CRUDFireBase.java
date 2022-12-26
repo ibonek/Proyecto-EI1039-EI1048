@@ -1,10 +1,14 @@
 package com.ei10391048.project.fireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Coordinates;
 import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.api.API;
+import com.ei10391048.project.modelo.api.NewsAPI;
+import com.ei10391048.project.modelo.api.OpenWeather;
+import com.ei10391048.project.modelo.api.TicketMaster;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
@@ -26,6 +30,15 @@ public class CRUDFireBase {
             docLocation.put("latitude",location.getCoordinates().getLat());
             docLocation.put("longitude",location.getCoordinates().getLon());
             docLocation.put("active",true);
+            OpenWeather openWeather = (OpenWeather) location.getApiManager().getApiList().get(0);
+            docLocation.put("open_weather",openWeather.getName());
+            docLocation.put("open_weather_active",openWeather.getIsActive());
+            TicketMaster ticketMaster = (TicketMaster) location.getApiManager().getApiList().get(1);
+            docLocation.put("ticket_master",ticketMaster.getName());
+            docLocation.put("ticket_master_active",ticketMaster.getIsActive());
+            NewsAPI newsAPI = (NewsAPI) location.getApiManager().getApiList().get(2);
+            docLocation.put("news_api",newsAPI.getName());
+            docLocation.put("news_api_active",newsAPI.getIsActive());
 
             ApiFuture<WriteResult> future=db.collection("Location").document(String.valueOf(UUID.randomUUID())).set(docLocation);
             future.get().getUpdateTime();
@@ -93,9 +106,14 @@ public class CRUDFireBase {
         return location1;
     }
 
-    public void deleteLocations() throws ExecutionException, InterruptedException {
+    public void deleteLocations() {
         ApiFuture<QuerySnapshot> future = db.collection("Location").get();
-        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        List<QueryDocumentSnapshot> documents;
+        try {
+            documents = future.get().getDocuments();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
         for (QueryDocumentSnapshot document : documents) {
             db.collection("Location").document(document.getId()).delete();
         }
@@ -115,8 +133,6 @@ public class CRUDFireBase {
             Map<String,Object>docAPI=new HashMap<>();
             docAPI.put("id", UUID.randomUUID().toString());
             docAPI.put("name",api.getName());
-            docAPI.put("information",api.getInformation());
-            docAPI.put("apiKey",api.getApiKey());
             docAPI.put("isActive", api.getIsActive());
 
             ApiFuture<WriteResult> future=db.collection("API").document(String.valueOf(UUID.randomUUID())).set(docAPI);
@@ -138,7 +154,6 @@ public class CRUDFireBase {
         }
         API api1 = api;
         api1.setName((String) document.getData().get("name"));
-        api1.setApiKey((String) document.getData().get("apiKey"));
         api1.setActive((Boolean) document.getData().get("isActive"));
         return api1;
     }
@@ -171,6 +186,21 @@ public class CRUDFireBase {
         document.getReference().update("isActive",!api.getIsActive());
     }
 
+    public void changeAPILocationStatus(API api, Location location) throws NotSavedException {
+        QueryDocumentSnapshot document;
+        document = getLocationDocument(location);
+        if (document==null){
+            throw new NotSavedException();
+        }
+        switch (api.getAPIName()) {
+            case "NewsAPI" -> document.getReference().update("news_api_active", !api.getIsActive());
+            case "OpenWeather" -> document.getReference().update("open_weather_active", !api.getIsActive());
+            case "TicketMaster" -> document.getReference().update("ticket_master_active", !api.getIsActive());
+        }
+    }
+
+
+
     public void deleteAPIs() {
         try {
             ApiFuture<QuerySnapshot> future = db.collection("API").get();
@@ -178,6 +208,32 @@ public class CRUDFireBase {
             for (QueryDocumentSnapshot document : documents) {
                 db.collection("API").document(document.getId()).delete();
             }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<API> getAPIs() throws NotExistingAPIException {
+        try {
+            ApiFuture<QuerySnapshot> future = db.collection("API").get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            if (documents.isEmpty()) {
+                throw new NotExistingAPIException();
+            }
+            List<API> apis = new ArrayList<>();
+            for (QueryDocumentSnapshot document : documents) {
+                String name = (String) document.getData().get("name");
+                API api = switch (name) {
+                    case "OpenWeather" -> new OpenWeather();
+                    case "TicketMaster" -> new TicketMaster();
+                    case "NewsAPI" -> new NewsAPI();
+                    default -> throw new NotExistingAPIException();
+                };
+                api.setName(name);
+                api.setActive((Boolean) document.getData().get("isActive"));
+                apis.add(api);
+            }
+            return apis;
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }

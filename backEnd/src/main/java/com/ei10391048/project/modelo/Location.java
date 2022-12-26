@@ -11,18 +11,21 @@ public class Location {
 
     private String name;
     private String alias;
-    private boolean isActive=true;
+    private boolean isActive;
     private ApiFacade apiManager;
     private Coordinates coordinates;
 
     public Location() {
-
+        apiManager = new APIManager();
+        isActive=true;
     }
 
     public Location(String name, double lat, double lon) {
         this.name = name;
         this.alias = name;
         this.coordinates = new Coordinates(lat,lon);
+        apiManager = new APIManager();
+        isActive=true;
     }
 
     public String getName() {

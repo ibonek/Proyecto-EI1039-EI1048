@@ -1,9 +1,7 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.exception.NonExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
-import com.ei10391048.project.modelo.api.API;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,7 +11,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.ArrayList;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.Collections.addAll;

@@ -1,11 +1,7 @@
 package com.ei10391048.project.controlador;
 
-import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.exception.NonExistingAPIException;
+import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.modelo.*;
-import com.ei10391048.project.modelo.ApiFacade;
-import com.ei10391048.project.modelo.api.API;
-import com.ei10391048.project.modelo.api.APIsNames;
 import com.ei10391048.project.modelo.information.APIInformation;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +40,7 @@ public class InformationController {
         try {
             manager.changeApiState(order);
             confirmation = true;
-        } catch (NonExistingAPIException e) {
+        } catch (NotExistingAPIException e) {
             confirmation = false;
         }
     }
