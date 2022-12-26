@@ -23,6 +23,7 @@ public class FireBaseTest {
     public void setUp() throws ExecutionException, InterruptedException {
         crudFireBase = new CRUDFireBase();
         crudFireBase.deleteLocations();
+        crudFireBase.deleteAPIs();
     }
     @Test
     public void addLocationToBBDDValid(){

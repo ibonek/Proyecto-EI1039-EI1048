@@ -12,11 +12,12 @@ import java.util.List;
 public class InformationLocationManager implements InformationLocationManagerFacade {
     private final List<API> apiList;
     private static InformationLocationManagerFacade informationLocationManager;
+    private final CRUDFireBase crudFireBase;
 
 
     private InformationLocationManager() {
         this.apiList = new LinkedList<>();
-        CRUDFireBase crudFireBase = new CRUDFireBase();
+        crudFireBase = new CRUDFireBase();
         apiList.add(APIsNames.WEATHER.getOrder(),new OpenWeather());
         apiList.add(APIsNames.EVENTS.getOrder(),new TicketMaster());
         apiList.add(APIsNames.NEWS.getOrder(),new NewsAPI());
@@ -44,6 +45,11 @@ public class InformationLocationManager implements InformationLocationManagerFac
             location.getApiManager().getApiList().get(order).setActive(!api.getIsActive());
         }
         api.setActive(!api.getIsActive());
+        try {
+            crudFireBase.changeAPIStatus(api);
+        } catch (NotSavedException e) {
+            throw new RuntimeException(e);
+        }
     }
     public List<List<List<APIInformation>>> getAllActivatedInfo() throws IndexOutOfBoundsException{
         List<List<List<APIInformation>>> list = new LinkedList<>();

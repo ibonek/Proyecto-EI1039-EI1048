@@ -54,12 +54,17 @@ public class CRUDFireBase {
         }
     }
 
-    private QueryDocumentSnapshot getDocument(Location location) throws ExecutionException, InterruptedException {
+    private QueryDocumentSnapshot getLocationDocument(Location location) {
         if (location==null){
             return null;
         }
         ApiFuture<QuerySnapshot> future=db.collection("Location").get();
-        List<QueryDocumentSnapshot> documents=future.get().getDocuments();
+        List<QueryDocumentSnapshot> documents;
+        try {
+            documents = future.get().getDocuments();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
         for (QueryDocumentSnapshot document:documents){
             if (document.getData().get("name").equals(location.getName()) &&
                     document.getData().get("latitude").equals(location.getCoordinates().getLat())&&
@@ -74,11 +79,7 @@ public class CRUDFireBase {
             return null;
         }
         QueryDocumentSnapshot document;
-        try {
-            document = getDocument(location);
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        document = getLocationDocument(location);
         if (document==null){
             return null;
         }
@@ -102,11 +103,7 @@ public class CRUDFireBase {
 
     public void changeLocationStatus(Location location) throws NotSavedException {
         QueryDocumentSnapshot document;
-        try {
-            document = getDocument(location);
-        } catch (ExecutionException | InterruptedException e) {
-            throw new NotSavedException();
-        }
+        document = getLocationDocument(location);
         if (document==null){
             throw new NotSavedException();
         }
@@ -127,12 +124,62 @@ public class CRUDFireBase {
         } catch (InterruptedException | ExecutionException | NullPointerException e) {
             throw new NotSavedException();
         }
+
     }
 
     public API getAPI(API api) {
+        if (api==null){
+            return null;
+        }
+        QueryDocumentSnapshot document;
+        document = getAPIDocument(api);
+        if (document==null){
+            return null;
+        }
+        API api1 = api;
+        api1.setName((String) document.getData().get("name"));
+        api1.setApiKey((String) document.getData().get("apiKey"));
+        api1.setActive((Boolean) document.getData().get("isActive"));
+        return api1;
+    }
+
+    private QueryDocumentSnapshot getAPIDocument(API api) {
+        if (api==null){
+            return null;
+        }
+        ApiFuture<QuerySnapshot> future;
+        try {
+            future = db.collection("API").get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            for (QueryDocumentSnapshot document : documents) {
+                if (document.getData().get("name").equals(api.getName())) {
+                    return document;
+                }
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
     public void changeAPIStatus(API api) throws NotSavedException {
+        QueryDocumentSnapshot document;
+        document = getAPIDocument(api);
+        if (document==null){
+            throw new NotSavedException();
+        }
+        document.getReference().update("isActive",!api.getIsActive());
+    }
+
+    public void deleteAPIs() {
+        try {
+            ApiFuture<QuerySnapshot> future = db.collection("API").get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            for (QueryDocumentSnapshot document : documents) {
+                db.collection("API").document(document.getId()).delete();
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
