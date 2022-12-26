@@ -21,12 +21,16 @@ public class LocationManager {
     private static LocationManager locationManager;
 
     private LocationApiInterface locationApi;
-    private List<API> apiList;
+    private final List<API> apiList;
 
     private LocationManager() {
-        this.locations = new LinkedList<>();
         this.locationApi = new GeoCodService();
         this.crudFireBase = new CRUDFireBase();
+        try {
+            this.locations = crudFireBase.getLocations();
+        } catch (IncorrectLocationException e) {
+            throw new RuntimeException(e);
+        }
 
         this.apiList = new LinkedList<>();
 
@@ -168,6 +172,7 @@ public class LocationManager {
         Location location = getLocation(name);
         if (!locations.remove(location))
             throw new IncorrectLocationException();
+        crudFireBase.deleteLocation(location);
     }
 
     public void changeApiState(int order) throws NonExistingAPIException {
