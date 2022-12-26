@@ -1,7 +1,7 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.exception.NonExistingAPIException;
+import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.api.API;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +38,7 @@ public class InformationLocationManagerTest {
      Test que comprueba la historia de usuario 20: Como usuario quiero activar un servicio de información (API), entre aquellos disponibles
      */
     @Test
-    public void activateAPIValidCase() throws NonExistingAPIException {
+    public void activateAPIValidCase() throws NotExistingAPIException {
         List<API> apiList = informationLocationManager.getApis();
         for (int i=0;i<apiList.size();i++){
             assertTrue(apiList.get(i).getIsActive());
@@ -48,14 +48,14 @@ public class InformationLocationManagerTest {
         }
     }
     @Test
-    public void activateAPIInvalidCase() throws NonExistingAPIException {
+    public void activateAPIInvalidCase() throws NotExistingAPIException {
         for(int i=0;i<informationLocationManager.getApis().size();i++){
             informationLocationManager.changeApiState(i);
         }
         try{
             informationLocationManager.changeApiState(-1);
             fail();
-        }catch(NonExistingAPIException ex){
+        }catch(NotExistingAPIException ex){
             for(int i=0;i<informationLocationManager.getApis().size();i++){
                 assertFalse(informationLocationManager.getApis().get(i).getIsActive());
                 informationLocationManager.changeApiState(i);
@@ -64,7 +64,7 @@ public class InformationLocationManagerTest {
     }
 
     @Test
-    public void changeApiStateTest() throws NonExistingAPIException {
+    public void changeApiStateTest() throws NotExistingAPIException {
         List<API> apiList = informationLocationManager.getApis();
         for (int i = 0; i<apiList.size();i++){
             API api = apiList.get(i);
@@ -82,7 +82,7 @@ public class InformationLocationManagerTest {
      */
 
     @Test
-    public void deactivateAPIValidCase() throws NonExistingAPIException {
+    public void deactivateAPIValidCase() throws NotExistingAPIException {
         List<API> apiList = informationLocationManager.getApis();
         for (int i=0;i<apiList.size();i++){
             informationLocationManager.changeApiState(i);
@@ -95,7 +95,7 @@ public class InformationLocationManagerTest {
         try{
             informationLocationManager.changeApiState(informationLocationManager.getApis().size());
             fail();
-        }catch(NonExistingAPIException ex){
+        }catch(NotExistingAPIException ex){
             for(API api:informationLocationManager.getApis()){
                 assertTrue(api.getIsActive());
             }

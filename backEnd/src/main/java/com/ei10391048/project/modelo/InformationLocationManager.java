@@ -1,7 +1,8 @@
 package com.ei10391048.project.modelo;
 
-import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.exception.NonExistingAPIException;
+import com.ei10391048.project.exception.NotExistingAPIException;
+import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.fireBase.CRUDFireBase;
 import com.ei10391048.project.modelo.api.*;
 import com.ei10391048.project.modelo.information.APIInformation;
 
@@ -11,14 +12,26 @@ import java.util.List;
 public class InformationLocationManager implements InformationLocationManagerFacade {
     private List<API> apiList;
     private static InformationLocationManagerFacade informationLocationManager;
+    private final CRUDFireBase crudFireBase;
 
 
     private InformationLocationManager() {
-        this.apiList = new LinkedList<>();
-
-        apiList.add(APIsNames.WEATHER.getOrder(),new OpenWeather());
-        apiList.add(APIsNames.EVENTS.getOrder(),new TicketMaster());
-        apiList.add(APIsNames.NEWS.getOrder(),new NewsAPI());
+        crudFireBase = new CRUDFireBase();
+        try {
+            apiList=crudFireBase.getAPIs();
+        } catch (NotExistingAPIException e) {
+            apiList = new LinkedList<>();
+            apiList.add(APIsNames.WEATHER.getOrder(),new OpenWeather());
+            apiList.add(APIsNames.EVENTS.getOrder(),new TicketMaster());
+            apiList.add(APIsNames.NEWS.getOrder(),new NewsAPI());
+            for (API api: apiList){
+                try {
+                    crudFireBase.addAPI(api);
+                } catch (NotSavedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
     }
 
     public static InformationLocationManagerFacade getInstance() {
@@ -28,14 +41,20 @@ public class InformationLocationManager implements InformationLocationManagerFac
         return informationLocationManager;
 
     }
-    public void changeApiState(int order) throws NonExistingAPIException {
+    public void changeApiState(int order) throws NotExistingAPIException {
         if (order < 0 || order >= apiList.size())
-            throw new NonExistingAPIException();
+            throw new NotExistingAPIException();
         API api=apiList.get(order);
-        for (Location location: LocationManager.getInstance().getLocations()){
-            location.getApiManager().getApiList().get(order).setActive(!api.getIsActive());
+        try {
+            for (Location location: LocationManager.getInstance().getLocations()){
+                crudFireBase.changeAPILocationStatus(location.getApiManager().getApiList().get(order),location);
+                location.getApiManager().getApiList().get(order).setActive(!api.getIsActive());
+            }
+            crudFireBase.changeAPIStatus(api);
+            api.setActive(!api.getIsActive());
+        } catch (NotSavedException e) {
+            throw new RuntimeException(e);
         }
-        api.setActive(!api.getIsActive());
     }
     public List<List<List<APIInformation>>> getAllActivatedInfo() throws IndexOutOfBoundsException{
         List<List<List<APIInformation>>> list = new LinkedList<>();

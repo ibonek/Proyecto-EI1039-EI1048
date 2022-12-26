@@ -3,13 +3,13 @@ package com.ei10391048.project.fireBase;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Location;
+import com.ei10391048.project.modelo.api.API;
+import com.ei10391048.project.modelo.api.OpenWeather;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,9 +18,10 @@ import java.util.stream.Stream;
 public class FireBaseTest {
     private static CRUDFireBase crudFireBase;
     @BeforeEach
-    public void setUp() throws ExecutionException, InterruptedException {
+    public void setUp() {
         crudFireBase = new CRUDFireBase();
         crudFireBase.deleteLocations();
+        crudFireBase.deleteAPIs();
     }
     @Test
     public void addLocationToBBDDValid(){
@@ -51,7 +52,7 @@ public class FireBaseTest {
             Location location2 = crudFireBase.getLocation(location);
             assertEquals(location, location2);
         } catch (NotSavedException e) {
-            throw new RuntimeException(e);
+            fail();
         }
     }
 
@@ -77,7 +78,7 @@ public class FireBaseTest {
             crudFireBase.addLocation(location);
             crudFireBase.deleteLocations();
             assertEquals(0, crudFireBase.getLocations().size());
-        } catch (ExecutionException | InterruptedException |NotSavedException | IncorrectLocationException e){
+        } catch (NotSavedException | IncorrectLocationException e){
             fail();
         }
     }
@@ -88,10 +89,8 @@ public class FireBaseTest {
             crudFireBase.deleteLocations();
             System.out.println(crudFireBase.getLocations());
             assertEquals(0, crudFireBase.getLocations().size());
-        } catch (ExecutionException | InterruptedException exception){
-            fail();
         } catch (IncorrectLocationException e) {
-            throw new RuntimeException(e);
+            fail();
         }
     }
 
@@ -144,7 +143,7 @@ public class FireBaseTest {
         try {
             location.setActive(false);
             crudFireBase.addLocation(location);
-            crudFireBase.changeStatus(location);
+            crudFireBase.changeLocationStatus(location);
             assertTrue(crudFireBase.getLocation(location).getIsActive());
         } catch (NotSavedException exception) {
             fail();
@@ -155,7 +154,7 @@ public class FireBaseTest {
     @MethodSource("status")
     public void activateLocationFromBBDDInvalid(Location status) {
         try {
-            crudFireBase.changeStatus(status);
+            crudFireBase.changeLocationStatus(status);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
@@ -174,7 +173,7 @@ public class FireBaseTest {
         Location location = new Location("Teruel", 40.345, -0.6667);
         try {
             crudFireBase.addLocation(location);
-            crudFireBase.changeStatus(location);
+            crudFireBase.changeLocationStatus(location);
 
             assertFalse(crudFireBase.getLocation(location).getIsActive());
         } catch (NotSavedException exception) {
@@ -186,7 +185,51 @@ public class FireBaseTest {
     @MethodSource("status")
     public void deactivateLocationFromBBDDInvalid(Location status) {
         try {
-            crudFireBase.changeStatus(status);
+            crudFireBase.changeLocationStatus(status);
+            fail();
+        } catch (NotSavedException e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void addAPIValid(){
+        API api= new OpenWeather();
+        try {
+            crudFireBase.addAPI(api);
+            assertTrue(true);
+        } catch (NotSavedException exception){
+            fail();
+        }
+    }
+
+    @Test
+    public void addAPIInvalid(){
+        try {
+            crudFireBase.addAPI(null);
+            fail();
+        } catch (NotSavedException exception){
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void activateAPIValid(){
+        API api= new OpenWeather();
+        try {
+            api.setActive(false);
+            crudFireBase.addAPI(api);
+            crudFireBase.changeAPIStatus(api);
+            assertTrue(crudFireBase.getAPI(api).getIsActive());
+        } catch (NotSavedException exception) {
+            fail();
+        }
+    }
+
+    @Test
+    public void activateAPIInvalid() {
+        try {
+            crudFireBase.changeAPIStatus(null);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);

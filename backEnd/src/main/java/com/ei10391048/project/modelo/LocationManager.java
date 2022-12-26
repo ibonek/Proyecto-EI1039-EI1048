@@ -76,6 +76,7 @@ public class LocationManager implements LocationManagerFacade{
 
     public void clearLocations() {
         this.locations.clear();
+        crudFireBase.deleteLocations();
     }
 
     public void setLocations(List<Location> locations) {

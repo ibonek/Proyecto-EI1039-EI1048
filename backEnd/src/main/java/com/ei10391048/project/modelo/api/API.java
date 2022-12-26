@@ -1,8 +1,6 @@
 package com.ei10391048.project.modelo.api;
 
 import com.ei10391048.project.modelo.information.APIInformation;
-import com.ei10391048.project.modelo.information.EventInformation;
-import com.ei10391048.project.modelo.information.WeatherInformation;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +10,7 @@ public abstract class API {
 
     protected String name;
 
-    protected List<APIInformation> information= new LinkedList<>();;
+    protected List<APIInformation> information= new LinkedList<>();
     protected String apiKey=null;
     protected boolean isActive=true;
 
@@ -80,5 +78,17 @@ public abstract class API {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setInformation(List<APIInformation> information) {
+        this.information = information;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 }
