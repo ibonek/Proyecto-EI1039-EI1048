@@ -6,13 +6,11 @@ public class GeoCodService implements  LocationApiInterface{
 
     private SearchInterface search;
 
-    public SearchInterface setSearch(SearchInterface search) {
+    public void setSearch(SearchInterface search) {
         this.search = search;
-        return search;
     }
 
     public Location findLocation() throws IncorrectLocationException {
-        System.out.println("aa");
         return search.search();
     }
 
