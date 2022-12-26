@@ -27,9 +27,4 @@ public interface LocationManagerFacade {
 
     List<Location> getActiveLocations();
 
-    void setLocationApi(LocationApiInterface locationApi);
-
-    LocationApiInterface getLocationApi();
-
-    void setCrudFireBase(CRUDFireBase firebaseMock);
 }

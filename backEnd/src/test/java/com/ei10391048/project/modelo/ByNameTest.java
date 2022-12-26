@@ -18,19 +18,14 @@ import static org.mockito.Mockito.when;
 
 public class ByNameTest {
     private ByName byNameMock;
-    private LocationApiInterface geoCodMock;
-
     private LocationManager managerMock;
-    private CRUDFireBase crudFireBaseMock;
 
     @BeforeEach
     public void setUp(){
         byNameMock= Mockito.mock(ByName.class);
-        geoCodMock = Mockito.mock(GeoCodService.class);
         managerMock = Mockito.mock(LocationManager.class);
-        crudFireBaseMock = Mockito.mock(CRUDFireBase.class);
     }
-    /*
+
     @Test
     public void registerLocation_invalidName() throws IncorrectLocationException {
         when(byNameMock.search()).thenThrow(new IncorrectLocationException());
@@ -52,22 +47,20 @@ public class ByNameTest {
     @Test
     public void registerLocation_validName() throws IncorrectLocationException, NotSavedException {
         Location place = new Location();
-        geoCodMock.setSearch(byNameMock);
+
         place.setName("Barcelona");
-        LocationManager manager = (LocationManager) Mockito.spy(LocationManager.getInstance());
-        when(byNameMock.search()).thenReturn(place);
-        when(manager.generateApiInterface(any(String.class))).thenReturn(geoCodMock);
-        Location location =manager.addLocation("Barcelona");
+
+        LocationManagerFacade manager = Mockito.spy(LocationManager.getInstance());
+        int num = manager.getNumberOfLocations();
+
+        manager.addLocation("Barcelona");
 
         Mockito.verify(manager).addLocation("Barcelona");
 
-
-
-
-        assertEquals(location, place);
+        assertEquals(num+1,manager.getNumberOfLocations());
     }
 
-*/
+
 
 }
 

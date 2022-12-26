@@ -14,18 +14,12 @@ import java.util.List;
 public class LocationManager implements LocationManagerFacade{
     private List<Location> locations;
     private CRUDFireBase crudFireBase;
-
-    private static InformationLocationManagerFacade informationLocationManager;
-
-    private LocationApiInterface locationApi;
     private static LocationManagerFacade locationManager;
 
     private LocationManager() {
         this.locations = new LinkedList<>();
         this.crudFireBase = new CRUDFireBase();
-        this.locationApi = new GeoCodService();
         InformationLocationManager.getInstance();
-
     }
 
 
@@ -38,15 +32,6 @@ public class LocationManager implements LocationManagerFacade{
         return activeList;
     }
 
-    @Override
-    public void setLocationApi(LocationApiInterface locationApi) {
-        this.locationApi = locationApi;
-    }
-
-    @Override
-    public LocationApiInterface getLocationApi() {
-        return locationApi;
-    }
 
     public static LocationManagerFacade getInstance() {
         if (locationManager == null) {
@@ -55,7 +40,6 @@ public class LocationManager implements LocationManagerFacade{
         return locationManager;
 
     }
-
 
     public List<Location> getLocations() {
         return locations;
@@ -96,12 +80,6 @@ public class LocationManager implements LocationManagerFacade{
         this.locations = locations;
     }
 
-    public void setCrudFireBase(CRUDFireBase crudFireBase) {
-        this.crudFireBase = crudFireBase;
-    }
-
-
-
 
     public void deleteLocation(String name) throws IncorrectLocationException{
         Location location = getLocation(name);
@@ -112,7 +90,6 @@ public class LocationManager implements LocationManagerFacade{
     public LocationApiInterface generateApiInterface(String name){
         LocationApiInterface geoCod = new GeoCodService();
         geoCod.setSearch(new ByName(name));
-
         return geoCod;
     }
 
@@ -128,10 +105,6 @@ public class LocationManager implements LocationManagerFacade{
         Location location = geoCod.findLocation();
 
         location.setApiManager(new APIManager());
-        if (locations == null || crudFireBase == null){
-            locations = new LinkedList<>();
-            crudFireBase = new CRUDFireBase();
-        }
         locations.add(location);
         crudFireBase.addLocation(location);
         return location;
@@ -142,14 +115,10 @@ public class LocationManager implements LocationManagerFacade{
         LocationApiInterface geoCod = generateApiInterface(coords);
         Location location = geoCod.findLocation();
         location.setApiManager(new APIManager());
-        insertLocation(location);
+        locations.add(location);
+        crudFireBase.addLocation(location);
         return location;
     }
 
-    public boolean insertLocation(Location location) throws NotSavedException {
-        locations.add(location);
-        crudFireBase.addLocation(location);
-        return true;
-    }
 }
 
