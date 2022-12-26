@@ -4,6 +4,7 @@ import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Coordinates;
 import com.ei10391048.project.modelo.Location;
+import com.ei10391048.project.modelo.api.API;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
@@ -99,7 +100,7 @@ public class CRUDFireBase {
         }
     }
 
-    public void changeStatus(Location location) throws NotSavedException {
+    public void changeLocationStatus(Location location) throws NotSavedException {
         QueryDocumentSnapshot document;
         try {
             document = getDocument(location);
@@ -110,5 +111,28 @@ public class CRUDFireBase {
             throw new NotSavedException();
         }
         document.getReference().update("active",!location.getIsActive());
+    }
+
+    public void addAPI(API api) throws NotSavedException {
+        try {
+            Map<String,Object>docAPI=new HashMap<>();
+            docAPI.put("id", UUID.randomUUID().toString());
+            docAPI.put("name",api.getName());
+            docAPI.put("information",api.getInformation());
+            docAPI.put("apiKey",api.getApiKey());
+            docAPI.put("isActive", api.getIsActive());
+
+            ApiFuture<WriteResult> future=db.collection("API").document(String.valueOf(UUID.randomUUID())).set(docAPI);
+            future.get().getUpdateTime();
+        } catch (InterruptedException | ExecutionException | NullPointerException e) {
+            throw new NotSavedException();
+        }
+    }
+
+    public API getAPI(API api) {
+        return null;
+    }
+
+    public void changeAPIStatus(API api) throws NotSavedException {
     }
 }

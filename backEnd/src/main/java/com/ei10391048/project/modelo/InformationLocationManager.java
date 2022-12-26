@@ -1,7 +1,8 @@
 package com.ei10391048.project.modelo;
 
-import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NonExistingAPIException;
+import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.fireBase.CRUDFireBase;
 import com.ei10391048.project.modelo.api.*;
 import com.ei10391048.project.modelo.information.APIInformation;
 
@@ -9,16 +10,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class InformationLocationManager implements InformationLocationManagerFacade {
-    private List<API> apiList;
+    private final List<API> apiList;
     private static InformationLocationManagerFacade informationLocationManager;
 
 
     private InformationLocationManager() {
         this.apiList = new LinkedList<>();
-
+        CRUDFireBase crudFireBase = new CRUDFireBase();
         apiList.add(APIsNames.WEATHER.getOrder(),new OpenWeather());
         apiList.add(APIsNames.EVENTS.getOrder(),new TicketMaster());
         apiList.add(APIsNames.NEWS.getOrder(),new NewsAPI());
+        for (API api: apiList){
+            try {
+                crudFireBase.addAPI(api);
+            } catch (NotSavedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public static InformationLocationManagerFacade getInstance() {
