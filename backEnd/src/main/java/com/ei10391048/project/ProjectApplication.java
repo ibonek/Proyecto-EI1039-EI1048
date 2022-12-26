@@ -13,8 +13,6 @@ public class ProjectApplication {
 
     public static void main(String[] args) throws IncorrectUserException {
         new SpringApplicationBuilder(ProjectApplication.class).run(args);
-        UserManager.getInstance().registerUser("sdk","1234a");
-        System.out.println(UserManager.getInstance().getUser("sdk").getEmail());
-
+        UserManager.getInstance();
     }
 }

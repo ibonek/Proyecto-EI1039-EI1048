@@ -16,6 +16,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import {RouterModule, RouterOutlet, Routes} from "@angular/router";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
+import {UserService} from "./user.service";
 
 import Swal from "sweetalert2"
 
@@ -31,7 +32,6 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { LocationEventsComponent } from './location-events/location-events.component';
 import { ApiListComponent } from './api-list/api-list.component';
 import { UserComponent } from './userRegister/user.component';
-import {UserService} from "./user.service";
 //import { LocationFromComponent } from './location-from/location-from.component';
 
 const routes: Routes=[];

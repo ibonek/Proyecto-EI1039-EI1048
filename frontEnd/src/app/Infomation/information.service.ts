@@ -27,7 +27,6 @@ export class InformationService {
 
   }
   public giveActiveLocationsNameList(){
-    alert(sessionStorage.getItem("email"))
     // @ts-ignore
     const params = new HttpParams().set("email",sessionStorage.getItem("email"));
 
@@ -40,4 +39,5 @@ export class InformationService {
   public getFilter(){
     this.component.changesOnFilter();
   }
+
 }

@@ -30,13 +30,15 @@ export class LocationEventsComponent implements OnInit {
   ngOnInit(): void {
     if (this.informationService.filterSelected == undefined) {
 
-      this.informationService.findAll().subscribe(data => {
-        this.info = data;
-        this.completeInfo = data;
-        this.informationService.giveActiveLocationsNameList().subscribe(data2 => {
-          this.mylocations = data2;
+      if (sessionStorage.getItem("email") != null) {
+        this.informationService.findAll().subscribe(data => {
+          this.info = data;
+          this.completeInfo = data;
+          this.informationService.giveActiveLocationsNameList().subscribe(data2 => {
+            this.mylocations = data2;
+          });
         });
-      });
+      }
     }
   }
 

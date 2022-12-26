@@ -14,17 +14,27 @@ import java.util.Map;
 public class UserController {
     public Boolean confirmation=null;
 
-    @PostMapping("/register")
+
+    @PostMapping("/registerUser")
     public void registerUser(@RequestBody String body) throws IncorrectUserException {
-        System.out.println("aaaaaaaaaaa");
         String[] aux = body.split("#");
         String password = aux[1];
         String email = aux[0];
 
         UserManager manager = UserManager.getInstance();
-        System.out.println(password);
-        System.out.println(email);
-
-        manager.registerUser( email,password);
+        confirmation=true;
+        try {
+            manager.registerUser(email, password);
+        } catch (IncorrectUserException ex){
+            confirmation=false;
+        }
     }
+
+    @GetMapping("/registerUser")
+    public Boolean giveConfirmation(){
+        while  (confirmation ==null);
+        return confirmation;
+    }
+
+
 }
