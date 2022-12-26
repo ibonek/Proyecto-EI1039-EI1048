@@ -241,11 +241,7 @@ public class CRUDFireBase {
 
     public void deleteLocation(Location location) throws IncorrectLocationException{
         QueryDocumentSnapshot document;
-        try {
-            document = getDocument(location);
-        } catch (ExecutionException | InterruptedException e) {
-            throw new IncorrectLocationException();
-        }
+        document = getLocationDocument(location);
         if (document==null){
             throw new IncorrectLocationException();
         }
