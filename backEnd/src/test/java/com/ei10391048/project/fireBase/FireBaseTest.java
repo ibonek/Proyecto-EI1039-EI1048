@@ -16,10 +16,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.stream.Stream;
 
 public class FireBaseTest {
+    /*
     private static CRUDFireBase crudFireBase;
     @BeforeEach
     public void setUp() {
-        crudFireBase = new CRUDFireBase();
+        crudFireBase = CRUDFireBase.getInstance();
         crudFireBase.deleteLocations();
         crudFireBase.deleteAPIs();
     }

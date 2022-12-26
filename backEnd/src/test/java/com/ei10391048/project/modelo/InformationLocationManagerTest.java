@@ -5,6 +5,8 @@ import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.api.APIsNames;
+import com.ei10391048.project.modelo.user.User;
+import com.ei10391048.project.modelo.user.UserFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +17,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class InformationLocationManagerTest {
 
-    LocationManagerFacade manager =  LocationManager.getInstance();
-    InformationLocationManagerFacade informationLocationManager = InformationLocationManager.getInstance();
+    LocationManager manager;
+    InformationLocationManager informationLocationManager;
+
+    UserFacade user = new User();
     @BeforeEach
     void setUp() throws NotSavedException, IncorrectLocationException {
-        manager.clearLocations();
-        manager.addLocation("Castellón");
-        manager.addLocation("Madrid");
+        user=new User();
+        user.setEmail("test@gmail.com");
+        manager = user.getLocationManager();
+        informationLocationManager = user.getInformationLocationManager();
+        user.addLocation("Castellón");
+        user.addLocation("Madrid");
     }
 
     @Test
@@ -47,24 +54,23 @@ public class InformationLocationManagerTest {
         List<API> apiList = informationLocationManager.getApis();
         for (int i=0;i<apiList.size();i++){
             assertTrue(apiList.get(i).getIsActive());
-            informationLocationManager.changeApiState(i);
-            informationLocationManager.changeApiState(i);
+            user.changeAPIState(i);
+            user.changeAPIState(i);
             assertTrue(apiList.get(i).getIsActive());
         }
     }
     @Test
     public void activateAPIInvalidCase() throws NotExistingAPIException {
         for(int i=0;i<informationLocationManager.getApis().size();i++){
-            informationLocationManager.changeApiState(i);
+            user.changeAPIState(i);
         }
         try{
-            informationLocationManager.changeApiState(-1);
+            user.changeAPIState(-1);
             fail();
         }catch(NotExistingAPIException ex){
             for(int i=0;i<informationLocationManager.getApis().size();i++){
                 assertFalse(informationLocationManager.getApis().get(i).getIsActive());
-                informationLocationManager.changeApiState(i);
-            }
+                user.changeAPIState(i);            }
         }
     }
 
@@ -75,9 +81,9 @@ public class InformationLocationManagerTest {
             API api = apiList.get(i);
             Location location = manager.getActiveLocations().get(0);
             assertEquals(api.getIsActive(), location.getApiManager().getApiList().get(i).getIsActive());
-            informationLocationManager.changeApiState(i);
+            user.changeAPIState(i);
             assertEquals(api.getIsActive(), location.getApiManager().getApiList().get(i).getIsActive());
-            informationLocationManager.changeApiState(i);
+            user.changeAPIState(i);
         }
     }
     /**
@@ -90,21 +96,28 @@ public class InformationLocationManagerTest {
     public void deactivateAPIValidCase() throws NotExistingAPIException {
         List<API> apiList = informationLocationManager.getApis();
         for (int i=0;i<apiList.size();i++){
-            informationLocationManager.changeApiState(i);
+            user.changeAPIState(i);
             assertFalse(apiList.get(i).getIsActive());
-            informationLocationManager.changeApiState(i);
-        }
+            user.changeAPIState(i);        }
     }
     @Test
     public void deactivateAPIInvalidCase(){
         try{
-            informationLocationManager.changeApiState(informationLocationManager.getApis().size());
+            user.changeAPIState(informationLocationManager.getApis().size());
             fail();
         }catch(NotExistingAPIException ex){
             for(API api:informationLocationManager.getApis()){
                 assertTrue(api.getIsActive());
             }
         }
+    }
+
+    @Test
+    void activateLocationValidCase() {
+        Location location = user.getMyLocations().get(0);
+        location.setActive(!location.getIsActive());
+        location.setActive(!location.getIsActive());
+        assertTrue(user.getMyLocations().get(0).getIsActive());
     }
 
 }

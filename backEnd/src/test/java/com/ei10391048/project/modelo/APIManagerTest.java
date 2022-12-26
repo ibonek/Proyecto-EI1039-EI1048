@@ -1,10 +1,12 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.IncorrectUserException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.api.APIsNames;
 import com.ei10391048.project.modelo.information.APIInformation;
-import org.junit.Assert;
+import com.ei10391048.project.modelo.user.User;
+import com.ei10391048.project.modelo.user.UserManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,22 +18,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class APIManagerTest {
 
 
-    LocationManagerFacade manager = LocationManager.getInstance();
-    InformationLocationManagerFacade informationLocationManager = InformationLocationManager.getInstance();
+    UserManager userManager = UserManager.getInstance();
+    LocationManager manager;
+    InformationLocationManager informationLocationManager;
+    User user = new User();
     @BeforeEach
-    public void setParams() throws IncorrectLocationException, NotSavedException {
-        manager.clearLocations();
-        informationLocationManager.changeAllAPIs(true);
+    public void setParams() throws IncorrectLocationException, NotSavedException, IncorrectUserException {
+        manager = user.getLocationManager();
+
+        manager.clearLocations();;
+        informationLocationManager = user.getInformationLocationManager();
 
         String toponimo = "Valencia";
-        manager.addLocation(toponimo);
+        user.addLocation(toponimo);
 
         toponimo = "Madrid";
-        manager.addLocation(toponimo);
+        user.addLocation(toponimo);
 
         toponimo = "Castellón";
 
-        manager.addLocation(toponimo);
+        user.addLocation(toponimo);
 
 
     }
@@ -43,7 +49,7 @@ public class APIManagerTest {
 
     @Test
     public void getInfoFromAllLocationsValidTest(){
-        List<List<List<APIInformation>>> list = informationLocationManager.getAllActivatedInfo();
+        List<List<List<APIInformation>>> list = user.getAllActivatedInfo();
         assertEquals(list.size(),manager.getActiveLocations().size());
 
         for (int i=0;i<list.size();i++){

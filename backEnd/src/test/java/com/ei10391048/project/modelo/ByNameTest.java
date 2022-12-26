@@ -3,6 +3,7 @@ package com.ei10391048.project.modelo;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.fireBase.CRUDFireBase;
+import com.ei10391048.project.modelo.user.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
@@ -49,8 +50,7 @@ public class ByNameTest {
         Location place = new Location();
 
         place.setName("Barcelona");
-
-        LocationManagerFacade manager = Mockito.spy(LocationManager.getInstance());
+        LocationManager manager = Mockito.spy(new LocationManager());
         int num = manager.getNumberOfLocations();
 
         manager.addLocation("Barcelona");

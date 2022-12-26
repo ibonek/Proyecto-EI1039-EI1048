@@ -3,6 +3,8 @@ package com.ei10391048.project.modelo;
 import com.ei10391048.project.exception.IncorrectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.modelo.user.User;
+import com.ei10391048.project.modelo.user.UserFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LocationTest {
     Location location;
-    LocationManagerFacade manager = LocationManager.getInstance();
     @BeforeEach
     public void setUp(){
         location = new Location();
@@ -45,14 +46,6 @@ public class LocationTest {
         } catch (IncorrectAliasException e){
             assertTrue(true);
         }
-    }
-    @Test
-    void activateLocationValidCase() throws IncorrectLocationException, NotSavedException {
-        manager.addLocation("Valencia");
-        Location location = manager.getLocations().get(0);
-        location.setActive(!location.getIsActive());
-        assertFalse(manager.getLocations().get(0).getIsActive());
-        location.setActive(!location.getIsActive());
     }
 
 

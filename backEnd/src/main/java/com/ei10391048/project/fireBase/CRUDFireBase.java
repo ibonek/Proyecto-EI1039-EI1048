@@ -18,11 +18,22 @@ import java.util.concurrent.ExecutionException;
 public class CRUDFireBase {
     private static Firestore db;
 
-    public CRUDFireBase() {
+    private static CRUDFireBase crudFireBase = null;
+
+    private CRUDFireBase() {
         db = FireBaseConnection.getInstance();
     }
 
+    public static CRUDFireBase getInstance(){
+        if (crudFireBase==null){
+            crudFireBase = new CRUDFireBase();
+            return crudFireBase;
+        }else{
+            return crudFireBase;
+        }
+    }
     public void addLocation(Location location) throws NotSavedException {
+        System.out.println(location);
         try {
             Map<String,Object>docLocation=new HashMap<>();
             docLocation.put("id", UUID.randomUUID().toString());
