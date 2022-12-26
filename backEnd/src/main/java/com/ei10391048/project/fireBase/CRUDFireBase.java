@@ -51,7 +51,7 @@ public class CRUDFireBase {
         try {
             ApiFuture<QuerySnapshot> future=db.collection("Location").get();
             List<QueryDocumentSnapshot> documents=future.get().getDocuments();
-            List<Location>locations=new ArrayList<>();
+            List<Location> locations=new LinkedList<>();
             for (QueryDocumentSnapshot document:documents){
                 Location location=new Location();
                 location.setName((String) document.getData().get("name"));
@@ -59,9 +59,43 @@ public class CRUDFireBase {
                 coordinates.setLat((Double) document.getData().get("latitude"));
                 coordinates.setLon((Double) document.getData().get("longitude"));
                 location.setCoordinates(coordinates);
+                location.setActive((Boolean) document.getData().get("active"));
                 locations.add(location);
             }
             return locations;
+        } catch (InterruptedException | ExecutionException e) {
+            throw new IncorrectLocationException();
+        }
+    }
+
+    public Map<Location,List<API>> getAPILocations() throws IncorrectLocationException {
+        try {
+            ApiFuture<QuerySnapshot> future=db.collection("Location").get();
+            List<QueryDocumentSnapshot> documents=future.get().getDocuments();
+            Map<Location,List<API>>locationAPIs=new HashMap<>();
+            for (QueryDocumentSnapshot document:documents){
+                Location location=new Location();
+                location.setName((String) document.getData().get("name"));
+                Coordinates coordinates=new Coordinates();
+                coordinates.setLat((Double) document.getData().get("latitude"));
+                coordinates.setLon((Double) document.getData().get("longitude"));
+                location.setCoordinates(coordinates);
+                List<API>apiList=new ArrayList<>();
+                OpenWeather openWeather=new OpenWeather();
+                openWeather.setName((String) document.getData().get("open_weather"));
+                openWeather.setActive((Boolean) document.getData().get("open_weather_active"));
+                apiList.add(openWeather);
+                TicketMaster ticketMaster=new TicketMaster();
+                ticketMaster.setName((String) document.getData().get("ticket_master"));
+                ticketMaster.setActive((Boolean) document.getData().get("ticket_master_active"));
+                apiList.add(ticketMaster);
+                NewsAPI newsAPI=new NewsAPI();
+                newsAPI.setName((String) document.getData().get("news_api"));
+                newsAPI.setActive((Boolean) document.getData().get("news_api_active"));
+                apiList.add(newsAPI);
+                locationAPIs.put(location,apiList);
+            }
+            return locationAPIs;
         } catch (InterruptedException | ExecutionException e) {
             throw new IncorrectLocationException();
         }
@@ -87,7 +121,7 @@ public class CRUDFireBase {
         }
         return null;
     }
-    public Location getLocation(Location location) {
+    public Map<String,List<API>> getAPILocation(Location location) {
         if (location==null){
             return null;
         }
@@ -96,14 +130,48 @@ public class CRUDFireBase {
         if (document==null){
             return null;
         }
-        Location location1 = new Location();
-        location1.setName((String) document.getData().get("name"));
-        Coordinates coordinates = new Coordinates();
-        coordinates.setLat((Double) document.getData().get("latitude"));
-        coordinates.setLon((Double) document.getData().get("longitude"));
-        location1.setActive((Boolean) document.getData().get("active"));
-        location1.setCoordinates(coordinates);
-        return location1;
+        String name=(String) document.getData().get("name");
+        List<API> apiList = new ArrayList<>();
+        OpenWeather openWeather = new OpenWeather();
+        openWeather.setName((String) document.getData().get("open_weather"));
+        openWeather.setActive((Boolean) document.getData().get("open_weather_active"));
+        apiList.add(openWeather);
+        TicketMaster ticketMaster = new TicketMaster();
+        ticketMaster.setName((String) document.getData().get("ticket_master"));
+        ticketMaster.setActive((Boolean) document.getData().get("ticket_master_active"));
+        apiList.add(ticketMaster);
+        NewsAPI newsAPI = new NewsAPI();
+        newsAPI.setName((String) document.getData().get("news_api"));
+        newsAPI.setActive((Boolean) document.getData().get("news_api_active"));
+        apiList.add(newsAPI);
+        Map<String, List<API>> locationAPIs = new HashMap<>();
+        locationAPIs.put(name, apiList);
+        return locationAPIs;
+    }
+
+    public Location getLocation(Location location) {
+        ApiFuture<QuerySnapshot> future=db.collection("Location").get();
+        List<QueryDocumentSnapshot> documents;
+        try {
+            documents = future.get().getDocuments();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        for (QueryDocumentSnapshot document:documents){
+            if (document.getData().get("name").equals(location.getName()) &&
+                    document.getData().get("latitude").equals(location.getCoordinates().getLat())&&
+                    document.getData().get("longitude").equals(location.getCoordinates().getLon())){
+                Location location1=new Location();
+                location1.setName((String) document.getData().get("name"));
+                Coordinates coordinates=new Coordinates();
+                coordinates.setLat((Double) document.getData().get("latitude"));
+                coordinates.setLon((Double) document.getData().get("longitude"));
+                location1.setCoordinates(coordinates);
+                location1.setActive((Boolean) document.getData().get("active"));
+                return location1;
+            }
+        }
+        return null;
     }
 
     public void deleteLocations() {
