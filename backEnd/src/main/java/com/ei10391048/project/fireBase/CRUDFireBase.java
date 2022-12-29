@@ -1,6 +1,7 @@
 package com.ei10391048.project.fireBase;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.IncorrectUserException;
 import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.Coordinates;
@@ -9,8 +10,13 @@ import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.api.NewsAPI;
 import com.ei10391048.project.modelo.api.OpenWeather;
 import com.ei10391048.project.modelo.api.TicketMaster;
+import com.ei10391048.project.modelo.user.User;
+import com.ei10391048.project.modelo.user.UserFacade;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -32,35 +38,72 @@ public class CRUDFireBase {
             return crudFireBase;
         }
     }
-    public void addLocation(Location location) throws NotSavedException {
-        System.out.println(location);
+
+    public void signUp(String email, String password) throws IncorrectUserException {
+        if (email == null || password == null) {
+            throw new IncorrectUserException();
+        }
+        UserRecord.CreateRequest request = new UserRecord.CreateRequest()
+                .setEmail(email)
+                .setEmailVerified(false)
+                .setPassword(password)
+                .setDisabled(false);
+        try {
+            FirebaseAuth.getInstance().createUser(request);
+
+        } catch (FirebaseAuthException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void addUser(String email) throws IncorrectUserException {
+        if (email == null) {
+            throw new IncorrectUserException();
+        }
+        db.collection("users").document(email).set(Map.of("email", email));
+        addAPIs(getUserDocument(email));
+    }
+
+    private void addAPIs(QueryDocumentSnapshot doc){
+        OpenWeather openWeather = new OpenWeather();
+        Map<String,Object>docAPI=new HashMap<>();
+        docAPI.put("name", openWeather.getName());
+        docAPI.put("active",openWeather.getIsActive());
+
+        Map<String,Object>docAPI2=new HashMap<>();
+        TicketMaster ticketMaster = new TicketMaster();
+        docAPI2.put("name", ticketMaster.getName());
+        docAPI2.put("active",ticketMaster.getIsActive());
+
+        Map<String,Object>docAPI3=new HashMap<>();
+        NewsAPI newsAPI = new NewsAPI();
+        docAPI3.put("name", newsAPI.getName());
+        docAPI3.put("active",newsAPI.getIsActive());
+
+        doc.getReference().collection("apis").document(openWeather.getName()).set(docAPI);
+        doc.getReference().collection("apis").document(ticketMaster.getName()).set(docAPI2);
+        doc.getReference().collection("apis").document(newsAPI.getName()).set(docAPI3);
+    }
+
+    public void addLocation(Location location, String email) throws NotSavedException {
         try {
             Map<String,Object>docLocation=new HashMap<>();
-            docLocation.put("id", UUID.randomUUID().toString());
             docLocation.put("name",location.getName());
             docLocation.put("latitude",location.getCoordinates().getLat());
             docLocation.put("longitude",location.getCoordinates().getLon());
-            docLocation.put("active",true);
-            OpenWeather openWeather = (OpenWeather) location.getApiManager().getApiList().get(0);
-            docLocation.put("open_weather",openWeather.getName());
-            docLocation.put("open_weather_active",openWeather.getIsActive());
-            TicketMaster ticketMaster = (TicketMaster) location.getApiManager().getApiList().get(1);
-            docLocation.put("ticket_master",ticketMaster.getName());
-            docLocation.put("ticket_master_active",ticketMaster.getIsActive());
-            NewsAPI newsAPI = (NewsAPI) location.getApiManager().getApiList().get(2);
-            docLocation.put("news_api",newsAPI.getName());
-            docLocation.put("news_api_active",newsAPI.getIsActive());
-
-            ApiFuture<WriteResult> future=db.collection("Location").document(String.valueOf(UUID.randomUUID())).set(docLocation);
+            docLocation.put("alias",location.getAlias());
+            docLocation.put("active",location.getIsActive());
+            ApiFuture<WriteResult> future =db.collection("users").document(email).collection("locations").document(location.getName()).set(docLocation);
+            addAPIs(getLocationDocument(email,location.getName()));
             future.get().getUpdateTime();
         } catch (InterruptedException | ExecutionException | NullPointerException e) {
             throw new NotSavedException();
         }
     }
 
-    public List<Location> getLocations() throws IncorrectLocationException {
+    public List<Location> getUserLocations(String email) throws IncorrectLocationException {
         try {
-            ApiFuture<QuerySnapshot> future=db.collection("Location").get();
+            ApiFuture<QuerySnapshot> future=db.collection("users").document(email).collection("locations").get();
             List<QueryDocumentSnapshot> documents=future.get().getDocuments();
             List<Location> locations=new LinkedList<>();
             for (QueryDocumentSnapshot document:documents){
@@ -79,174 +122,200 @@ public class CRUDFireBase {
         }
     }
 
-    public Map<Location,List<API>> getAPILocations() throws IncorrectLocationException {
+    public List<API> getUserLocationAPIs(String email, Location location) throws IncorrectLocationException {
         try {
-            ApiFuture<QuerySnapshot> future=db.collection("Location").get();
+            ApiFuture<QuerySnapshot> future=db.collection("users").document(email).collection("locations").document(location.getName()).collection("apis").get();
             List<QueryDocumentSnapshot> documents=future.get().getDocuments();
-            Map<Location,List<API>>locationAPIs=new HashMap<>();
+            List<API> apis=new LinkedList<>();
             for (QueryDocumentSnapshot document:documents){
-                Location location=new Location();
-                location.setName((String) document.getData().get("name"));
-                Coordinates coordinates=new Coordinates();
-                coordinates.setLat((Double) document.getData().get("latitude"));
-                coordinates.setLon((Double) document.getData().get("longitude"));
-                location.setCoordinates(coordinates);
-                List<API>apiList=new ArrayList<>();
-                OpenWeather openWeather=new OpenWeather();
-                openWeather.setName((String) document.getData().get("open_weather"));
-                openWeather.setActive((Boolean) document.getData().get("open_weather_active"));
-                apiList.add(openWeather);
-                TicketMaster ticketMaster=new TicketMaster();
-                ticketMaster.setName((String) document.getData().get("ticket_master"));
-                ticketMaster.setActive((Boolean) document.getData().get("ticket_master_active"));
-                apiList.add(ticketMaster);
-                NewsAPI newsAPI=new NewsAPI();
-                newsAPI.setName((String) document.getData().get("news_api"));
-                newsAPI.setActive((Boolean) document.getData().get("news_api_active"));
-                apiList.add(newsAPI);
-                locationAPIs.put(location,apiList);
+                String name=(String) document.getData().get("name");
+                API api=switch (name){
+                    case "OpenWeather" -> new OpenWeather();
+                    case "TicketMaster" -> new TicketMaster();
+                    case "NewsAPI" -> new NewsAPI();
+                    default -> null;
+                };
+                if (api!=null){
+                    api.setName(name);
+                    api.setActive((Boolean) document.getData().get("active"));
+                    apis.add(api);
+                }
             }
-            return locationAPIs;
+            return apis;
         } catch (InterruptedException | ExecutionException e) {
             throw new IncorrectLocationException();
         }
     }
 
-    private QueryDocumentSnapshot getLocationDocument(Location location) {
-        if (location==null){
+    private QueryDocumentSnapshot getUserDocument(String email) throws IncorrectUserException {
+        if (email == null) {
+            throw new IncorrectUserException();
+        }
+        try {
+            List<QueryDocumentSnapshot> documents = db.collection("users").get().get().getDocuments();
+            for (QueryDocumentSnapshot document : documents) {
+                if (document.getData().get("email").equals(email)) {
+                    return document;
+                }
+            }
+            throw new IncorrectUserException();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new IncorrectUserException();
+        }
+    }
+
+    private QueryDocumentSnapshot getLocationDocument(String email, String locationName) {
+        if (locationName==null || email==null){
             return null;
         }
-        ApiFuture<QuerySnapshot> future=db.collection("Location").get();
-        List<QueryDocumentSnapshot> documents;
+        QueryDocumentSnapshot docEmail= null;
         try {
-            documents = future.get().getDocuments();
+            docEmail = getUserDocument(email);
+        } catch (IncorrectUserException e) {
+            throw new RuntimeException(e);
+        }
+        ApiFuture<QuerySnapshot> future=docEmail.getReference().collection("locations").whereEqualTo("name",locationName).get();
+        try {
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            if (documents.size() == 0) {
+                return null;
+            }
+            return documents.get(0);
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-        for (QueryDocumentSnapshot document:documents){
-            if (document.getData().get("name").equals(location.getName()) &&
-                    document.getData().get("latitude").equals(location.getCoordinates().getLat())&&
-                    document.getData().get("longitude").equals(location.getCoordinates().getLon())){
-                return document;
-            }
-        }
-        return null;
-    }
-    public Map<String,List<API>> getAPILocation(Location location) {
-        if (location==null){
-            return null;
-        }
-        QueryDocumentSnapshot document;
-        document = getLocationDocument(location);
-        if (document==null){
-            return null;
-        }
-        String name=(String) document.getData().get("name");
-        List<API> apiList = new ArrayList<>();
-        OpenWeather openWeather = new OpenWeather();
-        openWeather.setName((String) document.getData().get("open_weather"));
-        openWeather.setActive((Boolean) document.getData().get("open_weather_active"));
-        apiList.add(openWeather);
-        TicketMaster ticketMaster = new TicketMaster();
-        ticketMaster.setName((String) document.getData().get("ticket_master"));
-        ticketMaster.setActive((Boolean) document.getData().get("ticket_master_active"));
-        apiList.add(ticketMaster);
-        NewsAPI newsAPI = new NewsAPI();
-        newsAPI.setName((String) document.getData().get("news_api"));
-        newsAPI.setActive((Boolean) document.getData().get("news_api_active"));
-        apiList.add(newsAPI);
-        Map<String, List<API>> locationAPIs = new HashMap<>();
-        locationAPIs.put(name, apiList);
-        return locationAPIs;
     }
 
-    public Location getLocation(Location location) {
-        ApiFuture<QuerySnapshot> future=db.collection("Location").get();
-        List<QueryDocumentSnapshot> documents;
-        try {
-            documents = future.get().getDocuments();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+    public Location getUserLocation(String email, String locationName) {
+        if (locationName==null || email==null){
+            return null;
         }
-        for (QueryDocumentSnapshot document:documents){
-            if (document.getData().get("name").equals(location.getName()) &&
-                    document.getData().get("latitude").equals(location.getCoordinates().getLat())&&
-                    document.getData().get("longitude").equals(location.getCoordinates().getLon())){
-                Location location1=new Location();
-                location1.setName((String) document.getData().get("name"));
-                Coordinates coordinates=new Coordinates();
-                coordinates.setLat((Double) document.getData().get("latitude"));
-                coordinates.setLon((Double) document.getData().get("longitude"));
-                location1.setCoordinates(coordinates);
-                location1.setActive((Boolean) document.getData().get("active"));
-                return location1;
-            }
+        QueryDocumentSnapshot locDoc=getLocationDocument(email,locationName);
+        if (locDoc==null){
+            return null;
         }
-        return null;
+        Location location=new Location();
+        location.setName((String) locDoc.getData().get("name"));
+        Coordinates coordinates=new Coordinates();
+        coordinates.setLat((Double) locDoc.getData().get("latitude"));
+        coordinates.setLon((Double) locDoc.getData().get("longitude"));
+        location.setCoordinates(coordinates);
+        location.setActive((Boolean) locDoc.getData().get("active"));
+        return location;
     }
 
-    public void deleteLocations() {
-        ApiFuture<QuerySnapshot> future = db.collection("Location").get();
-        List<QueryDocumentSnapshot> documents;
+    public void deleteUserLocations(String email) throws IncorrectUserException {
+        if (email == null) {
+            throw new IncorrectUserException();
+        }
+        QueryDocumentSnapshot docEmail = getUserDocument(email);
+        List<QueryDocumentSnapshot> documents= null;
         try {
-            documents = future.get().getDocuments();
+            documents = docEmail.getReference().collection("locations").get().get().getDocuments();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
         for (QueryDocumentSnapshot document : documents) {
-            db.collection("Location").document(document.getId()).delete();
+            deletUserLocationAPIs(document);
+            document.getReference().delete();
         }
     }
 
-    public void changeLocationStatus(Location location) throws NotSavedException {
-        QueryDocumentSnapshot document;
-        document = getLocationDocument(location);
-        if (document==null){
-            throw new NotSavedException();
-        }
-        document.getReference().update("active",!location.getIsActive());
-    }
-
-    public void addAPI(API api) throws NotSavedException {
+    public void deletUserLocationAPIs(QueryDocumentSnapshot document){
+        List<QueryDocumentSnapshot> documents= null;
         try {
-            Map<String,Object>docAPI=new HashMap<>();
-            docAPI.put("id", UUID.randomUUID().toString());
-            docAPI.put("name",api.getName());
-            docAPI.put("isActive", api.getIsActive());
-
-            ApiFuture<WriteResult> future=db.collection("API").document(String.valueOf(UUID.randomUUID())).set(docAPI);
-            future.get().getUpdateTime();
-        } catch (InterruptedException | ExecutionException | NullPointerException e) {
-            throw new NotSavedException();
+            documents = document.getReference().collection("apis").get().get().getDocuments();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
         }
-
+        for (QueryDocumentSnapshot doc : documents) {
+            doc.getReference().delete();
+        }
+    }
+    public void deletUserLocationAPIs(String email, String locationName) throws IncorrectLocationException {
+        if (locationName==null || email==null){
+            throw new IncorrectLocationException();
+        }
+        QueryDocumentSnapshot locDoc=getLocationDocument(email,locationName);
+        if (locDoc==null){
+            throw new IncorrectLocationException();
+        }
+        List<QueryDocumentSnapshot> documents= null;
+        try {
+            documents = locDoc.getReference().collection("apis").get().get().getDocuments();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        for (QueryDocumentSnapshot document : documents) {
+            document.getReference().delete();
+        }
     }
 
-    public API getAPI(API api) {
-        if (api==null){
+    public void changeUserLocationStatus(String email, Location location) throws NotSavedException {
+        if (email == null || location == null) {
+            throw new NotSavedException();
+        }
+        QueryDocumentSnapshot docLocation = getLocationDocument(email, location.getName());
+        if (docLocation == null) {
+            throw new NotSavedException();
+        }
+        docLocation.getReference().update("active", !location.getIsActive());
+    }
+
+    public API getAPI(String email, String name) {
+        if (name==null){
             return null;
         }
         QueryDocumentSnapshot document;
-        document = getAPIDocument(api);
+        document = getAPIDocument(email, name);
         if (document==null){
             return null;
         }
-        API api1 = api;
-        api1.setName((String) document.getData().get("name"));
-        api1.setActive((Boolean) document.getData().get("isActive"));
-        return api1;
+        String nameAPI=(String) document.getData().get("name");
+        API api = switch (nameAPI) {
+            case "OpenWeather" -> new OpenWeather();
+            case "NewsAPI" -> new NewsAPI();
+            case "TicketMaster" -> new TicketMaster();
+            default -> null;
+        };
+        if (api==null){
+            return null;
+        }
+        api.setName((String) document.getData().get("name"));
+        api.setActive((Boolean) document.getData().get("isActive"));
+        return api;
     }
 
-    private QueryDocumentSnapshot getAPIDocument(API api) {
-        if (api==null){
+    private QueryDocumentSnapshot getAPIDocument(String email, String name) {
+        if (name==null){
             return null;
         }
         ApiFuture<QuerySnapshot> future;
         try {
-            future = db.collection("API").get();
+            future = getUserDocument(email).getReference().collection("apis").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
             for (QueryDocumentSnapshot document : documents) {
-                if (document.getData().get("name").equals(api.getName())) {
+                if (document.getData().get("name").equals(name)) {
+                    return document;
+                }
+            }
+        } catch (InterruptedException | ExecutionException | IncorrectUserException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    private QueryDocumentSnapshot getUserLocationAPIDocument(String email,String locationName, String name) {
+        if (email==null || locationName==null || name==null){
+            return null;
+        }
+        QueryDocumentSnapshot docLocation=getLocationDocument(email,locationName);
+        ApiFuture<QuerySnapshot> future;
+        try {
+            future = docLocation.getReference().collection("apis").get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            for (QueryDocumentSnapshot document : documents) {
+                if (document.getData().get("name").equals(name)) {
                     return document;
                 }
             }
@@ -256,18 +325,24 @@ public class CRUDFireBase {
         return null;
     }
 
-    public void changeAPIStatus(API api) throws NotSavedException {
+    public void changeAPIStatus(String email, API api) throws NotSavedException {
+        if (email == null || api == null) {
+            throw new NotSavedException();
+        }
         QueryDocumentSnapshot document;
-        document = getAPIDocument(api);
+        document = getAPIDocument(email,api.getName());
         if (document==null){
             throw new NotSavedException();
         }
         document.getReference().update("isActive",!api.getIsActive());
     }
 
-    public void changeAPILocationStatus(API api, Location location) throws NotSavedException {
+    public void changeUserLocationAPIStatus(String email, String locationName, API api) throws NotSavedException {
+        if (email == null || api == null || locationName==null) {
+            throw new NotSavedException();
+        }
         QueryDocumentSnapshot document;
-        document = getLocationDocument(location);
+        document = getUserLocationAPIDocument(email,locationName,api.getName());
         if (document==null){
             throw new NotSavedException();
         }
@@ -278,14 +353,12 @@ public class CRUDFireBase {
         }
     }
 
-
-
     public void deleteAPIs() {
         try {
-            ApiFuture<QuerySnapshot> future = db.collection("API").get();
+            ApiFuture<QuerySnapshot> future = db.collection("apis").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
             for (QueryDocumentSnapshot document : documents) {
-                db.collection("API").document(document.getId()).delete();
+                document.getReference().delete();
             }
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
@@ -294,7 +367,7 @@ public class CRUDFireBase {
 
     public List<API> getAPIs() throws NotExistingAPIException {
         try {
-            ApiFuture<QuerySnapshot> future = db.collection("API").get();
+            ApiFuture<QuerySnapshot> future = db.collection("apis").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
             if (documents.isEmpty()) {
                 throw new NotExistingAPIException();
@@ -318,12 +391,41 @@ public class CRUDFireBase {
         }
     }
 
-    public void deleteLocation(Location location) throws IncorrectLocationException{
+    public void deleteUserLocation(String email, String locationName) throws IncorrectLocationException{
         QueryDocumentSnapshot document;
-        document = getLocationDocument(location);
+        document = getLocationDocument(email, locationName);
         if (document==null){
             throw new IncorrectLocationException();
         }
+        deletUserLocationAPIs(document);
         document.getReference().delete();
+    }
+
+    public void deleteUser(String email) {
+        if (email==null){
+            return;
+        }
+        QueryDocumentSnapshot document;
+        try {
+            document = getUserDocument(email);
+        } catch (IncorrectUserException e) {
+            throw new RuntimeException(e);
+        }
+        document.getReference().delete();
+    }
+
+    public UserFacade getUser(String email) {
+        if (email==null){
+            return null;
+        }
+        QueryDocumentSnapshot document;
+        try {
+            document = getUserDocument(email);
+        } catch (IncorrectUserException e) {
+            throw new RuntimeException(e);
+        }
+        UserFacade user = new User();
+        user.setEmail((String) document.getData().get("email"));
+        return user;
     }
 }
