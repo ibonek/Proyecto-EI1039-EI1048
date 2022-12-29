@@ -1,9 +1,6 @@
 package com.ei10391048.project.fireBase;
 
-import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.exception.IncorrectUserException;
-import com.ei10391048.project.exception.NotExistingAPIException;
-import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.exception.*;
 import com.ei10391048.project.modelo.Coordinates;
 import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.api.API;
@@ -39,7 +36,7 @@ public class CRUDFireBase {
         }
     }
 
-    public void signUp(String email, String password) throws IncorrectUserException {
+    public void signUp(String email, String password) throws IncorrectUserException, AlreadyExistentUser {
         if (email == null || password == null) {
             throw new IncorrectUserException();
         }
@@ -52,7 +49,7 @@ public class CRUDFireBase {
             FirebaseAuth.getInstance().createUser(request);
 
         } catch (FirebaseAuthException e) {
-            throw new RuntimeException(e);
+            throw new AlreadyExistentUser();
         }
     }
 
@@ -85,7 +82,7 @@ public class CRUDFireBase {
         doc.getReference().collection("apis").document(newsAPI.getName()).set(docAPI3);
     }
 
-    public void addLocation(Location location, String email) throws NotSavedException {
+    public void addUserLocation(Location location, String email) throws NotSavedException {
         try {
             Map<String,Object>docLocation=new HashMap<>();
             docLocation.put("name",location.getName());
@@ -103,8 +100,10 @@ public class CRUDFireBase {
 
     public List<Location> getUserLocations(String email) throws IncorrectLocationException {
         try {
-            ApiFuture<QuerySnapshot> future=db.collection("users").document(email).collection("locations").get();
-            List<QueryDocumentSnapshot> documents=future.get().getDocuments();
+            List<QueryDocumentSnapshot> documents=db.collection("users").document(email).collection("locations").get().get().getDocuments();
+            if (documents.isEmpty()){
+                return null;
+            }
             List<Location> locations=new LinkedList<>();
             for (QueryDocumentSnapshot document:documents){
                 Location location=new Location();
@@ -115,6 +114,7 @@ public class CRUDFireBase {
                 location.setCoordinates(coordinates);
                 location.setActive((Boolean) document.getData().get("active"));
                 locations.add(location);
+                System.out.println(location);
             }
             return locations;
         } catch (InterruptedException | ExecutionException e) {
@@ -145,6 +145,20 @@ public class CRUDFireBase {
         } catch (InterruptedException | ExecutionException e) {
             throw new IncorrectLocationException();
         }
+    }
+
+    public API getUserLocationAPI(String email, String locationName, String apiName){
+        API api=switch (apiName){
+            case "OpenWeather" -> new OpenWeather();
+            case "TicketMaster" -> new TicketMaster();
+            case "NewsAPI" -> new NewsAPI();
+            default -> null;
+        };
+        if (api!=null){
+            api.setName(apiName);
+            api.setActive((Boolean) getUserLocationAPIDocument(email,locationName,apiName).getData().get("active"));
+        }
+        return api;
     }
 
     private QueryDocumentSnapshot getUserDocument(String email) throws IncorrectUserException {
@@ -346,11 +360,7 @@ public class CRUDFireBase {
         if (document==null){
             throw new NotSavedException();
         }
-        switch (api.getAPIName()) {
-            case "NewsAPI" -> document.getReference().update("news_api_active", !api.getIsActive());
-            case "OpenWeather" -> document.getReference().update("open_weather_active", !api.getIsActive());
-            case "TicketMaster" -> document.getReference().update("ticket_master_active", !api.getIsActive());
-        }
+        document.getReference().update("active",!api.getIsActive());
     }
 
     public void deleteAPIs() {
