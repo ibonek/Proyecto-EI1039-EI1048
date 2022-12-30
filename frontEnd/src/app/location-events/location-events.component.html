@@ -1,66 +1,74 @@
-<button class="buttonWhite" (click)="goApiList()"> List events subscriptions</button>
+<div class="upButtons">
+  <button class="buttonBlue" (click)="goApiList()"> List events subscriptions</button>
+  <app-filter></app-filter>
+</div>
 
-<app-filter></app-filter>
+<div *ngIf="this.mylocations.length == 1">
+  <app-location-form></app-location-form>
+</div>
+
 <div class="infoBody" *ngFor="let infoPakage of this.info; let i=index">
-  <div class="backgroundMain"><h1>{{mylocations[i+1]}}</h1></div>
-  <div class="timeBody">
-    <div *ngIf="infoPakage[0].length != 0">
-      <div class="backgroundMain"><h2>Weather</h2></div>
+  <div class="locationName"><h1>{{mylocations[i+1]}}</h1></div>
+  <div *ngIf="infoPakage[0].length != 0">
+    <div class="backgroundMain">
       <div class="timeContent"> {{castWeatherInfo(infoPakage[0][0])}}
         <div class="temperature">
-          <h1>{{this.weatherInfo.temperature}}ºC</h1>
           <img src="{{this.weatherInfo.imageURL}}">
+          <p>{{this.weatherInfo.temperature}}ºC</p>
         </div>
-        <div class="weatherData">
-          <div class="">
-            <h3>Humidity</h3>
-            <h3>{{this.weatherInfo.humidity}}</h3>
+        <div class="fecha">
+          <div class="separador"></div>
+          <div class="weatherData">
+            <div>
+              Humidity
+              <p>{{this.weatherInfo.humidity}}</p>
+            </div>
+            <div>
+              Weather State
+              <p>{{this.weatherInfo.weatherState}}</p>
+            </div>
+            <div>
+              Wind
+              <p>{{this.weatherInfo.wind}}</p>
+            </div>
           </div>
-          <div class="">
-            <h3>Weather State</h3>
-            <h3>{{this.weatherInfo.weatherState}}</h3>
-          </div>
-          <div class="">
-            <h3>Wind</h3>
-            <h3>{{this.weatherInfo.wind}}</h3>
-          </div>
-          <div class="">
-            <h3>Date</h3>
-            <h3>{{this.weatherInfo.date}}</h3>
-          </div>
+          <p>{{this.weatherInfo.date}}</p>
         </div>
       </div>
     </div>
   </div>
   <div class="extrasBody">
     <div *ngIf="infoPakage[2].length != 0">
-    <div class="newsBody" >
-
-      <div class="backgroundMain"><h3>News</h3></div>
-      <div class="new" *ngFor="let news of infoPakage[2]"> {{castNewsInfo(news)}}
-        <div>
-          <h3>{{this.newsInfo.title}}</h3>
-          <h4>{{this.newsInfo.author}}       {{this.newsInfo.date}}</h4>
-          <img class="newsImg" src="{{this.newsInfo.imageURL}}">
-          <p>{{this.newsInfo.description}}</p>
-          <a href="{{this.newsInfo.newsURL}}">More info</a>
+      <div class="backgroundMain">
+        <h2>News</h2>
+        <div class="new" *ngFor="let news of infoPakage[2]"> {{castNewsInfo(news)}}
+          <label class="titleLabel">{{this.newsInfo.title}}</label>
+          <div class="textContent">
+            <div class="imagesContent">
+              <img class="newsImg" src="{{this.newsInfo.imageURL}}">
+              <p>{{this.newsInfo.author}}</p>
+              <p>{{this.newsInfo.date}}</p>
+              <a href="{{this.newsInfo.newsURL}}">More info</a>
+            </div>
+            <p>{{this.newsInfo.description}}</p>
+          </div>
         </div>
-      </div>
       </div>
     </div>
 
     <div *ngIf="infoPakage[1].length != 0">
-
-    <div class="eventBody">
-      <div class="backgroundMain"><h3>Events</h3></div>
-      <div *ngFor="let event of infoPakage[1]"> {{castEventsInfo(event)}}
-        <div class="new">
-          <h3>{{this.eventInfo.eventName}}</h3>
-          <h4>{{this.eventInfo.place}}      {{this.eventInfo.date}}</h4>
-          <img class="newsImg" src="{{this.eventInfo.imageURL}}">
-          <p>{{this.eventInfo.address}}</p>
+      <div class="backgroundMain">
+        <h2>Events</h2>
+        <div *ngFor="let event of infoPakage[1]"> {{castEventsInfo(event)}}
+          <div class="events">
+            <div>
+              <label class="titleLabel">{{this.eventInfo.eventName}}</label>
+              <label>{{this.eventInfo.place}}      {{this.eventInfo.date}}</label>
+            </div>
+            <img class="eventImg" src="{{this.eventInfo.imageURL}}">
+            <p>{{this.eventInfo.address}}</p>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   </div>

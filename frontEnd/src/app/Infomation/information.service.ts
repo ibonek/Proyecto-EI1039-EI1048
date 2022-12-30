@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {APIInformation} from "./apiinformation";
 import {AppComponent} from "../app.component";
@@ -20,12 +20,17 @@ export class InformationService {
   }
 
   public findAll(): Observable<APIInformation[][][]>{
+    // @ts-ignore
+    const params = new HttpParams().set("email",sessionStorage.getItem("email"));
 
-    return this.http.get<APIInformation[][][]>(this.infoUrl);
+    return this.http.get<APIInformation[][][]>(this.infoUrl,{params});
 
   }
   public giveActiveLocationsNameList(){
-    return this.http.get<string[]>("http://localhost:8080/activeLocationsNames");
+    // @ts-ignore
+    const params = new HttpParams().set("email",sessionStorage.getItem("email"));
+
+    return this.http.get<string[]>("http://localhost:8080/activeLocationsNames",{params});
   }
 
   public setAppComponent(appComponent: LocationEventsComponent){
@@ -34,4 +39,5 @@ export class InformationService {
   public getFilter(){
     this.component.changesOnFilter();
   }
+
 }

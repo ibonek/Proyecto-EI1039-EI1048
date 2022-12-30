@@ -1,7 +1,12 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.IncorrectUserException;
 import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.modelo.user.User;
+import com.ei10391048.project.modelo.user.UserManager;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,10 +22,24 @@ import static java.util.Collections.addAll;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LocationManagerTest {
-    LocationManagerFacade manager =  LocationManager.getInstance();
+    static LocationManager manager;
+    static User user;
+    @BeforeAll
+    static void setUp() throws IncorrectUserException {
+        user = new User();
+        user.setEmail("test@gmail.com");
+        UserManager.getInstance().getUserList().add(user);
+        user = UserManager.getInstance().getUser("test@gmail.com");
+        manager = user.getLocationManager();
+    }
     @BeforeEach
-    void setUp(){
+    void clear(){
         manager.clearLocations();
+    }
+
+    @AfterAll
+    static void delete(){
+        UserManager.getInstance().deleteAllUsers();
     }
 
     /**
@@ -33,11 +52,10 @@ class LocationManagerTest {
     public void addLocationByNameValid() throws IncorrectLocationException, NotSavedException {
         String name = "Valencia";
 
-        LocationManagerFacade locations = LocationManager.getInstance();
-        int num = locations.getNumberOfLocations();
-        locations.addLocation(name);
+        int num = manager.getNumberOfLocations();
+        manager.addUserLocation(name);
 
-        assertEquals( locations.getNumberOfLocations(), num + 1);
+        assertEquals( manager.getNumberOfLocations(), num + 1);
     }
 
 
@@ -45,7 +63,7 @@ class LocationManagerTest {
     public void addLocationByNameInvalid() {
         String name = "";
         try {
-            manager.addLocation(name);
+            manager.addUserLocation(name);
             fail();
         } catch (IncorrectLocationException ex){
             int num = manager.getNumberOfLocations();
@@ -66,7 +84,7 @@ class LocationManagerTest {
     public void addLocationByCoordinatesValid() throws IncorrectLocationException, NotSavedException {
         Coordinates coordinates = new Coordinates(-0.3773900,39.4697500);
         int num = manager.getNumberOfLocations();
-        manager.addLocation(coordinates);
+        manager.addUserLocation(coordinates);
         assertEquals(manager.getNumberOfLocations(), num + 1);
     }
 
@@ -74,12 +92,11 @@ class LocationManagerTest {
     @ParameterizedTest
     @MethodSource("coords")
     public void addLocationByCoordinatesInvalid(double lat, double lon){
-        LocationManagerFacade locationManager = LocationManager.getInstance();
         try {
             Coordinates coordinates = new Coordinates(lat,lon);
-            locationManager.addLocation(coordinates);
+            manager.addUserLocation(coordinates);
         } catch (IncorrectLocationException ex){
-            int num = locationManager.getNumberOfLocations();
+            int num = manager.getNumberOfLocations();
             assertEquals(0,num);
         } catch (NotSavedException e) {
             fail();
@@ -100,8 +117,7 @@ class LocationManagerTest {
     @MethodSource("getName")
     void getLocationsNameValidCase(ArrayList<String> sol) throws IncorrectLocationException, NotSavedException {
         for (String name : sol) {
-            manager.addLocation(name);
-
+            manager.addUserLocation(name);
         }
 
         assertEquals(manager.getActiveLocationsName(), sol);
@@ -122,7 +138,7 @@ class LocationManagerTest {
     @Test
     void getLocationsNameInvalidCase() {
         manager.setLocations(new LinkedList<>());
-        assertEquals(manager.getLocations(), new LinkedList<Location>());
+        assertEquals(user.getMyLocations(), new LinkedList<Location>());
     }
 
 
@@ -130,7 +146,7 @@ class LocationManagerTest {
     @MethodSource("getActiveLocation")
     void getActiveLocationValidCase(ArrayList<String> sol) throws IncorrectLocationException,  NotSavedException {
         for (String name : sol) {
-            manager.addLocation(name);
+            manager.addUserLocation(name);
         }
         assertEquals(manager.getActiveLocationsName(), sol);
     }
@@ -151,7 +167,7 @@ class LocationManagerTest {
     @MethodSource("getActiveLocationInvalid")
     void getActiveLocationInvalidCase(ArrayList<String> input) throws IncorrectLocationException, NotSavedException {
         for (String name : input) {
-            manager.addLocation(name);
+            manager.addUserLocation(name);
         }
 
 
@@ -175,7 +191,7 @@ class LocationManagerTest {
     @Test
     void deleteLocationValidCase(){
         try {
-            manager.addLocation("Valencia");
+            manager.addUserLocation("Valencia");
             manager.deleteLocation("Valencia");
             assertTrue(true);
         } catch (IncorrectLocationException e) {

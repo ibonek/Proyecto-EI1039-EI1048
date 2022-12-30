@@ -1,10 +1,11 @@
-@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 body {
-  background: #303030;
+
+  background: image("assets/images/fondo.jpg");
   padding-top: 4rem;
   margin: 0;
-  font-family: Arial, serif;
+  font-family: Oswald, serif;
 }
 
 app-top-bar{
@@ -17,10 +18,23 @@ app-top-bar{
 .buttonWhite{
   background: white;
   border: none;
-  color: #c2185b;
-  padding: 0.5rem 1rem;
+  color: #2ab2b9;
+  padding: 0.8rem 1rem;
   font-weight: bold;
   font-size: medium;
-  box-shadow: 0.1rem 0.1rem 0 #303030;
-  border-radius: 2px;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
+  border-radius: 7px;
+  height: fit-content;
+}
+.buttonBlue{
+  background: #2ab2b9;
+  border: none;
+  color: white;
+  padding: 0.8rem 1rem;
+  font-weight: bold;
+  font-size: medium;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
+  border-radius: 7px;
+  height: fit-content;
+
 }

@@ -16,6 +16,7 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (sessionStorage.getItem("email")!=null)
     this.informationService.giveActiveLocationsNameList().subscribe(data=>{
       this.filterList = data;
     });

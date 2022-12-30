@@ -1,8 +1,11 @@
 package com.ei10391048.project.controlador;
 import com.ei10391048.project.exception.IncorrectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.IncorrectUserException;
 import com.ei10391048.project.modelo.*;
 import com.ei10391048.project.modelo.api.API;
+import com.ei10391048.project.modelo.user.UserFacade;
+import com.ei10391048.project.modelo.user.UserManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -12,21 +15,23 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class LocationController {
 
-
     public Boolean confirmation=null;
 
     @PostMapping("/addLocation")
-    public void createLocation(@RequestBody String location) {
+    public void createLocation(@RequestBody String body) {
+        String[] aux = body.split("#");
+        String location = aux[1];
+        String email = aux[0];
         try {
         location = location.trim();
-        LocationManagerFacade locationManager = LocationManager.getInstance();
+        UserFacade user = UserManager.getInstance().getUser(email);
         if (InputValidator.isCoordinates(location)) {
             double[] coordinateInput = InputValidator.formatingInputCoords(location);
             Coordinates coordinates = new Coordinates(coordinateInput[0], coordinateInput[1]);
-            locationManager.addLocation(coordinates);
+            user.addUserLocation(coordinates);
         } else {
             location = InputValidator.formatingInputName(location);
-            locationManager.addLocation(location);
+            user.addUserLocation(location);
 
         }
             confirmation = true;
@@ -34,6 +39,7 @@ public class LocationController {
             confirmation = false;
         }
     }
+
 
     @GetMapping("/addLocation")
     public Boolean giveConfirmation(){
@@ -48,16 +54,19 @@ public class LocationController {
     }
 
     @GetMapping("/giveLocations")
-    public List<Location> getLocationList() {
-        LocationManagerFacade manager = LocationManager.getInstance();
-        return manager.getLocations();
+    public List<Location> getLocationList(@RequestParam String email) throws IncorrectUserException {
+        UserFacade user = UserManager.getInstance().getUser(email);
+        return user.getMyLocations();
     }
 
     @PostMapping("/changeActiveState")
-    public void changeActiveState(@RequestBody String location) throws IncorrectLocationException {
-        LocationManagerFacade manager = LocationManager.getInstance();
+    public void changeActiveState(@RequestBody String body) throws IncorrectLocationException, IncorrectUserException {
+        String[] aux = body.split("#");
+        String location = aux[1];
+        String email = aux[0];
+        UserFacade user = UserManager.getInstance().getUser(email);
         try {
-            Location loc = manager.getLocation(location);
+            Location loc = user.getLocationManager().getLocation(location);
             loc.setActive(!loc.getIsActive());
         } catch (IncorrectLocationException e) {
             throw new IncorrectLocationException();
@@ -65,30 +74,40 @@ public class LocationController {
     }
 
     @PostMapping("/changeAlias")
-    public void changeAlias(@RequestBody String alias) throws IncorrectLocationException, IncorrectAliasException {
-        LocationManagerFacade manager = LocationManager.getInstance();
+    public void changeAlias(@RequestBody String body) throws IncorrectLocationException, IncorrectAliasException, IncorrectUserException {
+        String[] aux = body.split("#");
+
+        String name = aux[1];
+        String alias = aux[2];
+        String email = aux[0];
+        UserFacade user = UserManager.getInstance().getUser(email);
         try {
-            String[] vec = alias.split("#");
-            Location location = manager.getLocation(vec[0]);
-            location.setAlias(vec[1]);
+            Location location = user.getLocation(name);
+            location.setAlias(alias);
         } catch ( IncorrectAliasException e) {
             throw new IncorrectAliasException();
         }
     }
 
     @PostMapping("/deleteLocation")
-    public void deleteLocation(@RequestBody String location) throws IncorrectLocationException {
-        LocationManagerFacade manager = LocationManager.getInstance();
+    public void deleteLocation(@RequestBody String body) throws IncorrectLocationException, IncorrectUserException {
+        String[] aux = body.split("#");
+
+        String location = aux[1];
+        String email = aux[0];
+        UserFacade user =  UserManager.getInstance().getUser(email);
+
         try {
-            manager.deleteLocation(location);
+            user.deleteLocation(location);
         } catch (IncorrectLocationException e) {
             throw new IncorrectLocationException();
         }
     }
 
     @GetMapping("/giveAvailableApis")
-    public List<API> giveAvailableApis() {
-        InformationLocationManagerFacade manager = InformationLocationManager.getInstance();
-        return manager.getApis();
+    public List<API> giveAvailableApis(@RequestParam String email) throws IncorrectUserException {
+        UserFacade user = UserManager.getInstance().getUser(email);
+
+        return user.getApis();
     }
 }

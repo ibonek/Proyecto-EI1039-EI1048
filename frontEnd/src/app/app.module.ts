@@ -16,6 +16,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import {RouterModule, RouterOutlet, Routes} from "@angular/router";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
+import {UserService} from "./user.service";
 
 import Swal from "sweetalert2"
 
@@ -30,6 +31,7 @@ import { LocationListComponent } from './location-list/location-list.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { LocationEventsComponent } from './location-events/location-events.component';
 import { ApiListComponent } from './api-list/api-list.component';
+import { UserComponent } from './userRegister/user.component';
 //import { LocationFromComponent } from './location-from/location-from.component';
 
 const routes: Routes=[];
@@ -41,7 +43,8 @@ const routes: Routes=[];
     FilterComponent,
     LocationListComponent,
     LocationEventsComponent,
-    ApiListComponent
+    ApiListComponent,
+    UserComponent
   ],
     imports: [
       BrowserAnimationsModule,
@@ -61,10 +64,10 @@ const routes: Routes=[];
       MatSelectModule,
       MatMenuModule,
       MatSlideToggleModule,
-      ReactiveFormsModule
     ],
   providers: [FindingByNameService,
-              InformationService],
+              InformationService,
+              UserService],
   exports:[
     RouterModule
   ],

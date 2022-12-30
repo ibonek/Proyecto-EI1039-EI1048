@@ -7,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopBarComponent implements OnInit {
 
+  email!:string | null;
   constructor() { }
 
   ngOnInit(): void {
+    this.email=sessionStorage.getItem("email");
   }
 
 }
