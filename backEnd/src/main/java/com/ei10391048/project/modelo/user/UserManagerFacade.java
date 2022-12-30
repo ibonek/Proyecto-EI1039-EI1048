@@ -6,8 +6,7 @@ import com.ei10391048.project.exception.IncorrectUserException;
 public interface UserManagerFacade {
     User getUser(String email) throws IncorrectUserException;
 
-    User registerUser(String email, String password) throws IncorrectUserException, AlreadyExistentUser;
-
+    void registerUser(String email) throws IncorrectUserException, AlreadyExistentUser;
 
     int getNumberOfUsers();
 

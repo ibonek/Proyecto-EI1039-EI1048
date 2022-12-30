@@ -16,9 +16,6 @@ public interface UserFacade {
     String getEmail();
     void setEmail(String email);
 
-    String getPassword();
-    void setPassword(String password);
-
     LocationManager getLocationManager();
 
     InformationLocationManager getInformationLocationManager();

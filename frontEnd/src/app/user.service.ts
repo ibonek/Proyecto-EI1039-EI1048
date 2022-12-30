@@ -6,8 +6,8 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  public register(email: string , password: string){
-    return this.http.post<string>("http://localhost:8080/registerUser",email+"#"+password);
+  public register(email: string){
+    return this.http.post<string>("http://localhost:8080/registerUser",email);
   }
 
   public getConfirmation(){
@@ -18,4 +18,7 @@ export class UserService {
     return this.http.post<string>("http://localhost:8080/signOut",email)
   }
 
+  public signIn(email: string){
+    return this.http.post<string>("http://localhost:8080/signIn",email);
+  }
 }

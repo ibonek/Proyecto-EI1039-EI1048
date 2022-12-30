@@ -11,9 +11,6 @@ import com.ei10391048.project.modelo.user.User;
 import com.ei10391048.project.modelo.user.UserFacade;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.UserRecord;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -38,27 +35,18 @@ public class CRUDFireBase {
         }
     }
 
-    public void signUp(String email, String password) throws IncorrectUserException, AlreadyExistentUser {
-        if (email == null || password == null) {
+    /*private void logIn(String email) throws IncorrectUserException {
+        if (email == null) {
             throw new IncorrectUserException();
         }
-        UserRecord.CreateRequest request = new UserRecord.CreateRequest()
-                .setUid(email)
-                .setEmail(email)
-                .setEmailVerified(false)
-                .setPassword(password)
-                .setDisabled(false);
         try {
-            FirebaseAuth.getInstance().createUser(request);
-            addUser(email);
-
-        } catch (FirebaseAuthException | InterruptedException e) {
+        } catch (FirebaseAuthException e) {
             e.printStackTrace();
-            throw new AlreadyExistentUser();
+            throw new IncorrectUserException();
         }
-    }
+    }*/
 
-    private void addUser(String email) throws IncorrectUserException, InterruptedException {
+    public void addUser(String email) throws IncorrectUserException, InterruptedException {
         if (email == null) {
             throw new IncorrectUserException();
         }
@@ -105,11 +93,11 @@ public class CRUDFireBase {
         if (email==null){
             throw new IncorrectUserException();
         }
-        try {
+        /*try {
             FirebaseAuth.getInstance().deleteUser(email);
         } catch (FirebaseAuthException e) {
             throw new IncorrectUserException();
-        }
+        }*/
         QueryDocumentSnapshot document;
         try {
             document = getUserDocument(email);
@@ -135,9 +123,9 @@ public class CRUDFireBase {
                 deleteUserLocations(document.getId());
                 deleteUserAPIs(document.getId());
                 document.getReference().delete();
-                FirebaseAuth.getInstance().deleteUser(document.getData().get("email").toString());
+                //FirebaseAuth.getInstance().deleteUser(document.getData().get("email").toString());
             }
-        } catch (InterruptedException | ExecutionException | FirebaseAuthException e) {
+        } catch (InterruptedException | ExecutionException /*| FirebaseAuthException*/ e) {
             throw new IncorrectUserException();
         }
     }

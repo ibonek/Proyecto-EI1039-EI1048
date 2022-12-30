@@ -14,19 +14,16 @@ public class User implements UserFacade{
 
     private String email;
 
-    private String password;
-
     private LocationManager locationManager;
 
     private InformationLocationManager informationLocationManager;
 
-    private CRUDFireBase crudFireBase;
+    private final CRUDFireBase crudFireBase;
 
     @Override
     public String toString() {
         return "User{" +
                 "email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 
@@ -59,14 +56,6 @@ public class User implements UserFacade{
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public LocationManager getLocationManager() {
