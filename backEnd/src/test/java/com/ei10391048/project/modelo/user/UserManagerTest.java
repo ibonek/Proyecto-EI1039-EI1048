@@ -42,7 +42,7 @@ public class UserManagerTest {
                 );
     }
     @Test
-    public void signOutUserValidTest() throws IncorrectUserException, AlreadyExistentUser {
+    public void signOutUserValidTest() throws IncorrectUserException{
         User user = new User();
         user.setEmail("signOutTest@gmail.com");
         user.setPassword("123456");

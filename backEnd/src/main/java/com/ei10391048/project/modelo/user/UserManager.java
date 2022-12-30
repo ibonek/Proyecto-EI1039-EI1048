@@ -74,6 +74,6 @@ public class UserManager implements UserManagerFacade {
     }
 
     public void signOut(String email)throws IncorrectUserException{
-
+        userList.remove(getUser(email));
     }
 }
