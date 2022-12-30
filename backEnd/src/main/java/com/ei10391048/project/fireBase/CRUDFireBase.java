@@ -35,17 +35,6 @@ public class CRUDFireBase {
         }
     }
 
-    /*private void logIn(String email) throws IncorrectUserException {
-        if (email == null) {
-            throw new IncorrectUserException();
-        }
-        try {
-        } catch (FirebaseAuthException e) {
-            e.printStackTrace();
-            throw new IncorrectUserException();
-        }
-    }*/
-
     public void addUser(String email) throws IncorrectUserException, InterruptedException {
         if (email == null) {
             throw new IncorrectUserException();
@@ -64,6 +53,9 @@ public class CRUDFireBase {
             document = getUserDocument(email);
         } catch (IncorrectUserException e) {
             throw new RuntimeException(e);
+        }
+        if (document == null) {
+            return null;
         }
         UserFacade user = new User();
         user.setEmail((String) document.getData().get("email"));

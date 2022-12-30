@@ -1,0 +1,31 @@
+.loginBody{
+  background: #2ab2b9;
+  width: 20rem;
+  margin: 3rem auto;
+  padding: 1rem 1rem 2rem;
+  color: white;
+  text-align: center;
+  border-radius: 7px;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
+}
+
+h1{
+  line-height: 0;
+}
+
+.fromReg{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0.5rem;
+  padding: 1rem 2rem 0;
+}
+
+input{
+  font-size:medium;
+  padding: 0.8rem 0.4rem;
+  border: none;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
+  border-radius: 7px;
+
+}

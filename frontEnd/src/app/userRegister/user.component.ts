@@ -3,7 +3,19 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../user.service";
 import Swal from "sweetalert2";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
+import { initializeApp } from "firebase/app";
+const firebaseConfig = {
+  apiKey: "AIzaSyDrfr90AsmMD6MjooOQ42eTEfxrUTYE9Fo",
+  authDomain: "proyectoei1039-1048.firebaseapp.com",
+  databaseURL: "https://proyectoei1039-1048-default-rtdb.firebaseio.com",
+  projectId: "proyectoei1039-1048",
+  storageBucket: "proyectoei1039-1048.appspot.com",
+  messagingSenderId: "462858620301",
+  appId: "1:462858620301:web:143a2137db1ffd69c9c1c4",
+  measurementId: "G-B186TDEPPE"
+}
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -42,31 +54,19 @@ export class UserComponent implements OnInit {
       })
       return;
     } else {
-      const auth = getAuth();
       createUserWithEmailAndPassword(auth, this.email, this.password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
           if (user) {
             sessionStorage.setItem("email", this.email);
-            Swal.fire({
-              title: 'Welcome!',
-              text: 'You are now registered in LookAPP!',
-              icon: 'success',
-              showCancelButton: false,
-              confirmButtonColor: '#2ab2b9',
-              confirmButtonText: 'Ok'
-            }).then((result => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            }))
-            this.userService.register(this.email, this.password).subscribe(data => {
+            window.location.reload();
+            this.userService.register(this.email).subscribe(data => {
               console.log(data);
             });
           }
         })
-        .catch((error) => {
+        .catch(() => {
           Swal.fire({
             title: 'Ooops',
             text: "The email "+ this.email +" is already registered",
@@ -76,23 +76,6 @@ export class UserComponent implements OnInit {
             confirmButtonText: 'Ok'
           })
         });
-    }
-  }
-
-  signIn() {
-    if (!this.email.includes('@') || !this.email.includes('.')) {
-      Swal.fire({
-        title: 'Ooops',
-        text: "That email does not have the correct format (Format: "
-      });
-    } else {
-      this.userService.signIn(this.email, this.password).subscribe(data => {
-        this.userService.getConfirmation().subscribe(confirmation => {
-          if (confirmation) {
-            sessionStorage.setItem("email", this.email);
-          }
-        })
-      });
     }
   }
 }

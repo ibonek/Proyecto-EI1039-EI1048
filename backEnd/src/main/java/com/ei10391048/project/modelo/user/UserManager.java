@@ -73,6 +73,11 @@ public class UserManager implements UserManagerFacade {
         }
     }
 
+    @Override
+    public void signIn(String email) {
+        crudFireBase.getUser(email);
+    }
+
     public void signOut(String email)throws IncorrectUserException{
         userList.remove(getUser(email));
     }

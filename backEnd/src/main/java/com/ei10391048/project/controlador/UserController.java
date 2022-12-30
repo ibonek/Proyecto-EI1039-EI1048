@@ -8,29 +8,21 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
-    public Boolean confirmation=null;
-
-
     @PostMapping("/registerUser")
-    public void registerUser(@RequestBody String body)  {
-        String email = body.toLowerCase();
-
+    public void registerUser(@RequestBody String email)  {
         UserManager manager = UserManager.getInstance();
-        confirmation=true;
         try {
             manager.registerUser(email);
         } catch (IncorrectUserException | AlreadyExistentUser ex){
-            ex.printStackTrace();
-            confirmation=false;
+            throw new RuntimeException(ex);
         }
     }
 
-    @GetMapping("/registerUser")
-    public Boolean giveConfirmation(){
-        while  (confirmation ==null);
-        return confirmation;
+    @PostMapping("signIn")
+    public void signIn(@RequestBody String email)  {
+        UserManager manager = UserManager.getInstance();
+        manager.signIn(email);
     }
-
 
     @PostMapping("/signOut")
     public void signOut(@RequestBody String email) throws IncorrectUserException {
