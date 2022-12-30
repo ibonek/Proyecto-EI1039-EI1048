@@ -319,6 +319,9 @@ public class CRUDFireBase {
             throw new IncorrectUserException();
         }
         QueryDocumentSnapshot docEmail = getUserDocument(email);
+        if (docEmail == null) {
+            throw new IncorrectUserException();
+        }
         List<QueryDocumentSnapshot> documents;
         try {
             documents = docEmail.getReference().collection("locations").get().get().getDocuments();
