@@ -8,10 +8,7 @@ import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.api.OpenWeather;
 import com.ei10391048.project.modelo.user.User;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,24 +24,31 @@ public class FireBaseTest {
     private static User user;
 
     @BeforeAll
-    public static void setUp() throws IncorrectUserException, AlreadyExistentUser {
+    public static void setUp() {
         user = new User();
-        user.setEmail("test9@gmail.com");
+        user.setEmail("test@gmail.com");
         user.setPassword("123456");
         crudFireBase = new CRUDFireBase();
-
-        //crudFireBase.delete;
+        try {
+            crudFireBase.signUp(user.getEmail(), user.getPassword());
+            //sleep(1000);
+        } catch (IncorrectUserException | AlreadyExistentUser e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @AfterAll
     public static void delete(){
-
+        try {
+            crudFireBase.deleteUsers();
+        } catch (IncorrectUserException e) {
+            throw new RuntimeException(e);
+        }
     }
     @Test
     public void signUpValid() {
         try {
-            crudFireBase= new CRUDFireBase();
-            crudFireBase.signUp(user.getEmail(),user.getPassword());
+            crudFireBase.signUp("test1@gmail.com",user.getPassword());
             assertTrue(true);
         } catch (IncorrectUserException | AlreadyExistentUser e) {
             fail();
@@ -52,24 +56,51 @@ public class FireBaseTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideInvalidEmails")
+    @MethodSource("provideInvalidUsers")
     public void signUpInvalid(String email, String password) {
-        user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
         try {
-            crudFireBase.signUp(user.getEmail(), user.getPassword());
+            crudFireBase.signUp(email, password);
             fail();
         } catch (IncorrectUserException | AlreadyExistentUser e) {
             assertTrue(true);
         }
     }
 
+    @Test
+    public void deleteUserValid() {
+        try {
+            crudFireBase.signUp("test4@gmail.com",user.getPassword());
+            crudFireBase.deleteUser("test4@gmail.com");
+            assertTrue(true);
+        } catch (IncorrectUserException e) {
+            fail();
+        } catch (AlreadyExistentUser e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideInvalidEmails")
+    public void deleteUserInvalid(String email) {
+        try {
+            crudFireBase.deleteUser(email);
+            fail();
+        } catch (IncorrectUserException e) {
+            assertTrue(true);
+        }
+    }
+
     public static Stream<Arguments> provideInvalidEmails() {
         return Stream.of(
+                Arguments.of((Object) null),
+                Arguments.of("test3@gmail.com")
+        );
+    }
+
+    public static Stream<Arguments> provideInvalidUsers() {
+        return Stream.of(
                 Arguments.of(null, "123456"),
-                Arguments.of("al394886@uji.es", "123456"),
-                Arguments.of("al394887@uji.es", null)
+                Arguments.of("test@gmail.com", null)
         );
     }
 
@@ -138,20 +169,18 @@ public class FireBaseTest {
         }
     }
 
-    @Test
-    public void deleteUserLocationsFromBBDDInvalid(){
+    @ParameterizedTest
+    @MethodSource("provideInvalidEmails")
+    public void deleteUserLocationsFromBBDDInvalid(String email){
         try {
-            crudFireBase.deleteUserLocations(user.getEmail());
-            assertNull(crudFireBase.getUserLocations(user.getEmail()));
-        } catch (IncorrectLocationException e) {
-            fail();
+            crudFireBase.deleteUserLocations(email);
         } catch (IncorrectUserException e) {
-            throw new RuntimeException(e);
+            assertTrue(true);
         }
     }
 
     @Test
-    public void deleteLocationValid() {
+    public void deleteUserLocationValid() {
         Location location = new Location("Teruel", 40.345, -0.6667);
         Location location1 = new Location("Benicarló", 39.4699, -0.3774);
         try {
@@ -189,11 +218,9 @@ public class FireBaseTest {
 
     @Test
     public void getUserLocationsFromBBDDValid(){
-        Location location = new Location("Teruel", 40.345, -0.6667);
         try {
-            crudFireBase.addUserLocation(location, user.getEmail());
             assertEquals(1, crudFireBase.getUserLocations(user.getEmail()).size());
-        } catch (NotSavedException | IncorrectLocationException e) {
+        } catch (IncorrectLocationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -353,9 +380,4 @@ public class FireBaseTest {
                 Arguments.of(null, "Teruel")
         );
     }
-/*
-    @AfterAll
-    public static void tearDown() throws ExecutionException, InterruptedException {
-        crudFireBase.deleteLocations();
-    }*/
 }

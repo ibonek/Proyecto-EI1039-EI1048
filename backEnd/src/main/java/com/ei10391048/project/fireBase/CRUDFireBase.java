@@ -14,7 +14,6 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
-import org.apache.tomcat.jni.Time;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -44,6 +43,7 @@ public class CRUDFireBase {
             throw new IncorrectUserException();
         }
         UserRecord.CreateRequest request = new UserRecord.CreateRequest()
+                .setUid(email)
                 .setEmail(email)
                 .setEmailVerified(false)
                 .setPassword(password)
@@ -63,8 +63,83 @@ public class CRUDFireBase {
             throw new IncorrectUserException();
         }
         db.collection("users").document(email).set(Map.of("email", email));
-        sleep(250);
+        sleep(1000);
         addAPIs(getUserDocument(email));
+    }
+
+    public UserFacade getUser(String email) {
+        if (email==null){
+            return null;
+        }
+        QueryDocumentSnapshot document;
+        try {
+            document = getUserDocument(email);
+        } catch (IncorrectUserException e) {
+            throw new RuntimeException(e);
+        }
+        UserFacade user = new User();
+        user.setEmail((String) document.getData().get("email"));
+        return user;
+    }
+
+    public List<User> getUsers() {
+        try {
+            ApiFuture<QuerySnapshot> future = db.collection("users").get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            if (documents.isEmpty()) {
+                return new ArrayList<>();
+            }
+            List<User> users = new ArrayList<>();
+            for (QueryDocumentSnapshot document : documents) {
+                User user = new User();
+                user.setEmail((String) document.getData().get("email"));
+                users.add(user);
+            }
+            return users;
+        } catch (InterruptedException | ExecutionException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public void deleteUser(String email) throws IncorrectUserException {
+        if (email==null){
+            throw new IncorrectUserException();
+        }
+        try {
+            FirebaseAuth.getInstance().deleteUser(email);
+        } catch (FirebaseAuthException e) {
+            throw new IncorrectUserException();
+        }
+        QueryDocumentSnapshot document;
+        try {
+            document = getUserDocument(email);
+        } catch (IncorrectUserException e) {
+            throw new IncorrectUserException();
+        }
+        if (document==null){
+            return;
+        }
+        deleteUserAPIs(email);
+        deleteUserLocations(email);
+        document.getReference().delete();
+    }
+
+    public void deleteUsers() throws IncorrectUserException {
+        try {
+            ApiFuture<QuerySnapshot> future = db.collection("users").get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            if (documents.isEmpty()) {
+                return;
+            }
+            for (QueryDocumentSnapshot document : documents) {
+                deleteUserLocations(document.getId());
+                deleteUserAPIs(document.getId());
+                document.getReference().delete();
+                FirebaseAuth.getInstance().deleteUser(document.getData().get("email").toString());
+            }
+        } catch (InterruptedException | ExecutionException | FirebaseAuthException e) {
+            throw new IncorrectUserException();
+        }
     }
 
     private void addAPIs(QueryDocumentSnapshot doc){
@@ -203,7 +278,7 @@ public class CRUDFireBase {
         if (locationName==null || email==null){
             return null;
         }
-        QueryDocumentSnapshot docEmail= null;
+        QueryDocumentSnapshot docEmail;
         try {
             docEmail = getUserDocument(email);
         } catch (IncorrectUserException e) {
@@ -244,20 +319,23 @@ public class CRUDFireBase {
             throw new IncorrectUserException();
         }
         QueryDocumentSnapshot docEmail = getUserDocument(email);
-        List<QueryDocumentSnapshot> documents= null;
+        if (docEmail == null) {
+            throw new IncorrectUserException();
+        }
+        List<QueryDocumentSnapshot> documents;
         try {
             documents = docEmail.getReference().collection("locations").get().get().getDocuments();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
         for (QueryDocumentSnapshot document : documents) {
-            deletUserLocationAPIs(document);
+            deleteUserLocationAPIs(document);
             document.getReference().delete();
         }
     }
 
-    public void deletUserLocationAPIs(QueryDocumentSnapshot document){
-        List<QueryDocumentSnapshot> documents= null;
+    private void deleteUserLocationAPIs(QueryDocumentSnapshot document){
+        List<QueryDocumentSnapshot> documents;
         try {
             documents = document.getReference().collection("apis").get().get().getDocuments();
         } catch (InterruptedException | ExecutionException e) {
@@ -265,24 +343,6 @@ public class CRUDFireBase {
         }
         for (QueryDocumentSnapshot doc : documents) {
             doc.getReference().delete();
-        }
-    }
-    public void deletUserLocationAPIs(String email, String locationName) throws IncorrectLocationException {
-        if (locationName==null || email==null){
-            throw new IncorrectLocationException();
-        }
-        QueryDocumentSnapshot locDoc=getLocationDocument(email,locationName);
-        if (locDoc==null){
-            throw new IncorrectLocationException();
-        }
-        List<QueryDocumentSnapshot> documents= null;
-        try {
-            documents = locDoc.getReference().collection("apis").get().get().getDocuments();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-        for (QueryDocumentSnapshot document : documents) {
-            document.getReference().delete();
         }
     }
 
@@ -384,9 +444,12 @@ public class CRUDFireBase {
         document.getReference().update("active",!api.getIsActive());
     }
 
-    public void deleteAPIs() {
+    public void deleteUserAPIs(String email) throws IncorrectUserException {
+        if (email == null) {
+            throw new IncorrectUserException();
+        }
         try {
-            ApiFuture<QuerySnapshot> future = db.collection("apis").get();
+            ApiFuture<QuerySnapshot> future = getUserDocument(email).getReference().collection("apis").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
             for (QueryDocumentSnapshot document : documents) {
                 document.getReference().delete();
@@ -434,66 +497,7 @@ public class CRUDFireBase {
         if (document==null){
             throw new IncorrectLocationException();
         }
-        deletUserLocationAPIs(document);
+        deleteUserLocationAPIs(document);
         document.getReference().delete();
-    }
-
-    public void deleteUser(String email) {
-        if (email==null){
-            return;
-        }
-        QueryDocumentSnapshot document;
-        try {
-            document = getUserDocument(email);
-        } catch (IncorrectUserException e) {
-            throw new RuntimeException(e);
-        }
-        document.getReference().delete();
-    }
-
-    public UserFacade getUser(String email) {
-        if (email==null){
-            return null;
-        }
-        QueryDocumentSnapshot document;
-        try {
-            document = getUserDocument(email);
-        } catch (IncorrectUserException e) {
-            throw new RuntimeException(e);
-        }
-        UserFacade user = new User();
-        user.setEmail((String) document.getData().get("email"));
-        return user;
-    }
-
-    public List<User> getUsers() {
-        try {
-            ApiFuture<QuerySnapshot> future = db.collection("users").get();
-            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-            if (documents.isEmpty()) {
-                return new ArrayList<>();
-            }
-            List<User> users = new ArrayList<>();
-            for (QueryDocumentSnapshot document : documents) {
-                User user = new User();
-                user.setEmail((String) document.getData().get("email"));
-                users.add(user);
-            }
-            return users;
-        } catch (InterruptedException | ExecutionException e) {
-            return new ArrayList<>();
-        }
-    }
-
-    public void deleteAllUsers() {
-        try {
-            ApiFuture<QuerySnapshot> future = db.collection("users").get();
-            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-            for (QueryDocumentSnapshot document : documents) {
-                document.getReference().delete();
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

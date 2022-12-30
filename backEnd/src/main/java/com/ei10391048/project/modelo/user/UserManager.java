@@ -12,7 +12,7 @@ public class UserManager implements UserManagerFacade {
 
     private final List<User> userList;
 
-    private CRUDFireBase crudFireBase;
+    private final CRUDFireBase crudFireBase;
 
     private UserManager(){
         crudFireBase=CRUDFireBase.getInstance();
@@ -70,7 +70,11 @@ public class UserManager implements UserManagerFacade {
     @Override
     public void deleteAllUsers() {
         userList.clear();
-        crudFireBase.deleteAllUsers();
+        try {
+            crudFireBase.deleteUsers();
+        } catch (IncorrectUserException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void signOut(String email)throws IncorrectUserException{
