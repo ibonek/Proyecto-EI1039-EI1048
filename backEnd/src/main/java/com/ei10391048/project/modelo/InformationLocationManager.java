@@ -15,6 +15,11 @@ public class InformationLocationManager {
     private List<API> apiList;
     //private final CRUDFireBase crudFireBase;
     public InformationLocationManager() {
+        apiList = new LinkedList<>();
+        apiList.add(APIsNames.WEATHER.getOrder(), new OpenWeather());
+        apiList.add(APIsNames.EVENTS.getOrder(), new TicketMaster());
+        apiList.add(APIsNames.NEWS.getOrder(), new NewsAPI());
+
         //crudFireBase = CRUDFireBase.getInstance();
     }
 

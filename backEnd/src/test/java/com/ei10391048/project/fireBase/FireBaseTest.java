@@ -8,6 +8,8 @@ import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.api.OpenWeather;
 import com.ei10391048.project.modelo.user.User;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,21 +26,27 @@ public class FireBaseTest {
     private static CRUDFireBase crudFireBase;
     private static User user;
 
-    @BeforeEach
-    public void setUp() throws IncorrectUserException {
+    @BeforeAll
+    public static void setUp() throws IncorrectUserException, AlreadyExistentUser {
         user = new User();
-        user.setEmail("al394885@uji.es");
+        user.setEmail("test9@gmail.com");
         user.setPassword("123456");
         crudFireBase = new CRUDFireBase();
-        crudFireBase.deleteUserLocations(user.getEmail());
+
         //crudFireBase.delete;
     }
 
+    @AfterAll
+    public static void delete(){
+
+    }
     @Test
     public void signUpValid() {
         try {
             crudFireBase= new CRUDFireBase();
-            crudFireBase.signUp("test@uji.es","123456");
+            crudFireBase.signUp(user.getEmail(),user.getPassword());
+            crudFireBase.addUser(user.getEmail());
+
             assertTrue(true);
         } catch (IncorrectUserException | AlreadyExistentUser e) {
             fail();
@@ -282,8 +290,9 @@ public class FireBaseTest {
     public void deactivateAPIValid(){
         API api= new OpenWeather();
         try {
+            api.setActive(false);
             crudFireBase.changeAPIStatus(user.getEmail(),api);
-            assertFalse(crudFireBase.getAPI(user.getEmail(),api.getName()).getIsActive());
+            assertTrue(crudFireBase.getAPI(user.getEmail(),api.getName()).getIsActive());
         } catch (NotSavedException exception) {
             fail();
         }

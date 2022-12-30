@@ -19,6 +19,10 @@ public class UserManager implements UserManagerFacade {
         userList = crudFireBase.getUsers();
     }
 
+    public List<User> getUserList() {
+        return userList;
+    }
+
     public static UserManager getInstance(){
         if (userManager == null){
             userManager = new UserManager();
