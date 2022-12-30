@@ -72,4 +72,8 @@ public class UserManager implements UserManagerFacade {
         userList.clear();
         crudFireBase.deleteAllUsers();
     }
+
+    public void signOut(String email)throws IncorrectUserException{
+
+    }
 }
