@@ -14,4 +14,8 @@ export class UserService {
     return this.http.get<Boolean>("http://localhost:8080/registerUser");
   }
 
+  public signOut(email: string | null){
+    return this.http.post<string>("http://localhost:8080/signOut",email)
+  }
+
 }
