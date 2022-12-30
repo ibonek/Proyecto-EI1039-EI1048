@@ -22,6 +22,14 @@ public class User implements UserFacade{
 
     private CRUDFireBase crudFireBase;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
     public User(String email) {
         this.email = email;
         crudFireBase = new CRUDFireBase();

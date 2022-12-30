@@ -106,7 +106,6 @@ public class LocationController {
 
     @GetMapping("/giveAvailableApis")
     public List<API> giveAvailableApis(@RequestParam String email) throws IncorrectUserException {
-        System.out.println("aaaaa");
         UserFacade user = UserManager.getInstance().getUser(email);
 
         return user.getApis();

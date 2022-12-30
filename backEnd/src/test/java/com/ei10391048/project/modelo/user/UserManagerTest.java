@@ -1,5 +1,6 @@
 package com.ei10391048.project.modelo.user;
 
+import com.ei10391048.project.exception.AlreadyExistentUser;
 import com.ei10391048.project.exception.IncorrectUserException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserManagerTest {
     UserManager manager = UserManager.getInstance();
     @Test
-    public void registerValidUserTest() throws IncorrectUserException {
+    public void registerValidUserTest() throws IncorrectUserException, AlreadyExistentUser {
         int num = manager.getNumberOfUsers();
         manager.registerUser("test@gmail.com","123456");
         assertEquals(num+1, manager.getNumberOfUsers());
@@ -25,7 +26,7 @@ public class UserManagerTest {
         int num = manager.getNumberOfUsers();
         try {
             manager.registerUser(email,password);
-        }catch (IncorrectUserException ex){
+        }catch (IncorrectUserException | AlreadyExistentUser ex){
             assertEquals(num,manager.getNumberOfUsers());
         }
     }

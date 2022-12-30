@@ -14,9 +14,12 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import org.apache.tomcat.jni.Time;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+
+import static java.lang.Thread.sleep;
 
 public class CRUDFireBase {
     private static Firestore db;
@@ -47,17 +50,20 @@ public class CRUDFireBase {
                 .setDisabled(false);
         try {
             FirebaseAuth.getInstance().createUser(request);
+            addUser(email);
 
-        } catch (FirebaseAuthException e) {
+        } catch (FirebaseAuthException | InterruptedException e) {
+            e.printStackTrace();
             throw new AlreadyExistentUser();
         }
     }
 
-    public void addUser(String email) throws IncorrectUserException {
+    private void addUser(String email) throws IncorrectUserException, InterruptedException {
         if (email == null) {
             throw new IncorrectUserException();
         }
         db.collection("users").document(email).set(Map.of("email", email));
+        sleep(250);
         addAPIs(getUserDocument(email));
     }
 
@@ -129,7 +135,6 @@ public class CRUDFireBase {
                 location.setCoordinates(coordinates);
                 location.setActive((Boolean) document.getData().get("active"));
                 locations.add(location);
-                System.out.println(location);
             }
             return locations;
         } catch (InterruptedException | ExecutionException e) {
@@ -183,7 +188,7 @@ public class CRUDFireBase {
         try {
             List<QueryDocumentSnapshot> documents = db.collection("users").get().get().getDocuments();
             for (QueryDocumentSnapshot document : documents) {
-                System.out.println(document.getData());
+
                 if (document.getData().get("email").equals(email)) {
                     return document;
                 }

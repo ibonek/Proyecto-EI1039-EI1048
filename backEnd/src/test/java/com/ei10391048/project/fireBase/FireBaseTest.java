@@ -45,8 +45,6 @@ public class FireBaseTest {
         try {
             crudFireBase= new CRUDFireBase();
             crudFireBase.signUp(user.getEmail(),user.getPassword());
-            crudFireBase.addUser(user.getEmail());
-
             assertTrue(true);
         } catch (IncorrectUserException | AlreadyExistentUser e) {
             fail();
@@ -75,15 +73,6 @@ public class FireBaseTest {
         );
     }
 
-    @Test
-    public void addUser() {
-        try {
-            crudFireBase.addUser(user.getEmail());
-            assertEquals(user.getEmail(), crudFireBase.getUser(user.getEmail()).getEmail());
-        } catch (IncorrectUserException e) {
-            fail();
-        }
-    }
     @Test
     public void addUserLocationToBBDDValid(){
         try {
