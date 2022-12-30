@@ -45,11 +45,21 @@ export class LoginComponent implements OnInit {
           if (user) {
             sessionStorage.setItem("email", this.email);
             window.location.reload();
+            this.userService.signIn(this.email).subscribe(data => {
+              console.log(data);
+            });
           }
-          this.userService.signIn(this.email).subscribe(data => {
-            console.log(data);
-          });
         })
+        .catch(() => {
+          Swal.fire({
+            title: 'Ooops',
+            text: "Wrong email or password",
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonColor: '#2ab2b9',
+            confirmButtonText: 'Ok'
+          })
+        });
     }
   }
 }
