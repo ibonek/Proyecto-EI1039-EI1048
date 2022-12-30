@@ -39,4 +39,9 @@ public class UserController {
     }
 
 
+    @PostMapping("/signOut")
+    public void signOut(@RequestBody String email) throws IncorrectUserException {
+        UserManager manager = UserManager.getInstance();
+        manager.signOut(email);
+    }
 }
