@@ -17,7 +17,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     if (sessionStorage.getItem("email")==null){
-      this.router.navigate(['/register']);    }
+      this.router.navigate(['/']);    }
   }
 
 }

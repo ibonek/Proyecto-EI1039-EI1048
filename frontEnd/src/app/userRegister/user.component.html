@@ -1,6 +1,6 @@
-<div class="register">
-  <form class="custom.form" method="post">
-    <h1>REGISTER</h1>
+<div class="register registerBody">
+  <h1>REGISTER</h1>
+  <form class="fromReg" method="post">
     <input
       type="email"
       [(ngModel)]="email"
@@ -13,6 +13,6 @@
       name="password"
       placeholder="Password"
       required="required"/>
-    <button type="submit" (click)="register()">REGISTER</button>
+    <button class="buttonWhite" type="submit" (click)="register()">REGISTER</button>
   </form>
 </div>

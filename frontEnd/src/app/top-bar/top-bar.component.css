@@ -18,3 +18,12 @@
   padding: 0;
 }
 
+.nameUser{
+  color: white;
+  font-weight: bold;
+}
+
+.mat-icon{
+  color: white !important;
+}
+

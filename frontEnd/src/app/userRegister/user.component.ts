@@ -30,11 +30,11 @@ export class UserComponent implements OnInit {
             text: 'You are now registered in NOMBREAPP',
             icon: 'success',
             showCancelButton: false,
-            confirmButtonColor: '#c2185b',
+            confirmButtonColor: '#2ab2b9',
             confirmButtonText: 'Ok'
           }).then(( result => {
             if (result.isConfirmed) {
-              this.router.navigate(['/']);
+              this.router.navigate(['/events']);
             }
           }))
         }else{
@@ -43,7 +43,7 @@ export class UserComponent implements OnInit {
             text: "You can't register with that email or password",
             icon: 'error',
             showCancelButton: false,
-            confirmButtonColor: '#c2185b',
+            confirmButtonColor: '#2ab2b9',
             confirmButtonText: 'Ok'
           })
         }

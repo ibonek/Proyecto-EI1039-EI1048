@@ -12,9 +12,9 @@ const routes: Routes= [
 
   {path: 'addLocation', component: LocationFormComponent},
   {path: 'locationList', component: LocationListComponent},
-  {path: '', component: LocationEventsComponent},
+  {path: 'events', component: LocationEventsComponent},
   {path: 'apisList', component: ApiListComponent},
-  {path: 'register', component: UserComponent}
+  {path: '', component: UserComponent}
 
   ];
 

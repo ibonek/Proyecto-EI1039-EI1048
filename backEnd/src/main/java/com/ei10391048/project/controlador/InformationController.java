@@ -2,7 +2,7 @@ package com.ei10391048.project.controlador;
 
 import com.ei10391048.project.exception.IncorrectUserException;
 import com.ei10391048.project.exception.NotExistingAPIException;
-import com.ei10391048.project.modelo.*;
+import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.information.APIInformation;
 import com.ei10391048.project.modelo.user.User;
 import com.ei10391048.project.modelo.user.UserFacade;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")

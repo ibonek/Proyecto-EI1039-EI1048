@@ -1,9 +1,11 @@
 .fromBody {
-  background: #c2185b;
-  width: 20rem;
-  height: 11.3rem;
-  margin: 3rem 3rem;
-  border-radius: 2px;
+  background: #2ab2b9;
+  width: fit-content;
+  height: 12.3rem;
+  margin: 3rem auto;
+  border-radius: 7px;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
+
 }
 .fromInterno{
   margin: auto;
@@ -27,9 +29,9 @@
   font-size:medium;
   padding: 0.8rem 0.4rem;
   border: none;
-  box-shadow: 0.1rem 0.1rem 0 #303030;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
   width: 15.2rem;
-  border-radius: 2px;
+  border-radius: 7px;
 }
 .separator{
   height: 0.8rem;
@@ -38,4 +40,12 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+.input{
+  display: flex;
+}
+
+.mat-icon{
+  color: white;
 }

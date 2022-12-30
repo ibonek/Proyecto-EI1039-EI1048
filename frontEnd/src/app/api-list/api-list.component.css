@@ -1,19 +1,22 @@
 h1{
-  color: white;
+  color: #2ab2b9;
+  text-align: center;
 }
 
 .listBox{
-  background: #c2185b;
+  background: #2ab2b9;
   width: 80%;
   height: fit-content;
-  margin: 3rem auto;
-  border-radius: 2px;
+  margin: 0 auto;
+  border-radius: 7px;
   min-width: fit-content;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
+
 }
 
 .inBox{
   text-align: center;
-  padding: 1rem 3rem 2rem;
+  padding: 1.7rem 3rem 1rem;
 }
 
 .rowList{
@@ -32,9 +35,9 @@ h1{
   color: #303030;
   font-weight: bold;
   text-align: left;
-  border-radius: 2px;
+  border-radius: 7px;
   padding: 0.2rem 1rem ;
-  box-shadow: 0.1rem 0.1rem 0 #303030;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
   width: 20rem;
 }
 
@@ -45,7 +48,7 @@ h1{
 .alias{
   font-weight: bold;
   text-align: center;
-  border-radius: 2px;
+  border-radius: 7px;
   min-width: 15.7rem;
   padding: 0.2rem 1rem ;
   display: flex;
@@ -55,9 +58,9 @@ h1{
   font-size:medium;
   padding: 0.3rem 0.4rem;
   border: none;
-  box-shadow: 0.1rem 0.1rem 0 #303030;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
   width: 10rem;
-  border-radius: 2px;
+  border-radius: 7px;
 }
 
 .buttonList{
