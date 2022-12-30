@@ -21,7 +21,7 @@ public class APIManagerTest {
     UserManager userManager = UserManager.getInstance();
     LocationManager manager;
     InformationLocationManager informationLocationManager;
-    User user = new User();
+    User user = new User("test@gmail.com");
     @BeforeEach
     public void setParams() throws IncorrectLocationException, NotSavedException, IncorrectUserException {
         manager = user.getLocationManager();
@@ -30,14 +30,14 @@ public class APIManagerTest {
         informationLocationManager = user.getInformationLocationManager();
 
         String toponimo = "Valencia";
-        user.addLocation(toponimo);
+        user.addUserLocation(toponimo);
 
         toponimo = "Madrid";
-        user.addLocation(toponimo);
+        user.addUserLocation(toponimo);
 
         toponimo = "Castellón";
 
-        user.addLocation(toponimo);
+        user.addUserLocation(toponimo);
 
 
     }

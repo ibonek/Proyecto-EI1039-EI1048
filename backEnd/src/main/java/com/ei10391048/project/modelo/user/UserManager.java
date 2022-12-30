@@ -1,18 +1,22 @@
 package com.ei10391048.project.modelo.user;
 
+import com.ei10391048.project.exception.AlreadyExistentUser;
 import com.ei10391048.project.exception.IncorrectUserException;
+import com.ei10391048.project.fireBase.CRUDFireBase;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class UserManager implements UserManagerFacade {
 
     private static UserManager userManager = null;
 
-    private List<User> userList;
+    private final List<User> userList;
+
+    private CRUDFireBase crudFireBase;
 
     private UserManager(){
-        userList = new LinkedList<>();
+        crudFireBase=CRUDFireBase.getInstance();
+        userList = crudFireBase.getUsers();
     }
 
     public static UserManager getInstance(){
@@ -47,6 +51,11 @@ public class UserManager implements UserManagerFacade {
         user.setEmail(email);
         user.setPassword(password);
         this.userList.add(user);
+        try {
+            crudFireBase.signUp(email, password);
+        } catch (AlreadyExistentUser e) {
+            throw new RuntimeException(e);
+        }
         return user;
     }
 
@@ -58,6 +67,7 @@ public class UserManager implements UserManagerFacade {
 
     @Override
     public void deleteAllUsers() {
-        userList.removeAll(userList);
+        userList.clear();
+        crudFireBase.deleteAllUsers();
     }
 }

@@ -29,19 +29,16 @@ public class FireBaseTest {
         user = new User();
         user.setEmail("al394885@uji.es");
         user.setPassword("123456");
-        crudFireBase = CRUDFireBase.getInstance();
+        crudFireBase = new CRUDFireBase();
         crudFireBase.deleteUserLocations(user.getEmail());
         //crudFireBase.delete;
     }
 
     @Test
     public void signUpValid() {
-        user = new User();
-        user.setEmail("al394889@uji.es");
-        user.setPassword("123456");
-        crudFireBase = CRUDFireBase.getInstance();
         try {
-            crudFireBase.signUp(user.getEmail(), user.getPassword());
+            crudFireBase= new CRUDFireBase();
+            crudFireBase.signUp("test@uji.es","123456");
             assertTrue(true);
         } catch (IncorrectUserException | AlreadyExistentUser e) {
             fail();

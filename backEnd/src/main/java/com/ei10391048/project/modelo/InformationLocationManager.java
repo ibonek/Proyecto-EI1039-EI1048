@@ -13,26 +13,18 @@ import java.util.List;
 
 public class InformationLocationManager {
     private List<API> apiList;
-    private final CRUDFireBase crudFireBase;
+    //private final CRUDFireBase crudFireBase;
     public InformationLocationManager() {
-        crudFireBase = CRUDFireBase.getInstance();
-            apiList = new LinkedList<>();
-            apiList.add(APIsNames.WEATHER.getOrder(),new OpenWeather());
-            apiList.add(APIsNames.EVENTS.getOrder(),new TicketMaster());
-            apiList.add(APIsNames.NEWS.getOrder(),new NewsAPI());
-            for (API api: apiList){
-
-                /*
-                try {
-                    crudFireBase.addAPI(api);
-                } catch (NotSavedException ignored) {
-
-                }
-
-                 */
-        }
+        //crudFireBase = CRUDFireBase.getInstance();
     }
 
+    public void setApiList(List<API> apiList) {
+        this.apiList = apiList;
+    }
+
+    public List<API> getApiList() {
+        return apiList;
+    }
 
     public void changeApiState(int order, User user) throws NotExistingAPIException {
         if (order < 0 || order >= apiList.size())

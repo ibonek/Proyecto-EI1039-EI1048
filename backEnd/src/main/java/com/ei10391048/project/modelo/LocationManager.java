@@ -1,21 +1,16 @@
 package com.ei10391048.project.modelo;
 
 
-import com.ei10391048.project.fireBase.CRUDFireBase;
-
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
-import com.ei10391048.project.modelo.user.User;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class LocationManager{
     private List<Location> locations;
-    //private final CRUDFireBase crudFireBase;
     public LocationManager() {
-        this.locations = new LinkedList<>();
-        //this.crudFireBase =  CRUDFireBase.getInstance();
+        locations = new LinkedList<>();
     }
 
     public List<Location> getActiveLocations(){
@@ -60,7 +55,6 @@ public class LocationManager{
 
     public void clearLocations() {
         this.locations.clear();
-        //crudFireBase.deleteLocations();
     }
 
     public void setLocations(List<Location> locations) {
@@ -72,7 +66,6 @@ public class LocationManager{
         Location location = getLocation(name);
         if (!locations.remove(location))
             throw new IncorrectLocationException();
-        //crudFireBase.deleteLocation(location);
     }
 
     public LocationApiInterface generateApiInterface(String name){
@@ -88,23 +81,21 @@ public class LocationManager{
     }
 
 
-    public Location addLocation(String name) throws IncorrectLocationException, NotSavedException {
+    public Location addUserLocation(String name) throws IncorrectLocationException, NotSavedException {
         LocationApiInterface geoCod = generateApiInterface(name);
         Location location = geoCod.findLocation();
 
         location.setApiManager(new APIManager());
         locations.add(location);
-        //CRUDFireBase.getInstance().addLocation(location);
         return location;
     }
 
 
-    public Location addLocation(Coordinates coords) throws IncorrectLocationException, NotSavedException {
+    public Location addUserLocation(Coordinates coords) throws IncorrectLocationException, NotSavedException {
         LocationApiInterface geoCod = generateApiInterface(coords);
         Location location = geoCod.findLocation();
         location.setApiManager(new APIManager());
         locations.add(location);
-        //crudFireBase.addLocation(location);
         return location;
     }
 

@@ -23,7 +23,7 @@ class LocationManagerTest {
     static User user;
     @BeforeAll
     static void setUp(){
-        user = new User();
+        user = new User("test@gmail.com");
         manager = user.getLocationManager();
     }
     @BeforeEach
@@ -42,7 +42,7 @@ class LocationManagerTest {
         String name = "Valencia";
 
         int num = user.getNumberOfLocations();
-        user.addLocation(name);
+        user.addUserLocation(name);
 
         assertEquals( user.getNumberOfLocations(), num + 1);
     }
@@ -52,7 +52,7 @@ class LocationManagerTest {
     public void addLocationByNameInvalid() {
         String name = "";
         try {
-            user.addLocation(name);
+            user.addUserLocation(name);
             fail();
         } catch (IncorrectLocationException ex){
             int num = user.getNumberOfLocations();
@@ -73,7 +73,7 @@ class LocationManagerTest {
     public void addLocationByCoordinatesValid() throws IncorrectLocationException, NotSavedException {
         Coordinates coordinates = new Coordinates(-0.3773900,39.4697500);
         int num = user.getNumberOfLocations();
-        user.addLocation(coordinates);
+        user.addUserLocation(coordinates);
         assertEquals(user.getNumberOfLocations(), num + 1);
     }
 
@@ -83,7 +83,7 @@ class LocationManagerTest {
     public void addLocationByCoordinatesInvalid(double lat, double lon){
         try {
             Coordinates coordinates = new Coordinates(lat,lon);
-            user.addLocation(coordinates);
+            user.addUserLocation(coordinates);
         } catch (IncorrectLocationException ex){
             int num = user.getNumberOfLocations();
             assertEquals(0,num);
@@ -106,7 +106,7 @@ class LocationManagerTest {
     @MethodSource("getName")
     void getLocationsNameValidCase(ArrayList<String> sol) throws IncorrectLocationException, NotSavedException {
         for (String name : sol) {
-            user.addLocation(name);
+            user.addUserLocation(name);
         }
 
         assertEquals(user.getActiveLocationsName(), sol);
@@ -135,7 +135,7 @@ class LocationManagerTest {
     @MethodSource("getActiveLocation")
     void getActiveLocationValidCase(ArrayList<String> sol) throws IncorrectLocationException,  NotSavedException {
         for (String name : sol) {
-            user.addLocation(name);
+            user.addUserLocation(name);
         }
         assertEquals(user.getActiveLocationsName(), sol);
     }
@@ -156,7 +156,7 @@ class LocationManagerTest {
     @MethodSource("getActiveLocationInvalid")
     void getActiveLocationInvalidCase(ArrayList<String> input) throws IncorrectLocationException, NotSavedException {
         for (String name : input) {
-            user.addLocation(name);
+            user.addUserLocation(name);
         }
 
 
@@ -180,7 +180,7 @@ class LocationManagerTest {
     @Test
     void deleteLocationValidCase(){
         try {
-            user.addLocation("Valencia");
+            user.addUserLocation("Valencia");
             user.deleteLocation("Valencia");
             assertTrue(true);
         } catch (IncorrectLocationException e) {

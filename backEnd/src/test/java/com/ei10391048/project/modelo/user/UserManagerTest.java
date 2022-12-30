@@ -15,7 +15,7 @@ public class UserManagerTest {
     @Test
     public void registerValidUserTest() throws IncorrectUserException {
         int num = manager.getNumberOfUsers();
-        manager.registerUser("test@gmail.com","1234a");
+        manager.registerUser("test@gmail.com","123456");
         assertEquals(num+1, manager.getNumberOfUsers());
     }
 

@@ -3,6 +3,7 @@ package com.ei10391048.project.modelo.user;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.fireBase.CRUDFireBase;
 import com.ei10391048.project.modelo.*;
 import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.information.APIInformation;
@@ -19,9 +20,29 @@ public class User implements UserFacade{
 
     private InformationLocationManager informationLocationManager;
 
-    public User(){
+    private CRUDFireBase crudFireBase;
+
+    public User(String email) {
+        this.email = email;
+        crudFireBase = new CRUDFireBase();
+        locationManager = new LocationManager();
+        try {
+            locationManager.setLocations(crudFireBase.getUserLocations(email));
+        } catch (IncorrectLocationException e) {
+            throw new RuntimeException(e);
+        }
+        informationLocationManager = new InformationLocationManager();
+        try {
+            informationLocationManager.setApiList(crudFireBase.getUserAPIS(email));
+        } catch (NotExistingAPIException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User() {
         locationManager = new LocationManager();
         informationLocationManager = new InformationLocationManager();
+        crudFireBase = new CRUDFireBase();
     }
 
     public String getEmail() {
@@ -62,6 +83,11 @@ public class User implements UserFacade{
 
     @Override
     public void changeAPIState(int order) throws NotExistingAPIException {
+        try {
+            crudFireBase.changeAPIStatus(email, informationLocationManager.getApiList().get(order));
+        } catch (NotSavedException e) {
+            throw new RuntimeException(e);
+        }
         informationLocationManager.changeApiState(order,this);
     }
 
@@ -71,17 +97,20 @@ public class User implements UserFacade{
     }
 
     @Override
-    public void addLocation(String name) throws NotSavedException, IncorrectLocationException {
-        locationManager.addLocation(name);
+    public void addUserLocation(String name) throws NotSavedException, IncorrectLocationException {
+        Location location=locationManager.addUserLocation(name);
+        crudFireBase.addUserLocation(location, email);
     }
 
     @Override
-    public void addLocation(Coordinates coords) throws NotSavedException, IncorrectLocationException {
-        locationManager.addLocation(coords);
+    public void addUserLocation(Coordinates coords) throws NotSavedException, IncorrectLocationException {
+        Location location=locationManager.addUserLocation(coords);
+        crudFireBase.addUserLocation(location, email);
     }
 
     @Override
     public void deleteLocation(String name) throws IncorrectLocationException {
+        crudFireBase.deleteUserLocation(email, name);
         locationManager.deleteLocation(name);
     }
 

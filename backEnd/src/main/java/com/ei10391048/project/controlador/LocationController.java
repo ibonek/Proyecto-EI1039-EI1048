@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -29,10 +28,10 @@ public class LocationController {
         if (InputValidator.isCoordinates(location)) {
             double[] coordinateInput = InputValidator.formatingInputCoords(location);
             Coordinates coordinates = new Coordinates(coordinateInput[0], coordinateInput[1]);
-            user.addLocation(coordinates);
+            user.addUserLocation(coordinates);
         } else {
             location = InputValidator.formatingInputName(location);
-            user.addLocation(location);
+            user.addUserLocation(location);
 
         }
             confirmation = true;

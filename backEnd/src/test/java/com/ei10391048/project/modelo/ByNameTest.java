@@ -2,16 +2,9 @@ package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
-import com.ei10391048.project.fireBase.CRUDFireBase;
-import com.ei10391048.project.modelo.user.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,9 +28,9 @@ public class ByNameTest {
         geoCodService.setSearch(byNameMock);
         when(managerMock.generateApiInterface(any(String.class))).thenReturn(geoCodService);
         try {
-        when(managerMock.addLocation(any(String.class))).thenCallRealMethod();
+        when(managerMock.addUserLocation(any(String.class))).thenCallRealMethod();
 
-            managerMock.addLocation("null");
+            managerMock.addUserLocation("null");
             fail();
         } catch (IncorrectLocationException | NotSavedException ex){
             assertTrue(true);
@@ -53,9 +46,9 @@ public class ByNameTest {
         LocationManager manager = Mockito.spy(new LocationManager());
         int num = manager.getNumberOfLocations();
 
-        manager.addLocation("Barcelona");
+        manager.addUserLocation("Barcelona");
 
-        Mockito.verify(manager).addLocation("Barcelona");
+        Mockito.verify(manager).addUserLocation("Barcelona");
 
         assertEquals(num+1,manager.getNumberOfLocations());
     }

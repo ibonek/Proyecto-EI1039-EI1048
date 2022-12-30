@@ -29,9 +29,9 @@ public interface UserFacade {
 
     List<List<List<APIInformation>>> getAllActivatedInfo();
 
-    void addLocation(String name) throws NotSavedException, IncorrectLocationException;
+    void addUserLocation(String name) throws NotSavedException, IncorrectLocationException;
 
-    void addLocation(Coordinates coords) throws NotSavedException, IncorrectLocationException;
+    void addUserLocation(Coordinates coords) throws NotSavedException, IncorrectLocationException;
 
     void deleteLocation(String name) throws IncorrectLocationException;
 
