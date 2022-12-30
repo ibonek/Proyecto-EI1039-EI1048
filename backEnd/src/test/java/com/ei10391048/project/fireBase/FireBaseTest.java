@@ -10,7 +10,6 @@ import com.ei10391048.project.modelo.api.OpenWeather;
 import com.ei10391048.project.modelo.user.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -27,24 +26,26 @@ public class FireBaseTest {
     private static User user;
 
     @BeforeAll
-    public static void setUp() throws IncorrectUserException, AlreadyExistentUser {
+    public static void setUp() {
         user = new User();
-        user.setEmail("test9@gmail.com");
+        user.setEmail("test@gmail.com");
         user.setPassword("123456");
         crudFireBase = new CRUDFireBase();
-
-        //crudFireBase.delete;
     }
 
     @AfterAll
     public static void delete(){
-
+        try {
+            crudFireBase.deleteUsers();
+        } catch (IncorrectUserException e) {
+            throw new RuntimeException(e);
+        }
     }
     @Test
     public void signUpValid() {
         try {
             crudFireBase= new CRUDFireBase();
-            crudFireBase.signUp(user.getEmail(),user.getPassword());
+            crudFireBase.signUp("test1@gmail.com",user.getPassword());
             assertTrue(true);
         } catch (IncorrectUserException | AlreadyExistentUser e) {
             fail();
@@ -61,6 +62,34 @@ public class FireBaseTest {
             crudFireBase.signUp(user.getEmail(), user.getPassword());
             fail();
         } catch (IncorrectUserException | AlreadyExistentUser e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void deleteUserValid() {
+        try {
+            crudFireBase.signUp(user.getEmail(), user.getPassword());
+            sleep(1000);
+            crudFireBase.deleteUser(user.getEmail());
+            assertTrue(true);
+        } catch (IncorrectUserException e) {
+            fail();
+        } catch (AlreadyExistentUser | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideInvalidEmails")
+    public void deleteUserInvalid(String email, String password) {
+        user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        try {
+            crudFireBase.deleteUser(user.getEmail());
+            fail();
+        } catch (IncorrectUserException e) {
             assertTrue(true);
         }
     }
