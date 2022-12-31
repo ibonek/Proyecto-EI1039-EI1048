@@ -1,4 +1,4 @@
-<mat-toolbar style="background: #2ab2b9">
+<mat-toolbar style="background: #2ab2b9; display: flex; justify-content: space-between">
 
   <div *ngIf="this.email!=null">
     <button mat-icon-button>
@@ -9,7 +9,7 @@
   <button mat-button class="buttonLogo" >
     <img src="assets/images/DALL·E%202022-11-29%2014.51.44.png">
   </button>
-  <div *ngIf="this.email!=null">
+  <div style="display: flex; align-items: center" *ngIf="this.email!=null">
     <p class="nameUser">{{this.email}}</p>
     <button mat-icon-button (click)="signOut()">
       <mat-icon>exit_to_app</mat-icon>

@@ -3,12 +3,13 @@ h1{
 }
 
 .listBox{
-  background: #c2185b;
+  background: #2ab2b9;
   width: 80%;
   height: fit-content;
   margin: 3rem auto;
-  border-radius: 2px;
+  border-radius: 7px;
   min-width: fit-content;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
 }
 
 .inBox{

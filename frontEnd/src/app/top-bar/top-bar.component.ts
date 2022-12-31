@@ -24,7 +24,7 @@ export class TopBarComponent implements OnInit {
       title: 'Do you want to sign out?',
       text: 'All your changes have been saved',
       icon: 'question',
-      confirmButtonColor: '#c2185b',
+      confirmButtonColor: '#2ab2b9',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
