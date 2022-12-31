@@ -28,7 +28,7 @@ public class ByNameTest {
         geoCodService.setSearch(byNameMock);
         when(managerMock.generateApiInterface(any(String.class))).thenReturn(geoCodService);
         try {
-        when(managerMock.addUserLocation(any(String.class))).thenCallRealMethod();
+        when(managerMock.findLocation(any(String.class))).thenCallRealMethod();
 
             managerMock.addUserLocation("null");
             fail();
@@ -48,7 +48,7 @@ public class ByNameTest {
 
         manager.addUserLocation("Barcelona");
 
-        Mockito.verify(manager).addUserLocation("Barcelona");
+        Mockito.verify(manager).addUserLocation(location);
 
         assertEquals(num+1,manager.getNumberOfLocations());
     }

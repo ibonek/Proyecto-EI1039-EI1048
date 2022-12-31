@@ -2,6 +2,7 @@ package com.ei10391048.project.controlador;
 
 import com.ei10391048.project.exception.AlreadyExistentUser;
 import com.ei10391048.project.exception.IncorrectUserException;
+import com.ei10391048.project.modelo.user.User;
 import com.ei10391048.project.modelo.user.UserManager;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,12 @@ public class UserController {
     @PostMapping("signIn")
     public void signIn(@RequestBody String email)  {
         UserManager manager = UserManager.getInstance();
-        manager.signIn(email);
+        try {
+            User user = manager.getUser(email);
+            user.signIn();
+        } catch (IncorrectUserException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PostMapping("/signOut")

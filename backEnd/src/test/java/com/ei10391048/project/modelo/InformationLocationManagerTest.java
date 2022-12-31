@@ -7,11 +7,9 @@ import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.api.APIsNames;
 import com.ei10391048.project.modelo.user.User;
-import com.ei10391048.project.modelo.user.UserFacade;
 import com.ei10391048.project.modelo.user.UserManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
@@ -34,8 +32,10 @@ public class InformationLocationManagerTest {
         user = UserManager.getInstance().getUser("test@gmail.com");
         manager = user.getLocationManager();
         informationLocationManager = user.getInformationLocationManager();
-        manager.addUserLocation("Castellón");
-        manager.addUserLocation("Madrid");
+        Location location = new Location("Castellón", 39.46975, -0.37739);
+        Location location2 = new Location("Madrid", 40.416775, -3.70379);
+        manager.addUserLocation(location);
+        manager.addUserLocation(location2);
     }
 
     @AfterAll
@@ -127,10 +127,10 @@ public class InformationLocationManagerTest {
 
     @Test
     void activateLocationValidCase() {
-        Location location = manager.getLocations().get(0);
+        Location location = manager.getUserLocations().get(0);
         location.setActive(!location.getIsActive());
         location.setActive(!location.getIsActive());
-        assertTrue(manager.getLocations().get(0).getIsActive());
+        assertTrue(manager.getUserLocations().get(0).getIsActive());
     }
 
 }

@@ -11,6 +11,4 @@ public interface UserManagerFacade {
     int getNumberOfUsers();
 
     void deleteAllUsers();
-
-    void signIn(String body);
 }
