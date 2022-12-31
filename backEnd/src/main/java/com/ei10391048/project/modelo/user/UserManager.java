@@ -32,7 +32,6 @@ public class UserManager implements UserManagerFacade {
 
     @Override
     public User getUser(String email) throws IncorrectUserException {
-        //System.out.println(userList.stream().);
         for (User user: userList){
             if (user.getEmail().equals(email)){
                 return user;
@@ -42,23 +41,17 @@ public class UserManager implements UserManagerFacade {
     }
 
     @Override
-    public User registerUser(String email, String password) throws IncorrectUserException, AlreadyExistentUser {
-
-        if (password == null ||email == null ||email.length() == 0 ||password.length() == 0){
+    public void registerUser(String email) throws IncorrectUserException, AlreadyExistentUser {
+        if (email == null ||email.length() == 0){
             throw new IncorrectUserException();
         }
-        for (User user: userList){
-            if (email.equalsIgnoreCase(user.getEmail())){
-                throw new IncorrectUserException();
-            }
-        }
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
+        User user = new User(email);
         this.userList.add(user);
-        crudFireBase.signUp(email, password);
-
-        return user;
+        try {
+            crudFireBase.addUser(email);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

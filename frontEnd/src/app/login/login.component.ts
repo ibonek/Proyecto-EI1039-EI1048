@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../user.service";
-import Swal from "sweetalert2";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import Swal from 'sweetalert2';
 const firebaseConfig = {
   apiKey: "AIzaSyDrfr90AsmMD6MjooOQ42eTEfxrUTYE9Fo",
   authDomain: "proyectoei1039-1048.firebaseapp.com",
@@ -17,12 +17,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class UserComponent implements OnInit {
-
+export class LoginComponent implements OnInit {
   email!: string
   password !:string;
   constructor(private route: ActivatedRoute,
@@ -32,36 +31,21 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  register() {
-    if (this.password.length < 6) {
+  login() {
+    if (!this.email.includes('@') || !this.email.includes('.')) {
       Swal.fire({
         title: 'Ooops',
-        text: "Password must have at least 6 characters",
-        icon: 'error',
-        showCancelButton: false,
-        confirmButtonColor: '#2ab2b9',
-        confirmButtonText: 'Ok'
-      })
-      return;
-    } else if (!this.email.includes('@') || !this.email.includes('.')) {
-      Swal.fire({
-        title: 'Ooops',
-        text: "That email does not have the correct format (Format: abc@abc.abc)",
-        icon: 'error',
-        showCancelButton: false,
-        confirmButtonColor: '#2ab2b9',
-        confirmButtonText: 'Ok'
-      })
-      return;
+        text: "That email does not have the correct format (Format: "
+      });
     } else {
-      createUserWithEmailAndPassword(auth, this.email, this.password)
+      signInWithEmailAndPassword(auth, this.email, this.password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
           if (user) {
             sessionStorage.setItem("email", this.email);
             window.location.reload();
-            this.userService.register(this.email).subscribe(data => {
+            this.userService.signIn(this.email).subscribe(data => {
               console.log(data);
             });
           }
@@ -69,7 +53,7 @@ export class UserComponent implements OnInit {
         .catch(() => {
           Swal.fire({
             title: 'Ooops',
-            text: "The email "+ this.email +" is already registered",
+            text: "Wrong email or password",
             icon: 'error',
             showCancelButton: false,
             confirmButtonColor: '#2ab2b9',

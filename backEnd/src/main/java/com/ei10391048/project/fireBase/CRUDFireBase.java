@@ -11,9 +11,6 @@ import com.ei10391048.project.modelo.user.User;
 import com.ei10391048.project.modelo.user.UserFacade;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.UserRecord;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -25,7 +22,7 @@ public class CRUDFireBase {
 
     private static CRUDFireBase crudFireBase;
 
-    public CRUDFireBase() {
+    private CRUDFireBase() {
         db = FireBaseConnection.getInstance();
     }
 
@@ -38,33 +35,14 @@ public class CRUDFireBase {
         }
     }
 
-    public void signUp(String email, String password) throws IncorrectUserException, AlreadyExistentUser {
-        if (email == null || password == null) {
-            throw new IncorrectUserException();
-        }
-        UserRecord.CreateRequest request = new UserRecord.CreateRequest()
-                .setUid(email)
-                .setEmail(email)
-                .setEmailVerified(false)
-                .setPassword(password)
-                .setDisabled(false);
-        try {
-            FirebaseAuth.getInstance().createUser(request);
-            addUser(email);
-
-        } catch (FirebaseAuthException | InterruptedException e) {
-            e.printStackTrace();
-            throw new AlreadyExistentUser();
-        }
-    }
-
-    private void addUser(String email) throws IncorrectUserException, InterruptedException {
+    public void addUser(String email) throws IncorrectUserException, InterruptedException {
         if (email == null) {
             throw new IncorrectUserException();
         }
         db.collection("users").document(email).set(Map.of("email", email));
-        sleep(1000);
-        addAPIs(getUserDocument(email));
+    sleep(1000);
+
+        addAPIs(email);
     }
 
     public UserFacade getUser(String email) {
@@ -76,6 +54,9 @@ public class CRUDFireBase {
             document = getUserDocument(email);
         } catch (IncorrectUserException e) {
             throw new RuntimeException(e);
+        }
+        if (document == null) {
+            return null;
         }
         UserFacade user = new User();
         user.setEmail((String) document.getData().get("email"));
@@ -105,11 +86,11 @@ public class CRUDFireBase {
         if (email==null){
             throw new IncorrectUserException();
         }
-        try {
+        /*try {
             FirebaseAuth.getInstance().deleteUser(email);
         } catch (FirebaseAuthException e) {
             throw new IncorrectUserException();
-        }
+        }*/
         QueryDocumentSnapshot document;
         try {
             document = getUserDocument(email);
@@ -135,14 +116,14 @@ public class CRUDFireBase {
                 deleteUserLocations(document.getId());
                 deleteUserAPIs(document.getId());
                 document.getReference().delete();
-                FirebaseAuth.getInstance().deleteUser(document.getData().get("email").toString());
+                //FirebaseAuth.getInstance().deleteUser(document.getData().get("email").toString());
             }
-        } catch (InterruptedException | ExecutionException | FirebaseAuthException e) {
+        } catch (InterruptedException | ExecutionException /*| FirebaseAuthException*/ e) {
             throw new IncorrectUserException();
         }
     }
 
-    private void addAPIs(QueryDocumentSnapshot doc){
+    private void addAPIs(String email){
         OpenWeather openWeather = new OpenWeather();
         Map<String,Object>docAPI=new HashMap<>();
         docAPI.put("name", openWeather.getName());
@@ -158,27 +139,54 @@ public class CRUDFireBase {
         docAPI3.put("name", newsAPI.getName());
         docAPI3.put("active",newsAPI.getIsActive());
 
-        doc.getReference().collection("apis").document(openWeather.getName()).set(docAPI);
-        doc.getReference().collection("apis").document(ticketMaster.getName()).set(docAPI2);
-        doc.getReference().collection("apis").document(newsAPI.getName()).set(docAPI3);
+        db.collection("users").document(email).collection("apis").document(openWeather.getName()).set(docAPI);
+        db.collection("users").document(email).collection("apis").document(ticketMaster.getName()).set(docAPI2);
+        db.collection("users").document(email).collection("apis").document(newsAPI.getName()).set(docAPI3);
     }
 
-    public void addUserLocation(Location location, String email) throws NotSavedException {
+    private void addAPIs(String email, String locationName){
+        OpenWeather openWeather = new OpenWeather();
+        Map<String,Object>docAPI=new HashMap<>();
+        docAPI.put("name", openWeather.getName());
+        docAPI.put("active",openWeather.getIsActive());
+
+        Map<String,Object>docAPI2=new HashMap<>();
+        TicketMaster ticketMaster = new TicketMaster();
+        docAPI2.put("name", ticketMaster.getName());
+        docAPI2.put("active",ticketMaster.getIsActive());
+
+        Map<String,Object>docAPI3=new HashMap<>();
+        NewsAPI newsAPI = new NewsAPI();
+        docAPI3.put("name", newsAPI.getName());
+        docAPI3.put("active",newsAPI.getIsActive());
+
+        db.collection("users").document(email).collection("locations").document(locationName).collection("apis").document(openWeather.getName()).set(docAPI);
+        db.collection("users").document(email).collection("locations").document(locationName).collection("apis").document(ticketMaster.getName()).set(docAPI2);
+        db.collection("users").document(email).collection("locations").document(locationName).collection("apis").document(newsAPI.getName()).set(docAPI3);
+    }
+
+    public void addUserLocation(Location location, String email) throws NotSavedException, AlreadyExistentLocationException, ExecutionException, InterruptedException {
+        if (location == null || email == null) {
+            throw new NotSavedException();
+        }
+        if (getUser(email) == null) {
+            return;
+        }
+        List<QueryDocumentSnapshot> documents=db.collection("users").document(email).collection("locations").get().get().getDocuments();
+        for (QueryDocumentSnapshot document : documents) {
+            if (document.getData().get("name").equals(location.getName())){
+                throw new AlreadyExistentLocationException();
+            }
+        }
+        Map<String,Object>docLocation=new HashMap<>();
+        docLocation.put("name",location.getName());
+        docLocation.put("latitude",location.getCoordinates().getLat());
+        docLocation.put("longitude",location.getCoordinates().getLon());
+        docLocation.put("alias",location.getAlias());
+        docLocation.put("active",location.getIsActive());
+        ApiFuture<WriteResult> future =db.collection("users").document(email).collection("locations").document(location.getName()).set(docLocation);
+        addAPIs(email, location.getName());
         try {
-            if (location == null || email == null) {
-                throw new NotSavedException();
-            }
-            if (getUser(email) == null) {
-                return;
-            }
-            Map<String,Object>docLocation=new HashMap<>();
-            docLocation.put("name",location.getName());
-            docLocation.put("latitude",location.getCoordinates().getLat());
-            docLocation.put("longitude",location.getCoordinates().getLon());
-            docLocation.put("alias",location.getAlias());
-            docLocation.put("active",location.getIsActive());
-            ApiFuture<WriteResult> future =db.collection("users").document(email).collection("locations").document(location.getName()).set(docLocation);
-            addAPIs(getLocationDocument(email,location.getName()));
             future.get().getUpdateTime();
         } catch (InterruptedException | ExecutionException | NullPointerException e) {
             throw new NotSavedException();
@@ -198,7 +206,7 @@ public class CRUDFireBase {
 
             List<QueryDocumentSnapshot> documents=db.collection("users").document(email).collection("locations").get().get().getDocuments();
             if (documents.isEmpty()){
-                return null;
+                return new LinkedList<>();
             }
             List<Location> locations=new LinkedList<>();
             for (QueryDocumentSnapshot document:documents){
@@ -296,11 +304,22 @@ public class CRUDFireBase {
         }
     }
 
-    public Location getUserLocation(String email, String locationName) {
+    public Location getUserLocation(String email, String locationName) throws ExecutionException, InterruptedException {
+        System.out.println(email+"  "+locationName);
         if (locationName==null || email==null){
             return null;
         }
-        QueryDocumentSnapshot locDoc=getLocationDocument(email,locationName);
+        UserFacade user=getUser(email);
+        System.out.println("holi "+user.getEmail());
+        List<QueryDocumentSnapshot> documents=db.collection("users").document(email).collection("locations").get().get().getDocuments();
+        QueryDocumentSnapshot locDoc=null;
+        for (QueryDocumentSnapshot document: documents){
+            System.out.println("AAAA"+document.getData());
+            if (document.getData().get("name").toString().equals(locationName)){
+                locDoc=document;
+                break;
+            }
+        }
         if (locDoc==null){
             return null;
         }
@@ -350,11 +369,7 @@ public class CRUDFireBase {
         if (email == null || location == null) {
             throw new NotSavedException();
         }
-        QueryDocumentSnapshot docLocation = getLocationDocument(email, location.getName());
-        if (docLocation == null) {
-            throw new NotSavedException();
-        }
-        docLocation.getReference().update("active", !location.getIsActive());
+        db.collection("users").document(email).collection("locations").document(location.getName()).update("active", !location.getIsActive());
     }
 
     public API getAPI(String email, String name) {

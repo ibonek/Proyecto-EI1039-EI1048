@@ -25,31 +25,32 @@ public class ByCoordinatesTest {
     }
 
     @Test
-    public void registerLocation_validCoords() throws IncorrectLocationException, NotSavedException, IncorrectUserException {
+    public void findLocation_validCoords() throws IncorrectLocationException, NotSavedException, IncorrectUserException {
         Location place = new Location();
         place.setCoordinates(new Coordinates(-3.7025600,40.4165000));
         LocationManager manager = Mockito.spy(new LocationManager());
         int num = manager.getNumberOfLocations();
-        manager.addUserLocation(new Coordinates(-3.7025600,40.4165000));
-        Mockito.verify(manager).addUserLocation(new Coordinates(-3.7025600,40.4165000));
+        Location location = new Location("test",-3.7025600,40.4165000);
+        manager.addUserLocation(location);
+        Mockito.verify(manager).addUserLocation(location);
         assertEquals(num+1,manager.getNumberOfLocations());
 
 
     }
 
     @Test
-    public void registerLocation_invalidCoords() throws IncorrectLocationException{
+    public void findLocation_invalidCoords() throws IncorrectLocationException{
         when(byCoordinatesMock.search()).thenThrow(new IncorrectLocationException());
 
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(byCoordinatesMock);
         when(managerMock.generateApiInterface(any(Coordinates.class))).thenReturn(geoCodService);
         try {
-            when(managerMock.addUserLocation(any(Coordinates.class))).thenCallRealMethod();
+            when(managerMock.findLocation(any(Coordinates.class))).thenCallRealMethod();
 
-            managerMock.addUserLocation(new Coordinates(50000,6000));
+            managerMock.findLocation(new Coordinates(5000,6000));
             fail();
-        } catch (IncorrectLocationException | NotSavedException ex){
+        } catch (IncorrectLocationException ex){
             assertTrue(true);
         }
     }

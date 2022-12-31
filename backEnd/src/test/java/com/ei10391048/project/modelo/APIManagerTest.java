@@ -9,7 +9,6 @@ import com.ei10391048.project.modelo.user.User;
 import com.ei10391048.project.modelo.user.UserManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -34,14 +33,16 @@ public class APIManagerTest {
         informationLocationManager = user.getInformationLocationManager();
 
         String toponimo = "Valencia";
-        manager.addUserLocation(toponimo);
+        Location location = new Location(toponimo, 39.46975, -0.37739);
+        manager.addUserLocation(location);
 
         toponimo = "Madrid";
-        manager.addUserLocation(toponimo);
+        location = new Location(toponimo, 40.416775, -3.70379);
+        manager.addUserLocation(location);
 
         toponimo = "Castellón";
-
-        manager.addUserLocation(toponimo);
+        location = new Location(toponimo, 39.986212, -0.037049);
+        manager.addUserLocation(location);
 
 
     }
@@ -80,10 +81,10 @@ public class APIManagerTest {
     @Test
     public void getInfoFrom1LocationValidTest() {
         int index = 0;
-        Location location = manager.getLocations().get(index);
+        Location location = manager.getUserLocations().get(index);
         ApiFacade apiManager = location.getApiManager();
         apiManager.generateInfo(location.getName());
-        assertEquals(apiManager.getInformation(APIsNames.WEATHER.getOrder()).get(0).getLocationName(), manager.getLocations().get(index).getName());
+        assertEquals(apiManager.getInformation(APIsNames.WEATHER.getOrder()).get(0).getLocationName(), manager.getUserLocations().get(index).getName());
 
     }
 

@@ -15,14 +15,14 @@ public class LocationManager{
 
     public List<Location> getActiveLocations(){
         List<Location> activeList = new LinkedList<>();
-        for (Location location: this.getLocations()){
+        for (Location location: this.getUserLocations()){
             if (location.getIsActive())
                 activeList.add(location);
         }
         return activeList;
     }
 
-    public List<Location> getLocations() {
+    public List<Location> getUserLocations() {
         return locations;
     }
 
@@ -80,24 +80,22 @@ public class LocationManager{
         return geoCod;
     }
 
-
-    public Location addUserLocation(String name) throws IncorrectLocationException, NotSavedException {
+    public Location findLocation(String name) throws IncorrectLocationException {
         LocationApiInterface geoCod = generateApiInterface(name);
-        Location location = geoCod.findLocation();
+        return geoCod.findLocation();
+    }
 
+    public Location findLocation(Coordinates coordinates) throws IncorrectLocationException {
+        LocationApiInterface geoCod = generateApiInterface(coordinates);
+        return geoCod.findLocation();
+    }
+
+    public Location addUserLocation(Location location) throws IncorrectLocationException, NotSavedException {
+        if (location==null||location.getAlias()==null||location.getAlias().equals(""))
+            throw new IncorrectLocationException();
         location.setApiManager(new APIManager());
         locations.add(location);
         return location;
     }
-
-
-    public Location addUserLocation(Coordinates coords) throws IncorrectLocationException, NotSavedException {
-        LocationApiInterface geoCod = generateApiInterface(coords);
-        Location location = geoCod.findLocation();
-        location.setApiManager(new APIManager());
-        locations.add(location);
-        return location;
-    }
-
 }
 
