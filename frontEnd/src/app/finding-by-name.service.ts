@@ -27,6 +27,10 @@ export class FindingByNameService {
     return this.http.get<string[]>("http://localhost:8080/giveAutocompleteLocations");
   }
 
+  public addLocation(location: string | undefined) {
+    return this.http.post<string>("http://localhost:8080/addLocation",sessionStorage.getItem("email")+"#"+location);
+  }
+
   public getLocationList(){
     // @ts-ignore
     const params = new HttpParams().set("email",sessionStorage.getItem("email"));
