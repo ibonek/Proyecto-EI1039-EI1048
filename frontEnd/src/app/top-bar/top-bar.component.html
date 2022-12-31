@@ -1,13 +1,28 @@
 <mat-toolbar style="background: #2ab2b9; display: flex; justify-content: space-between">
 
   <div *ngIf="this.email!=null">
-    <button mat-icon-button>
-      <mat-icon aria-hidden="false" aria-label="Example user verified icon">settings</mat-icon>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
     </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="goAddLoc()">
+        <span>Add a location</span>
+      </button>
+      <button mat-menu-item (click)="goLocList()">
+        <span>Active locations</span>
+      </button>
+      <button mat-menu-item (click)="goEventList()">
+        <span>Events</span>
+      </button>
+      <button mat-menu-item (click)="goApis()">
+        <span>APIs subscriptions</span>
+      </button>
+    </mat-menu>
   </div>
 
   <button mat-button class="buttonLogo" >
-    <img src="assets/images/DALL·E%202022-11-29%2014.51.44.png">
+    <img src="assets/images/logo.png">
+    LookApp
   </button>
   <div style="display: flex; align-items: center" *ngIf="this.email!=null">
     <p class="nameUser">{{this.email}}</p>

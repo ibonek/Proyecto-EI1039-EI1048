@@ -19,6 +19,21 @@ export class TopBarComponent implements OnInit {
     this.email=sessionStorage.getItem("email");
   }
 
+  goLocList(){
+    this.router.navigate(['/locationList']);
+  }
+
+  goEventList(){
+    this.router.navigate(['/events']);
+  }
+
+  goAddLoc(){
+    this.router.navigate(['/addLocation']);
+  }
+  goApis(){
+    this.router.navigate(['/apisList']);
+  }
+
   signOut(){
     Swal.fire({
       title: 'Do you want to sign out?',
@@ -39,9 +54,6 @@ export class TopBarComponent implements OnInit {
         })
       }
     }))
-
-
-
   }
 
 }

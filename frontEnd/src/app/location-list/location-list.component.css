@@ -43,6 +43,11 @@ h1{
   display: flex;
   align-items: center;
 }
+
+.inputGab{
+  display: flex;
+  gap: 1rem;
+}
 .alias{
   font-weight: bold;
   text-align: center;
