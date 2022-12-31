@@ -22,7 +22,7 @@ public class CRUDFireBase {
 
     private static CRUDFireBase crudFireBase;
 
-    public CRUDFireBase() {
+    private CRUDFireBase() {
         db = FireBaseConnection.getInstance();
     }
 

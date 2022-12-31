@@ -45,8 +45,7 @@ public class UserManager implements UserManagerFacade {
         if (email == null ||email.length() == 0){
             throw new IncorrectUserException();
         }
-        User user = new User();
-        user.setEmail(email);
+        User user = new User(email);
         this.userList.add(user);
         try {
             crudFireBase.addUser(email);

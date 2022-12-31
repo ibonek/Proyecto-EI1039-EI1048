@@ -32,7 +32,7 @@ public class User implements UserFacade{
     public User() {
         locationManager = new LocationManager();
         informationLocationManager = new InformationLocationManager();
-        crudFireBase = new CRUDFireBase();
+        crudFireBase = CRUDFireBase.getInstance();
     }
 
     public User(String email) {

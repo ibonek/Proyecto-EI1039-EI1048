@@ -21,7 +21,7 @@ public class ByNameTest {
     }
 
     @Test
-    public void registerLocation_invalidName() throws IncorrectLocationException {
+    public void findLocation_invalidName() throws IncorrectLocationException {
         when(byNameMock.search()).thenThrow(new IncorrectLocationException());
 
         GeoCodService geoCodService = new GeoCodService();
@@ -30,9 +30,9 @@ public class ByNameTest {
         try {
         when(managerMock.findLocation(any(String.class))).thenCallRealMethod();
 
-            managerMock.addUserLocation("null");
+            managerMock.findLocation("test");
             fail();
-        } catch (IncorrectLocationException | NotSavedException ex){
+        } catch (IncorrectLocationException ex){
             assertTrue(true);
         }
 
@@ -46,7 +46,8 @@ public class ByNameTest {
         LocationManager manager = Mockito.spy(new LocationManager());
         int num = manager.getNumberOfLocations();
 
-        manager.addUserLocation("Barcelona");
+        Location location = new Location("test", 1000,2000);
+        manager.addUserLocation(location);
 
         Mockito.verify(manager).addUserLocation(location);
 
