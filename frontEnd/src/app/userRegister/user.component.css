@@ -1,7 +1,6 @@
 .registerBody{
   background: #2ab2b9;
-  width: 20rem;
-  margin: 3rem auto;
+  width: 25rem;
   padding: 1rem 1rem 2rem;
   color: white;
   text-align: center;
@@ -9,11 +8,7 @@
   box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
 }
 
-h1{
-  line-height: 0;
-}
-
-.fromReg{
+.formReg{
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -27,5 +22,8 @@ input{
   border: none;
   box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
   border-radius: 7px;
+}
 
+button{
+  font-size: larger;
 }
