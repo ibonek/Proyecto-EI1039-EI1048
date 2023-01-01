@@ -21,13 +21,22 @@
   </div>
 
   <button mat-button class="buttonLogo" >
-    <img src="assets/images/logo.png">
+    <img src="assets/images/logo.png" alt="Logo LookApp">
     LookApp
   </button>
   <div style="display: flex; align-items: center" *ngIf="this.email!=null">
-    <p class="nameUser">{{this.email}}</p>
+    <div class="dropdown">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+        <div class="nameUser">{{this.email}}</div>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item text-bg-secondary rounded" (click)="signOut()">Sign out</a></li>
+        <li><a class="dropdown-item text-bg-danger rounded" (click)="deleteAccount()">Delete account</a></li>
+      </ul>
+    </div>
+    <!--p class="nameUser">{{this.email}}</--p>
     <button mat-icon-button (click)="signOut()">
       <mat-icon>exit_to_app</mat-icon>
-    </button>
+    </button-->
   </div>
 </mat-toolbar>

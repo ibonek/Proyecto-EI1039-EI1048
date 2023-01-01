@@ -70,6 +70,21 @@ public class UserManager implements UserManagerFacade {
         }
     }
 
+    @Override
+    public void deleteUser(String email) {
+        for (User user: userList){
+            if (user.getEmail().equals(email)){
+                userList.remove(user);
+                try {
+                    crudFireBase.deleteUser(email);
+                } catch (IncorrectUserException e) {
+                    throw new RuntimeException(e);
+                }
+                return;
+            }
+        }
+    }
+
     public void signOut(String email)throws IncorrectUserException{
         userList.remove(getUser(email));
     }

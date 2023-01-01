@@ -11,4 +11,6 @@ public interface UserManagerFacade {
     int getNumberOfUsers();
 
     void deleteAllUsers();
+
+    void deleteUser(String email);
 }

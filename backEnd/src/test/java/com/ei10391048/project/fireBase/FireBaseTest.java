@@ -179,15 +179,8 @@ public class FireBaseTest {
             crudFireBase.deleteUserLocations(user.getEmail());
             crudFireBase.addUserLocation(location, user.getEmail());
             assertEquals(1, crudFireBase.getUserLocations(user.getEmail()).size());
-        } catch (IncorrectLocationException | IncorrectUserException e) {
-            throw new RuntimeException(e);
-        } catch (AlreadyExistentLocationException e) {
-            throw new RuntimeException(e);
-        } catch (NotSavedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (IncorrectLocationException | IncorrectUserException | AlreadyExistentLocationException |
+                 NotSavedException | ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
