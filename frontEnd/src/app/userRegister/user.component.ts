@@ -60,9 +60,8 @@ export class UserComponent implements OnInit {
           const user = userCredential.user;
           if (user) {
             sessionStorage.setItem("email", this.email);
-            window.location.reload();
             this.userService.register(this.email).subscribe(data => {
-              console.log(data);
+              this.router.navigate(['/events']);
             });
           }
         })

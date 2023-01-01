@@ -29,7 +29,6 @@ export class LocationEventsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.informationService.filterSelected == undefined) {
-
       if (sessionStorage.getItem("email") != null) {
         this.informationService.findAll().subscribe(data => {
           this.info = data;
@@ -38,6 +37,9 @@ export class LocationEventsComponent implements OnInit {
             this.mylocations = data2;
           });
         });
+      }
+      else {
+        this.router.navigate(['/login']);
       }
     }
   }

@@ -44,9 +44,8 @@ export class LoginComponent implements OnInit {
           const user = userCredential.user;
           if (user) {
             sessionStorage.setItem("email", this.email);
-            window.location.reload();
             this.userService.signIn(this.email).subscribe(data => {
-              console.log(data);
+              this.router.navigate(['/events']);
             });
           }
         })
