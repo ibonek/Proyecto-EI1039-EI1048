@@ -17,4 +17,8 @@ export class UserService {
   public signIn(email: string){
     return this.http.post<string>("http://localhost:8080/signIn",email);
   }
+
+  public deleteAccount(email: string | null) {
+    return this.http.post<string>("http://localhost:8080/deleteUser",email);
+  }
 }

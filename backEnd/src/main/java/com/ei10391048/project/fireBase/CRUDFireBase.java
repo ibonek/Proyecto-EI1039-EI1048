@@ -86,11 +86,6 @@ public class CRUDFireBase {
         if (email==null){
             throw new IncorrectUserException();
         }
-        /*try {
-            FirebaseAuth.getInstance().deleteUser(email);
-        } catch (FirebaseAuthException e) {
-            throw new IncorrectUserException();
-        }*/
         QueryDocumentSnapshot document;
         try {
             document = getUserDocument(email);
@@ -184,13 +179,8 @@ public class CRUDFireBase {
         docLocation.put("longitude",location.getCoordinates().getLon());
         docLocation.put("alias",location.getAlias());
         docLocation.put("active",location.getIsActive());
-        ApiFuture<WriteResult> future =db.collection("users").document(email).collection("locations").document(location.getName()).set(docLocation);
+        db.collection("users").document(email).collection("locations").document(location.getName()).set(docLocation);
         addAPIs(email, location.getName());
-        try {
-            future.get().getUpdateTime();
-        } catch (InterruptedException | ExecutionException | NullPointerException e) {
-            throw new NotSavedException();
-        }
     }
 
     public List<Location> getUserLocations(String email) throws IncorrectLocationException {

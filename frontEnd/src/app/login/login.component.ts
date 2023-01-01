@@ -29,6 +29,9 @@ export class LoginComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit(): void {
+    if (sessionStorage.getItem("email")) {
+      this.router.navigate(['/events']);
+    }
   }
 
   login() {
@@ -44,9 +47,8 @@ export class LoginComponent implements OnInit {
           const user = userCredential.user;
           if (user) {
             sessionStorage.setItem("email", this.email);
-            window.location.reload();
             this.userService.signIn(this.email).subscribe(data => {
-              console.log(data);
+              window.location.reload();
             });
           }
         })

@@ -19,7 +19,7 @@ export class AppComponent implements OnInit{
     if (sessionStorage.getItem("email")==null){
       this.router.navigate(['/']);    }
     else{
-      this.router.navigate(['/events'])
+      //this.router.navigate(['/events'])
     }
   }
 

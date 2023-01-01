@@ -70,10 +70,7 @@ export class LocationFormComponent implements OnInit {
           }
         this.tinyQuestionAlert(mylocation);
         return;
-
       });
-
-
   });
   }
 

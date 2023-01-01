@@ -31,6 +31,7 @@ import { LocationEventsComponent } from './location-events/location-events.compo
 import { ApiListComponent } from './api-list/api-list.component';
 import { UserComponent } from './userRegister/user.component';
 import { LoginComponent } from './login/login.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { LoginComponent } from './login/login.component';
     LocationEventsComponent,
     ApiListComponent,
     UserComponent,
-    LoginComponent
+    LoginComponent,
+    ResetPasswordComponent
   ],
     imports: [
       BrowserAnimationsModule,

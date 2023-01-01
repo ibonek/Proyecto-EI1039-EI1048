@@ -30,6 +30,9 @@ export class UserComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit(): void {
+    if (sessionStorage.getItem("email") != null) {
+      this.router.navigate(['/events']);
+    }
   }
 
   register() {
@@ -60,9 +63,8 @@ export class UserComponent implements OnInit {
           const user = userCredential.user;
           if (user) {
             sessionStorage.setItem("email", this.email);
-            window.location.reload();
             this.userService.register(this.email).subscribe(data => {
-              console.log(data);
+              window.location.reload();
             });
           }
         })

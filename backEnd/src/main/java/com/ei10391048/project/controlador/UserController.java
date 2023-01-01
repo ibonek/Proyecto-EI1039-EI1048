@@ -35,4 +35,10 @@ public class UserController {
         UserManager manager = UserManager.getInstance();
         manager.signOut(email);
     }
+
+    @PostMapping("/deleteUser")
+    public void deleteUser(@RequestBody String email) {
+        UserManager manager = UserManager.getInstance();
+        manager.deleteUser(email);
+    }
 }

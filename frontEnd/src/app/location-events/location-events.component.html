@@ -1,11 +1,9 @@
 <div class="upButtons">
-  <button class="buttonBlue" (click)="goApiList()"> List events subscriptions</button>
+  <button class="buttonBlue" (click)="goApiList()">APIs subscriptions</button>
   <app-filter></app-filter>
 </div>
 
-<div *ngIf="this.mylocations.length == 1">
-  <app-location-form></app-location-form>
-</div>
+<app-location-form></app-location-form>
 
 <div class="infoBody" *ngFor="let infoPakage of this.info; let i=index">
   <div class="locationName"><h1>{{mylocations[i+1]}}</h1></div>
@@ -13,7 +11,7 @@
     <div class="backgroundMain">
       <div class="timeContent"> {{castWeatherInfo(infoPakage[0][0])}}
         <div class="temperature">
-          <img src="{{this.weatherInfo.imageURL}}">
+          <img src="{{this.weatherInfo.imageURL}}" alt="Weather">
           <p>{{this.weatherInfo.temperature}}ºC</p>
         </div>
         <div class="fecha">
@@ -24,7 +22,7 @@
               <p>{{this.weatherInfo.humidity}}</p>
             </div>
             <div>
-              Weather State
+              Weather
               <p>{{this.weatherInfo.weatherState}}</p>
             </div>
             <div>
@@ -45,7 +43,7 @@
           <label class="titleLabel">{{this.newsInfo.title}}</label>
           <div class="textContent">
             <div class="imagesContent">
-              <img class="newsImg" src="{{this.newsInfo.imageURL}}">
+              <img class="newsImg" src="{{this.newsInfo.imageURL}}" alt="Imagen de la noticia">
               <p>{{this.newsInfo.author}}</p>
               <p>{{this.newsInfo.date}}</p>
               <a href="{{this.newsInfo.newsURL}}">More info</a>
@@ -65,7 +63,7 @@
               <label class="titleLabel">{{this.eventInfo.eventName}}</label>
               <label>{{this.eventInfo.place}}      {{this.eventInfo.date}}</label>
             </div>
-            <img class="eventImg" src="{{this.eventInfo.imageURL}}">
+            <img class="eventImg" src="{{this.eventInfo.imageURL}}" alt="Imagen del evento">
             <p>{{this.eventInfo.address}}</p>
           </div>
         </div>
