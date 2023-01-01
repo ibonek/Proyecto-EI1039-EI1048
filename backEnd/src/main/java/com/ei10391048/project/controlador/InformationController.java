@@ -32,8 +32,11 @@ public class InformationController {
         UserManager userManager = UserManager.getInstance();
         User user = userManager.getUser(email);
         list.add("All");
-        for (Location location: user.getMyLocations()){
-            list.add(location.getAlias());
+        List<Location> locations = user.getUserLocations();
+        if (locations != null){
+            for (Location location: locations){
+                list.add(location.getName());
+            }
         }
         return list;
 

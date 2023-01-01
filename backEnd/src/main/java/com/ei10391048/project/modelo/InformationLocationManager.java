@@ -1,12 +1,9 @@
 package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.NotExistingAPIException;
-import com.ei10391048.project.exception.NotSavedException;
-import com.ei10391048.project.fireBase.CRUDFireBase;
 import com.ei10391048.project.modelo.api.*;
 import com.ei10391048.project.modelo.information.APIInformation;
 import com.ei10391048.project.modelo.user.User;
-import com.ei10391048.project.modelo.user.UserManager;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +33,7 @@ public class InformationLocationManager {
             throw new NotExistingAPIException();
         API api=apiList.get(order);
         //try {
-            for (Location location: user.getMyLocations()){
+            for (Location location: user.getUserLocations()){
                 //crudFireBase.changeAPILocationStatus(location.getApiManager().getApiList().get(order),location);
                 location.getApiManager().getApiList().get(order).setActive(!api.getIsActive());
             }
@@ -50,7 +47,10 @@ public class InformationLocationManager {
     }
     public List<List<List<APIInformation>>> getAllActivatedInfo(User user) throws IndexOutOfBoundsException{
         List<List<List<APIInformation>>> list = new LinkedList<>();
-        for (Location location: user.getMyLocations()){
+        List<Location> locations = user.getUserLocations();
+        if (locations==null)
+            return list;
+        for (Location location: user.getUserLocations()){
             List<List<APIInformation>> listAux = new LinkedList<>();
             ApiFacade manager = location.getApiManager();
             manager.generateInfo(location.getName());

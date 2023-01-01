@@ -17,16 +17,16 @@ public class UserManagerTest {
     @Test
     public void registerValidUserTest() throws IncorrectUserException, AlreadyExistentUser {
         int num = manager.getNumberOfUsers();
-        manager.registerUser("test@gmail.com","123456");
+        manager.registerUser("test@gmail.com");
         assertEquals(num+1, manager.getNumberOfUsers());
     }
 
     @ParameterizedTest
     @MethodSource("invalidUser")
-    public void registerInvalidUserTest(String email, String password){
+    public void registerInvalidUserTest(String email){
         int num = manager.getNumberOfUsers();
         try {
-            manager.registerUser(email,password);
+            manager.registerUser(email);
         }catch (IncorrectUserException | AlreadyExistentUser ex){
             assertEquals(num,manager.getNumberOfUsers());
         }
@@ -45,7 +45,6 @@ public class UserManagerTest {
     public void signOutUserValidTest() throws IncorrectUserException{
         User user = new User();
         user.setEmail("signOutTest@gmail.com");
-        user.setPassword("123456");
         manager.getUserList().add(user);
         int num = manager.getNumberOfUsers();
         manager.signOut("signOutTest@gmail.com");
@@ -56,7 +55,6 @@ public class UserManagerTest {
     public void signOutUserInvalidTest() {
         User user = new User();
         user.setEmail("signOutTest@gmail.com");
-        user.setPassword("123456");
         manager.getUserList().add(user);
         int num = manager.getNumberOfUsers();
         try{

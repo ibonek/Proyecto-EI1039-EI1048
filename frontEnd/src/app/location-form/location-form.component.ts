@@ -32,15 +32,18 @@ export class LocationFormComponent implements OnInit {
   async ngOnInit() {
     this.findingByNameService.giveCityList().subscribe(data => {
       this.locations = data;
-
-
-      this.filteredLocations = this.control.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
+      this.findingByNameService.getLocationList().subscribe(data2 => {
+        for (let i=0;i<data2.length;i++){
+          console.log(data2[i].name);
+        }
+        this.mylocations = data2.map((location: Location) => location.name);
+        this.filteredLocations = this.control.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+      }
+    );
     });
-
-
   }
 
 
@@ -71,7 +74,7 @@ export class LocationFormComponent implements OnInit {
   });
   }
 
-  private async submitLocation(){
+  private async submitLocation2(){
     this.findingByNameService.save(this.locationName).subscribe(data => {
       this.findingByNameService.giveConfirmation().subscribe(confirmation => {
         if (confirmation) {
@@ -83,14 +86,17 @@ export class LocationFormComponent implements OnInit {
     });
   }
   async onSubmit() {
-    this.findingByNameService.getLocationList().subscribe(data => {
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].name.toUpperCase() === this.locationName.trim().toUpperCase() || data[i].coordinates.lat + ", " + data[i].coordinates.lon === this.locationName) {
+    this.findingByNameService.addLocation(this.locationName).subscribe(data => {
+      this.findingByNameService.giveConfirmation().subscribe(confirmation => {
+        if (confirmation) {
+          this.mylocations.push(this.locationName);
+          this.tinySuccessAlert();
+        } else {
           this.tinyFailAlert("Your location "+this.locationName+ " has been added previously");
           return;
         }
       }
-      this.submitLocation();
+      );
     });
   }
 
@@ -129,7 +135,6 @@ export class LocationFormComponent implements OnInit {
     }).then(( result => {
       if (result.isConfirmed) {
         this.locationName = mylocation;
-        this.submitLocation();
       }
     }))
   }
