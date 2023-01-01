@@ -6,6 +6,7 @@ import {LocationEventsComponent} from "./location-events/location-events.compone
 import {ApiListComponent} from "./api-list/api-list.component";
 import {UserComponent} from "./userRegister/user.component";
 import {LoginComponent} from "./login/login.component";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 
 const routes: Routes= [
@@ -16,7 +17,8 @@ const routes: Routes= [
   {path: 'apisList', component: ApiListComponent},
   {path: '', component: UserComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: UserComponent}
+  {path: 'register', component: UserComponent},
+  {path: 'resetPassword', component: ResetPasswordComponent}
   ];
 
 @NgModule({
