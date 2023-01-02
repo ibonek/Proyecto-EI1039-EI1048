@@ -5,6 +5,7 @@ import com.ei10391048.project.modelo.information.APIInformation;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class APIManager implements ApiFacade{
@@ -42,12 +43,8 @@ public class APIManager implements ApiFacade{
         apiInformation = new LinkedList<>();
         for (API api: apiList){
             List<APIInformation> info = api.generateInfo(locationName);
-            if (info != null)
-                apiInformation.add(info);
-            else
-                apiInformation.add(new LinkedList<>());
+            apiInformation.add(Objects.requireNonNullElseGet(info, LinkedList::new));
         }
-
     }
 
 
@@ -60,8 +57,8 @@ public class APIManager implements ApiFacade{
     }
 
     public  List<APIInformation> getNewsInformation() {
+        System.out.println(apiInformation);
         return apiInformation.get(APIsNames.NEWS.getOrder());
-
     }
 
     public List<API> getApiList(){

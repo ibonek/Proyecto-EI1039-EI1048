@@ -16,9 +16,9 @@ public class User implements UserFacade{
 
     private String email;
 
-    private LocationManager locationManager;
+    private final LocationManager locationManager;
 
-    private InformationLocationManager informationLocationManager;
+    private final InformationLocationManager informationLocationManager;
 
     private final CRUDFireBase crudFireBase;
 
@@ -60,16 +60,8 @@ public class User implements UserFacade{
         return locationManager;
     }
 
-    public void setLocationManager(LocationManager locationManager) {
-        this.locationManager = locationManager;
-    }
-
     public InformationLocationManager getInformationLocationManager() {
         return informationLocationManager;
-    }
-
-    public void setInformationLocationManager(InformationLocationManager informationLocationManagerFacade) {
-        this.informationLocationManager = informationLocationManagerFacade;
     }
 
     public List<Location> getUserLocations(){
@@ -155,7 +147,12 @@ public class User implements UserFacade{
     }
 
     @Override
-    public void changeLocationAPIState(String name, int order) throws IncorrectLocationException, NotExistingAPIException {
-        locationManager.changeAPIState(name,order);
+    public void changeLocationAPIState(String locationName, int order) throws IncorrectLocationException, NotExistingAPIException {
+        try {
+            crudFireBase.changeUserLocationAPIStatus(email,locationName,informationLocationManager.getApiList().get(order));
+            locationManager.changeAPIState(locationName,order);
+        } catch (NotSavedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

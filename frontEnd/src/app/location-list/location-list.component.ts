@@ -3,7 +3,6 @@ import {FindingByNameService} from "../finding-by-name.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "../location";
 import {FormArray, FormBuilder} from "@angular/forms";
-import {Api} from "../api";
 
 @Component({
   selector: 'app-location-list',
@@ -29,7 +28,6 @@ export class LocationListComponent implements OnInit {
       this.locations=data;
 
       for(let i=0; i<this.locations.length; i++){
-        alert(this.locations[i].apiManager.apiList[0].isActive)
         this.aliases.push(this.fb.control(''));
       }
     });
