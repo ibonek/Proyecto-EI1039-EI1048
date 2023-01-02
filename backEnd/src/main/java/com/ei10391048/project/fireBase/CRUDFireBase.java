@@ -3,10 +3,7 @@ package com.ei10391048.project.fireBase;
 import com.ei10391048.project.exception.*;
 import com.ei10391048.project.modelo.Coordinates;
 import com.ei10391048.project.modelo.Location;
-import com.ei10391048.project.modelo.api.API;
-import com.ei10391048.project.modelo.api.NewsAPI;
-import com.ei10391048.project.modelo.api.OpenWeather;
-import com.ei10391048.project.modelo.api.TicketMaster;
+import com.ei10391048.project.modelo.api.*;
 import com.ei10391048.project.modelo.user.User;
 import com.ei10391048.project.modelo.user.UserFacade;
 import com.google.api.core.ApiFuture;
@@ -478,23 +475,43 @@ public class CRUDFireBase {
                 throw new NotExistingAPIException();
             }
             List<API> apis = new ArrayList<>();
+            for (int i=0; i<APIsNames.values().length;i++){
+                apis.add(null);
+            }
+
             for (QueryDocumentSnapshot document : documents) {
                 String name = (String) document.getData().get("name");
-                API api = switch (name) {
-                    case "OpenWeather" -> new OpenWeather();
-                    case "TicketMaster" -> new TicketMaster();
-                    case "NewsAPI" -> new NewsAPI();
+                API api;
+                int order;
+                switch (name) {
+                    case "OpenWeather" -> {
+                        api = new OpenWeather();
+                        order = APIsNames.WEATHER.getOrder();
+                    }
+                    case "TicketMaster" -> {
+                        api = new TicketMaster();
+                        order = APIsNames.EVENTS.getOrder();
+
+                    }
+                    case "NewsAPI" ->{
+                        api= new NewsAPI();
+                        order = APIsNames.NEWS.getOrder();
+
+                    }
                     default -> throw new NotExistingAPIException();
                 };
                 api.setName(name);
                 api.setActive((Boolean) document.getData().get("active"));
-                apis.add(api);
+                apis.remove(order);
+                apis.add(order,api);
             }
+
             return apis;
         } catch (InterruptedException | ExecutionException | IncorrectUserException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     public void deleteUserLocation(String email, String locationName) throws IncorrectLocationException{
         QueryDocumentSnapshot document;

@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit(): void {
-    if (sessionStorage.getItem("email")) {
+    if (sessionStorage.getItem("email") != null) {
       this.router.navigate(['/events']);
     }
   }
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     if (!this.email.includes('@') || !this.email.includes('.')) {
       Swal.fire({
         title: 'Ooops',
-        text: "That email does not have the correct format (Format: "
+        text: "That email does not have the correct format (Format: abc@abc.abc)"
       });
     } else {
       signInWithEmailAndPassword(auth, this.email, this.password)
