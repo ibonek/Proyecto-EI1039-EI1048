@@ -67,4 +67,12 @@ public class APIManager implements ApiFacade{
     public List<API> getApiList(){
         return apiList;
     }
+
+    @Override
+    public void copyApiListState(List<API> list) {
+        for (int i=0; i<apiList.size();i++){
+            apiList.get(i).setActive(list.get(i).getIsActive());
+        }
+    }
+
 }

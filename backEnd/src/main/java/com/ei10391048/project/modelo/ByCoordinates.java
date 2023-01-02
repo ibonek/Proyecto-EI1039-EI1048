@@ -1,5 +1,6 @@
 package com.ei10391048.project.modelo;
 
+import com.ei10391048.project.controlador.InputValidator;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.github.prominence.openweathermap.api.OpenWeatherMapClient;
 import com.github.prominence.openweathermap.api.enums.Language;
@@ -22,7 +23,8 @@ public class ByCoordinates implements SearchInterface{
         Location location = new Location();
         try {
             Weather weather = openWeatherMapClient.currentWeather().single().byCoordinate(Coordinate.of(coordinates.getLat(), coordinates.getLon() )).language(Language.SPANISH).unitSystem(UnitSystem.METRIC).retrieve().asJava();
-            location.setName(weather.getLocation().getName());
+            String name = weather.getLocation().getName().split("/")[0];
+            location.setName(name);
             Coordinates newCoords = new Coordinates(weather.getLocation().getCoordinate().getLatitude(),weather.getLocation().getCoordinate().getLongitude());
             location.setCoordinates(newCoords);
             return location;

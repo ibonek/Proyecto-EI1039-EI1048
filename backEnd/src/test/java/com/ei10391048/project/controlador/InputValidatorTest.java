@@ -23,7 +23,8 @@ class InputValidatorTest {
                 Arguments.of("madrid", "Madrid"),
                 Arguments.of("MaDRid", "Madrid"),
                 Arguments.of("MADRID", "Madrid"),
-                Arguments.of("Pekín", "Pekin")
+                Arguments.of("Pekín", "Pekin"),
+                Arguments.of("Castellón de la plana", "Castellon De La Plana")
         );
     }
 
@@ -57,6 +58,19 @@ class InputValidatorTest {
                 Arguments.of("6º26'37\"W", -6.4435)
                 );
     }
+
+    @ParameterizedTest
+    @MethodSource("urlLocationData")
+    public void urlLocationName(String input, String sol){
+        assertEquals(InputValidator.urlLocationName(input),sol);
+    }
+
+    static Stream<Arguments> urlLocationData() {
+        return Stream.of(
+                Arguments.of("Madrid", "Madrid"),
+                Arguments.of("Los Ángeles", "Los_Ángeles"),
+                Arguments.of("Castellon De La Plana", "Castellon_de_la_Plana")
+        );}
 
     @ParameterizedTest
     @MethodSource("NameOrCoordData")

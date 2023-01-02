@@ -95,6 +95,7 @@ public class User implements UserFacade{
     public void addUserLocation(String name) throws NotSavedException, IncorrectLocationException, ExecutionException, InterruptedException {
         try {
             Location location=locationManager.findLocation(name);
+            location.getApiManager().copyApiListState(informationLocationManager.getApiList());
             crudFireBase.addUserLocation(location, email);
             locationManager.addUserLocation(location);
         } catch (AlreadyExistentLocationException e) {
@@ -106,6 +107,7 @@ public class User implements UserFacade{
     public void addUserLocation(Coordinates coords) throws NotSavedException, IncorrectLocationException, AlreadyExistentLocationException {
         try {
             Location location=locationManager.findLocation(coords);
+            location.getApiManager().copyApiListState(informationLocationManager.getApiList());
             crudFireBase.addUserLocation(location, email);
             locationManager.addUserLocation(location);
         } catch (AlreadyExistentLocationException e) {
@@ -150,5 +152,10 @@ public class User implements UserFacade{
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public void changeLocationAPIState(String name, int order) throws IncorrectLocationException, NotExistingAPIException {
+        locationManager.changeAPIState(name,order);
     }
 }

@@ -106,11 +106,16 @@ public class InputValidator {
     }
 
     public static String formatingInputName(String input){
+        String aux = "";
         //Quitamos tildes
         input= StringUtils.stripAccents(input);
-        //Ponemos inicial en mayúscula
-        input= input.substring(0,1).toUpperCase()+ input.substring(1).toLowerCase();
-        return input;
+        //Ponemos inicial en primera letra de cada palabra
+        for (String palabra: input.split(" ")){
+            aux += palabra.substring(0,1).toUpperCase()+ palabra.substring(1).toLowerCase();
+            aux += " ";
+        }
+
+        return aux.trim();
     }
 
     public static List<String> generateAutocompleteList() throws IOException, InterruptedException {
@@ -130,6 +135,18 @@ public class InputValidator {
             list.add(jsonObject.getString("name"));
         }
         return list;
+    }
+    public static String urlLocationName(String location){
+        String[] aux = location.split(" ");
+
+        String urlName = aux[0];
+        for (int i=1;i< aux.length;i++){
+            if (aux[i].equalsIgnoreCase("de") || aux[i].equalsIgnoreCase("la") || aux[i].equalsIgnoreCase("el")){
+                aux[i] = aux[i].toLowerCase();
+            }
+            urlName += "_"+aux[i];
+        }
+        return urlName;
     }
 
 }
