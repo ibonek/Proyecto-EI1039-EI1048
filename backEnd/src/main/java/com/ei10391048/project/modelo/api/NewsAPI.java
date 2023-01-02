@@ -29,7 +29,7 @@ public class NewsAPI extends API{
 
     public NewsAPI() {
         name = APIsNames.NEWS.getApiName();
-        apiKey = "b851a5f3-39a4-4999-82ca-6a153635334f";
+        apiKey = "d74380d1-a3e9-4b26-b86d-909bce55e307";
         information = super.information;
         nonRepeatedIndex = new LinkedList<>();
 
