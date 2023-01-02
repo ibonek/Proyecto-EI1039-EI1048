@@ -2,6 +2,7 @@ package com.ei10391048.project.modelo;
 
 
 import com.ei10391048.project.exception.IncorrectLocationException;
+import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.api.APIsNames;
 
@@ -99,9 +100,9 @@ public class LocationManager{
         return location;
     }
 
-    public void changeAPIState(String name, int order) throws IncorrectLocationException{
+    public void changeAPIState(String name, int order) throws IncorrectLocationException, NotExistingAPIException {
         if (order <0 ||order >= APIsNames.values().length){
-            throw new IncorrectLocationException();
+            throw new NotExistingAPIException();
         }
         Location location = getLocation(name);
         location.changeAPIState(order);

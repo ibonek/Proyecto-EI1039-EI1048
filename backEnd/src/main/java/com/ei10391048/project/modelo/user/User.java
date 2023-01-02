@@ -151,4 +151,9 @@ public class User implements UserFacade{
         }
 
     }
+
+    @Override
+    public void changeLocationAPIState(String name, int order) throws IncorrectLocationException, NotExistingAPIException {
+        locationManager.changeAPIState(name,order);
+    }
 }

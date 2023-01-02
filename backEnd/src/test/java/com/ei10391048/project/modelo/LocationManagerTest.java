@@ -2,6 +2,7 @@ package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.IncorrectUserException;
+import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.api.APIsNames;
@@ -227,7 +228,7 @@ class LocationManagerTest {
      *
      */
     @Test
-    void changeStateLocationAPIValidCase() throws IncorrectLocationException {
+    void changeStateLocationAPIValidCase() throws IncorrectLocationException, NotExistingAPIException {
         String name = "Valencia";
         int order = APIsNames.WEATHER.getOrder();
         manager.addUserLocation(new Location(name,20,30));
@@ -246,7 +247,7 @@ class LocationManagerTest {
         try{
             manager.changeAPIState(name,order);
             fail();
-        } catch (IncorrectLocationException ex){
+        } catch (NotExistingAPIException ex){
             for (API api: manager.getLocation(name).getApiManager().getApiList()){
                 assertTrue(api.getIsActive());
             }

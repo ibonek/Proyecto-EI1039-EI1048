@@ -59,6 +59,10 @@ export class FindingByNameService {
     return this.http.post<string>("http://localhost:8080/changeActiveApiState",sessionStorage.getItem("email")+"#"+order);
   }
 
+  public changeActiveStateLocationAPI(location: Location,order : number | undefined){
+    return this.http.post<string>("http://localhost:8080/changeLocationApiState",sessionStorage.getItem("email")+"#"+location.name+"#"+order);
+  }
+
   public giveAPIConfirmation(){
     return this.http.get<boolean>("http://localhost:8080/changeActiveApiState");
   }
