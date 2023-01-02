@@ -38,6 +38,7 @@ public class UserManagerTest {
                 Arguments.of(null,"1234a"),
                 Arguments.of("test@gmail.com",null),
                 Arguments.of("test@gmail.com","12"),
+
                 Arguments.of("test@gmail.com","ab")
                 );
     }
