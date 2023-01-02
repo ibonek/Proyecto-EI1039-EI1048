@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Location} from "../location";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FindingByNameService} from "../finding-by-name.service";
 import {Api} from "../api";
 import Swal from "sweetalert2";
-
-
 
 @Component({
   selector: 'app-api-list',
@@ -28,7 +25,7 @@ export class ApiListComponent implements OnInit {
   }
 
   changeActiveState(order : number) {
-    this.findingByNameService.changeActiveStateApi(order).subscribe(data=> {
+    this.findingByNameService.changeAPIState(order).subscribe(data=> {
       this.findingByNameService.giveAPIConfirmation().subscribe(confirmation =>{
         if (confirmation){
           this.tinySuccessAlert(this.apis[order].isActive, this.apis[order].name)

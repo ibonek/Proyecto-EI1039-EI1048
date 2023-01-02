@@ -379,7 +379,7 @@ public class CRUDFireBase {
             return null;
         }
         api.setName((String) document.getData().get("name"));
-        api.setActive((Boolean) document.getData().get("isActive"));
+        api.setActive((Boolean) document.getData().get("active"));
         return api;
     }
 
@@ -431,7 +431,7 @@ public class CRUDFireBase {
         if (document==null){
             throw new NotSavedException();
         }
-        document.getReference().update("isActive",!api.getIsActive());
+        document.getReference().update("active",!api.getIsActive());
     }
 
     public void changeUserLocationAPIStatus(String email, String locationName, API api) throws NotSavedException {
@@ -499,7 +499,7 @@ public class CRUDFireBase {
 
                     }
                     default -> throw new NotExistingAPIException();
-                };
+                }
                 api.setName(name);
                 api.setActive((Boolean) document.getData().get("active"));
                 apis.remove(order);
