@@ -60,9 +60,11 @@ export class TopBarComponent implements OnInit {
       reverseButtons: true
     }).then(( result => {
       if (result.isConfirmed) {
+        this.userService.signOut(this.email).subscribe(data => {
           sessionStorage.removeItem("email");
           this.email=null;
           window.location.reload();
+        })
       }
     }))
   }

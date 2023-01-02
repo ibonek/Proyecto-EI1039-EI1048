@@ -74,6 +74,17 @@ export class LocationFormComponent implements OnInit {
   });
   }
 
+  private async submitLocation2(){
+    this.findingByNameService.save(this.locationName).subscribe(data => {
+      this.findingByNameService.giveConfirmation().subscribe(confirmation => {
+        if (confirmation) {
+          this.tinySuccessAlert();
+        } else {
+          this.tinyFailAlert("Your location " + this.locationName + " does not exist");
+        }
+      });
+    });
+  }
   async onSubmit() {
     this.findingByNameService.addLocation(this.locationName).subscribe(data => {
       this.findingByNameService.giveConfirmation().subscribe(confirmation => {
@@ -124,8 +135,6 @@ export class LocationFormComponent implements OnInit {
     }).then(( result => {
       if (result.isConfirmed) {
         this.locationName = mylocation;
-        this.onSubmit();
-
       }
     }))
   }

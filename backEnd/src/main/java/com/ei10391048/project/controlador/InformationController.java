@@ -35,8 +35,7 @@ public class InformationController {
         List<Location> locations = user.getUserLocations();
         if (locations != null){
             for (Location location: locations){
-                if (location.getIsActive())
-                    list.add(location.getAlias());
+                list.add(location.getName());
             }
         }
         return list;

@@ -41,7 +41,29 @@ public class UserManagerTest {
                 Arguments.of("test@gmail.com","ab")
                 );
     }
+    @Test
+    public void signOutUserValidTest() throws IncorrectUserException{
+        User user = new User();
+        user.setEmail("signOutTest@gmail.com");
+        manager.getUserList().add(user);
+        int num = manager.getNumberOfUsers();
+        manager.signOut("signOutTest@gmail.com");
+        assertEquals(num-1, manager.getNumberOfUsers());
+    }
 
+    @Test
+    public void signOutUserInvalidTest() {
+        User user = new User();
+        user.setEmail("signOutTest@gmail.com");
+        manager.getUserList().add(user);
+        int num = manager.getNumberOfUsers();
+        try{
+            manager.signOut("");
+            fail();
+        }catch (IncorrectUserException ex){
+            assertEquals(num, manager.getNumberOfUsers());
+        }
 
+    }
 
 }
