@@ -36,9 +36,7 @@ export class LocationListComponent implements OnInit {
   }
 
   onSubmit(){
-    this.findingByNameService.changeAlias(this.locations[this.pos].name,this.aliases.value[this.pos]).subscribe( data =>{
-      window.location.reload();
-    })
+    this.findingByNameService.changeAlias(this.locations[this.pos].name,this.aliases.value[this.pos]).subscribe( data =>{})
   }
 
   changeActiveState(location: Location | undefined) {

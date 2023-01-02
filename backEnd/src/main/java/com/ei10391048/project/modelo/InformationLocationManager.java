@@ -50,22 +50,20 @@ public class InformationLocationManager {
         List<Location> locations = user.getUserLocations();
         if (locations==null)
             return list;
-        for (Location location: locations){
-            if (location.getIsActive()) {
-                List<List<APIInformation>> listAux = new LinkedList<>();
-                ApiFacade manager = location.getApiManager();
-                manager.generateInfo(location.getName());
+        for (Location location: user.getUserLocations()){
+            List<List<APIInformation>> listAux = new LinkedList<>();
+            ApiFacade manager = location.getApiManager();
+            manager.generateInfo(location.getName());
 
-                for (int i = 0; i < apiList.size(); i++) {
-                    API api = apiList.get(i);
-                    if (!api.getIsActive()) {
-                        listAux.add(new LinkedList<>());
-                    } else {
-                        listAux.add(manager.getInformation(i));
-                    }
+            for (int i=0;i<apiList.size();i++){
+                API api = apiList.get(i);
+                if (!api.getIsActive()){
+                    listAux.add(new LinkedList<>());
+                }else {
+                    listAux.add(manager.getInformation(i));
                 }
-                list.add(listAux);
             }
+            list.add(listAux);
 
         }
         return list;

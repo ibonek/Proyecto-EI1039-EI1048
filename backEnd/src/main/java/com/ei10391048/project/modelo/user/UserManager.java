@@ -14,8 +14,8 @@ public class UserManager implements UserManagerFacade {
 
     private final CRUDFireBase crudFireBase;
 
-    private UserManager() {
-        crudFireBase = CRUDFireBase.getInstance();
+    private UserManager(){
+        crudFireBase=CRUDFireBase.getInstance();
         userList = crudFireBase.getUsers();
     }
 
@@ -23,8 +23,8 @@ public class UserManager implements UserManagerFacade {
         return userList;
     }
 
-    public static UserManager getInstance() {
-        if (userManager == null) {
+    public static UserManager getInstance(){
+        if (userManager == null){
             userManager = new UserManager();
         }
         return userManager;
@@ -32,8 +32,8 @@ public class UserManager implements UserManagerFacade {
 
     @Override
     public User getUser(String email) throws IncorrectUserException {
-        for (User user : userList) {
-            if (user.getEmail().equals(email)) {
+        for (User user: userList){
+            if (user.getEmail().equals(email)){
                 return user;
             }
         }
@@ -42,11 +42,10 @@ public class UserManager implements UserManagerFacade {
 
     @Override
     public void registerUser(String email) throws IncorrectUserException, AlreadyExistentUser {
-        if (email == null || email.length() == 0) {
+        if (email == null ||email.length() == 0){
             throw new IncorrectUserException();
         }
-        User user = new User();
-        user.setEmail(email);
+        User user = new User(email);
         this.userList.add(user);
         try {
             crudFireBase.addUser(email);
@@ -73,8 +72,8 @@ public class UserManager implements UserManagerFacade {
 
     @Override
     public void deleteUser(String email) {
-        for (User user : userList) {
-            if (user.getEmail().equals(email)) {
+        for (User user: userList){
+            if (user.getEmail().equals(email)){
                 userList.remove(user);
                 try {
                     crudFireBase.deleteUser(email);
@@ -85,5 +84,8 @@ public class UserManager implements UserManagerFacade {
             }
         }
     }
-}
 
+    public void signOut(String email)throws IncorrectUserException{
+        userList.remove(getUser(email));
+    }
+}

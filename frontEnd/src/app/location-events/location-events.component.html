@@ -6,7 +6,7 @@
 <app-location-form></app-location-form>
 
 <div class="infoBody" *ngFor="let infoPakage of this.info; let i=index">
-  <div class="locationName"><h1>{{mylocations[i+this.addCounter]}}</h1></div>
+  <div class="locationName"><h1>{{mylocations[i+1]}}</h1></div>
   <div *ngIf="infoPakage[0].length != 0">
     <div class="backgroundMain">
       <div class="timeContent"> {{castWeatherInfo(infoPakage[0][0])}}
