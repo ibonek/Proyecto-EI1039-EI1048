@@ -3,6 +3,8 @@ package com.ei10391048.project.modelo;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.IncorrectUserException;
 import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.modelo.api.API;
+import com.ei10391048.project.modelo.api.APIsNames;
 import com.ei10391048.project.modelo.user.User;
 import com.ei10391048.project.modelo.user.UserManager;
 import org.junit.jupiter.api.AfterAll;
@@ -72,8 +74,6 @@ class LocationManagerTest {
         } catch (IncorrectLocationException ex){
             int num = manager.getNumberOfLocations();
             assertEquals(0,num);
-        } catch (NotSavedException e) {
-            fail();
         }
     }
 
@@ -103,8 +103,6 @@ class LocationManagerTest {
         } catch (IncorrectLocationException ex){
             int num = manager.getNumberOfLocations();
             assertEquals(0,num);
-        } catch (NotSavedException e) {
-            fail();
         }
     }
 
@@ -210,8 +208,6 @@ class LocationManagerTest {
             assertTrue(true);
         } catch (IncorrectLocationException e) {
             fail();
-        } catch (NotSavedException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -225,4 +221,36 @@ class LocationManagerTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 16: Como usuario quiero poder elegir servicios de información (API) independientes para cada ubicación,
+     * con el doble fin de consultar sólo información de interés y contribuir a la gestión eficiente de recursos.
+     *
+     */
+    @Test
+    void changeStateLocationAPIValidCase() throws IncorrectLocationException {
+        String name = "Valencia";
+        int order = APIsNames.WEATHER.getOrder();
+        manager.addUserLocation(new Location(name,20,30));
+        assertTrue(manager.getLocation(name).getApiManager().getApiList().get(order).getIsActive());
+        manager.changeAPIState(name,order);
+        assertFalse(manager.getLocation(name).getApiManager().getApiList().get(order).getIsActive());
+        manager.changeAPIState(name,order);
+        assertTrue(manager.getLocation(name).getApiManager().getApiList().get(order).getIsActive());
+    }
+
+    @Test
+    void changeStateLocationAPIInvalidCase() throws IncorrectLocationException {
+        String name = "Valencia";
+        int order = -1;
+        manager.addUserLocation(new Location(name,20,30));
+        try{
+            manager.changeAPIState(name,order);
+            fail();
+        } catch (IncorrectLocationException ex){
+            for (API api: manager.getLocation(name).getApiManager().getApiList()){
+                assertTrue(api.getIsActive());
+            }
+        }
+
+    }
 }

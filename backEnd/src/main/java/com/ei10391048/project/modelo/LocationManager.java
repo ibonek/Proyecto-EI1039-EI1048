@@ -90,12 +90,16 @@ public class LocationManager{
         return geoCod.findLocation();
     }
 
-    public Location addUserLocation(Location location) throws IncorrectLocationException, NotSavedException {
+    public Location addUserLocation(Location location) throws IncorrectLocationException {
         if (location==null||location.getAlias()==null||location.getAlias().equals(""))
             throw new IncorrectLocationException();
         location.setApiManager(new APIManager());
         locations.add(location);
         return location;
+    }
+
+    public void changeAPIState(String name, int order) throws IncorrectLocationException{
+
     }
 }
 
