@@ -13,11 +13,10 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatOptionModule} from "@angular/material/core";
 import {AppRoutingModule} from "./app-routing.module";
-import {RouterModule, RouterOutlet, Routes} from "@angular/router";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {RouterModule} from "@angular/router";
+import {HttpClientModule} from "@angular/common/http";
 import {FindingByNameService} from "./finding-by-name.service";
-
-import Swal from "sweetalert2"
+import {UserService} from "./user.service";
 
 import { TopBarComponent } from './top-bar/top-bar.component';
 import {MatMenuModule} from "@angular/material/menu";
@@ -30,9 +29,10 @@ import { LocationListComponent } from './location-list/location-list.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { LocationEventsComponent } from './location-events/location-events.component';
 import { ApiListComponent } from './api-list/api-list.component';
-//import { LocationFromComponent } from './location-from/location-from.component';
+import { UserComponent } from './userRegister/user.component';
+import { LoginComponent } from './login/login.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
-const routes: Routes=[];
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +41,10 @@ const routes: Routes=[];
     FilterComponent,
     LocationListComponent,
     LocationEventsComponent,
-    ApiListComponent
+    ApiListComponent,
+    UserComponent,
+    LoginComponent,
+    ResetPasswordComponent
   ],
     imports: [
       BrowserAnimationsModule,
@@ -61,10 +64,10 @@ const routes: Routes=[];
       MatSelectModule,
       MatMenuModule,
       MatSlideToggleModule,
-      ReactiveFormsModule
     ],
   providers: [FindingByNameService,
-              InformationService],
+              InformationService,
+              UserService],
   exports:[
     RouterModule
   ],

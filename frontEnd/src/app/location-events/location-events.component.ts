@@ -19,24 +19,31 @@ export class LocationEventsComponent implements OnInit {
   newsInfo! : NewsInformation
   eventInfo! : EventInformation
   mylocations !: string[]
+  addCounter : number;
 
   constructor(private informationService: InformationService,
               private route: ActivatedRoute,
               private router: Router) {
     this.title = 'Spring Boot - Angular Application';
     this.informationService.setAppComponent(this);
+    this.addCounter = 1;
   }
 
   ngOnInit(): void {
     if (this.informationService.filterSelected == undefined) {
-
-      this.informationService.findAll().subscribe(data => {
-        this.info = data;
-        this.completeInfo = data;
-        this.informationService.giveActiveLocationsNameList().subscribe(data2 => {
-          this.mylocations = data2;
+      this.addCounter = 1;
+      if (sessionStorage.getItem("email") != null) {
+        this.informationService.findAll().subscribe(data => {
+          this.info = data;
+          this.completeInfo = data;
+          this.informationService.giveActiveLocationsNameList().subscribe(data2 => {
+            this.mylocations = data2;
+          });
         });
-      });
+      }
+      else {
+        this.router.navigate(['/login']);
+      }
     }
   }
 
@@ -45,6 +52,7 @@ export class LocationEventsComponent implements OnInit {
       this.info = this.completeInfo
 
     } else {
+      this.addCounter = this.informationService.filterSelected+1;
       // @ts-ignore
       this.info = [this.completeInfo[this.informationService.filterSelected]];
     }

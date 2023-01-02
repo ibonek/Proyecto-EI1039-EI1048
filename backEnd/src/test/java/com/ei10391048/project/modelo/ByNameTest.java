@@ -2,15 +2,9 @@ package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
-import com.ei10391048.project.fireBase.CRUDFireBase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,18 +21,18 @@ public class ByNameTest {
     }
 
     @Test
-    public void registerLocation_invalidName() throws IncorrectLocationException {
+    public void findLocation_invalidName() throws IncorrectLocationException {
         when(byNameMock.search()).thenThrow(new IncorrectLocationException());
 
         GeoCodService geoCodService = new GeoCodService();
         geoCodService.setSearch(byNameMock);
         when(managerMock.generateApiInterface(any(String.class))).thenReturn(geoCodService);
         try {
-        when(managerMock.addLocation(any(String.class))).thenCallRealMethod();
+        when(managerMock.findLocation(any(String.class))).thenCallRealMethod();
 
-            managerMock.addLocation("null");
+            managerMock.findLocation("test");
             fail();
-        } catch (IncorrectLocationException | NotSavedException ex){
+        } catch (IncorrectLocationException ex){
             assertTrue(true);
         }
 
@@ -49,13 +43,13 @@ public class ByNameTest {
         Location place = new Location();
 
         place.setName("Barcelona");
-
-        LocationManagerFacade manager = Mockito.spy(LocationManager.getInstance());
+        LocationManager manager = Mockito.spy(new LocationManager());
         int num = manager.getNumberOfLocations();
 
-        manager.addLocation("Barcelona");
+        Location location = new Location("test", 1000,2000);
+        manager.addUserLocation(location);
 
-        Mockito.verify(manager).addLocation("Barcelona");
+        Mockito.verify(manager).addUserLocation(location);
 
         assertEquals(num+1,manager.getNumberOfLocations());
     }

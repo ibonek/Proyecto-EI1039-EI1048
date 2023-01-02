@@ -1,0 +1,27 @@
+.registerBody{
+  background: #2ab2b9;
+  width: 25rem;
+  padding: 1rem 1rem 2rem;
+  color: white;
+  text-align: center;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
+}
+
+.formReg{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0.5rem;
+  padding: 1rem 2rem 0;
+}
+
+input{
+  font-size:medium;
+  padding: 0.8rem 0.4rem;
+  border: none;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
+}
+
+button{
+  font-size: larger;
+}

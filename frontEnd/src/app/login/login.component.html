@@ -1,0 +1,21 @@
+<div class="login loginBody container mt-5">
+  <h1>Log In</h1>
+  <form class="formReg" method="post">
+    <input class="mb-1 mt-3"
+      type="email"
+      [(ngModel)]="email"
+      name="email"
+      placeholder="Email"
+      required="required"/>
+    <input class="mt-2"
+      type="password"
+      [(ngModel)]="password"
+      name="password"
+      placeholder="Password"
+      minlength="6"
+      required="required"/>
+    <button class="buttonWhite" type="submit" (click)="login()">Log In</button>
+    <p class="mt-3">Don't have an account? <a routerLink="/register">Create and account</a></p>
+    <a routerLink="/resetPassword">Forgot password?</a>
+  </form>
+</div>

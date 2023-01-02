@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Location} from "./location";
 import {Api} from "./api";
 
@@ -10,44 +10,53 @@ export class FindingByNameService {
   }
 
   public save(name: string | undefined){
-    return this.http.post<string>("http://localhost:8080/addLocation",name);
+
+    //alert("a" +sessionStorage.getItem("email"));
+    return this.http.post("http://localhost:8080/addLocation",sessionStorage.getItem("email")+"#"+name);
   }
 
   public giveConfirmation(){
-    return this.http.get<boolean>("http://localhost:8080/addLocation");
+    // @ts-ignore
+    const params = new HttpParams().set("email",sessionStorage.getItem("email"));
+
+    return this.http.get<boolean>("http://localhost:8080/addLocation", {params});
   }
 
-  public giveRepeatedConfirmation(){
-    return this.http.get<boolean>("http://localhost:8080/repeatedLocation");
-
-  }
 
   public giveCityList(){
     return this.http.get<string[]>("http://localhost:8080/giveAutocompleteLocations");
   }
 
+  public addLocation(location: string | undefined) {
+    return this.http.post<string>("http://localhost:8080/addLocation",sessionStorage.getItem("email")+"#"+location);
+  }
+
   public getLocationList(){
-    return this.http.get<Location[]>("http://localhost:8080/giveLocations");
+    // @ts-ignore
+    const params = new HttpParams().set("email",sessionStorage.getItem("email"));
+    return this.http.get<Location[]>("http://localhost:8080/giveLocations", {params});
   }
 
   public changeActiveState(location: Location | undefined){
-    return this.http.post<string>("http://localhost:8080/changeActiveState",location?.name);
+    return this.http.post<string>("http://localhost:8080/changeActiveState",sessionStorage.getItem("email")+"#"+location?.name);
   }
 
   public changeAlias(name: string, alias: string) {
-    return this.http.post<string>("http://localhost:8080/changeAlias",name+'#'+alias);
+    return this.http.post<string>("http://localhost:8080/changeAlias",sessionStorage.getItem("email")+"#"+name+'#'+alias);
   }
 
   public deleteLocation(name: string | undefined) {
-    return this.http.post<string>("http://localhost:8080/deleteLocation",name);
+    return this.http.post<string>("http://localhost:8080/deleteLocation",sessionStorage.getItem("email")+"#"+name);
   }
 
   public giveAvailableApis(){
-    return this.http.get<Api[]>("http://localhost:8080/giveAvailableApis");
+    // @ts-ignore
+    const params = new HttpParams().set("email",sessionStorage.getItem("email"));
+    return this.http.get<Api[]>("http://localhost:8080/giveAvailableApis", {params});
   }
 
   public changeActiveStateApi(order : number | undefined){
-    return this.http.post<string>("http://localhost:8080/changeActiveApiState",order);
+    return this.http.post<string>("http://localhost:8080/changeActiveApiState",sessionStorage.getItem("email")+"#"+order);
   }
 
   public giveAPIConfirmation(){

@@ -1,56 +1,35 @@
 package com.ei10391048.project.modelo;
 
 
-import com.ei10391048.project.fireBase.CRUDFireBase;
-
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class LocationManager implements LocationManagerFacade{
+public class LocationManager{
     private List<Location> locations;
-    private final CRUDFireBase crudFireBase;
-    private static LocationManagerFacade locationManager;
-
-    private LocationManager() {
-        this.locations = new LinkedList<>();
-        this.crudFireBase = new CRUDFireBase();
-        InformationLocationManager.getInstance();
-        try {
-            this.locations = crudFireBase.getLocations();
-        } catch (IncorrectLocationException e) {
-            throw new RuntimeException(e);
-        }
+    public LocationManager() {
+        locations = new LinkedList<>();
     }
 
     public List<Location> getActiveLocations(){
         List<Location> activeList = new LinkedList<>();
-        for (Location location: this.getLocations()){
+        for (Location location: this.getUserLocations()){
             if (location.getIsActive())
                 activeList.add(location);
         }
         return activeList;
     }
 
-
-    public static LocationManagerFacade getInstance() {
-        if (locationManager == null) {
-            locationManager = new LocationManager();
-        }
-        return locationManager;
-
-    }
-
-    public List<Location> getLocations() {
+    public List<Location> getUserLocations() {
         return locations;
     }
 
 
     public Location getLocation(String name) throws IncorrectLocationException {
         for (Location loc : locations) {
-            if (loc.getAlias().equals(name)) {
+            if (loc.getName().equals(name) ||loc.getAlias().equals(name)) {
                 return loc;
             }
         }
@@ -76,7 +55,6 @@ public class LocationManager implements LocationManagerFacade{
 
     public void clearLocations() {
         this.locations.clear();
-        crudFireBase.deleteLocations();
     }
 
     public void setLocations(List<Location> locations) {
@@ -88,7 +66,6 @@ public class LocationManager implements LocationManagerFacade{
         Location location = getLocation(name);
         if (!locations.remove(location))
             throw new IncorrectLocationException();
-        crudFireBase.deleteLocation(location);
     }
 
     public LocationApiInterface generateApiInterface(String name){
@@ -103,26 +80,22 @@ public class LocationManager implements LocationManagerFacade{
         return geoCod;
     }
 
-    @Override
-    public Location addLocation(String name) throws IncorrectLocationException, NotSavedException {
+    public Location findLocation(String name) throws IncorrectLocationException {
         LocationApiInterface geoCod = generateApiInterface(name);
-        Location location = geoCod.findLocation();
-
-        location.setApiManager(new APIManager());
-        locations.add(location);
-        crudFireBase.addLocation(location);
-        return location;
+        return geoCod.findLocation();
     }
 
-    @Override
-    public Location addLocation(Coordinates coords) throws IncorrectLocationException, NotSavedException {
-        LocationApiInterface geoCod = generateApiInterface(coords);
-        Location location = geoCod.findLocation();
-        location.setApiManager(new APIManager());
-        locations.add(location);
-        crudFireBase.addLocation(location);
-        return location;
+    public Location findLocation(Coordinates coordinates) throws IncorrectLocationException {
+        LocationApiInterface geoCod = generateApiInterface(coordinates);
+        return geoCod.findLocation();
     }
 
+    public Location addUserLocation(Location location) throws IncorrectLocationException, NotSavedException {
+        if (location==null||location.getAlias()==null||location.getAlias().equals(""))
+            throw new IncorrectLocationException();
+        location.setApiManager(new APIManager());
+        locations.add(location);
+        return location;
+    }
 }
 

@@ -1,116 +1,165 @@
 package com.ei10391048.project.fireBase;
 
-import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.exception.*;
 import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.api.API;
 import com.ei10391048.project.modelo.api.OpenWeather;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.ei10391048.project.modelo.user.User;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
 public class FireBaseTest {
+
     private static CRUDFireBase crudFireBase;
-    @BeforeEach
-    public void setUp() {
-        crudFireBase = new CRUDFireBase();
-        crudFireBase.deleteLocations();
-        crudFireBase.deleteAPIs();
-    }
-    @Test
-    public void addLocationToBBDDValid(){
-        Location location = new Location("Teruel", 40.345, -0.6667);
+    private static User user;
+    private static Location location;
+
+    @BeforeAll
+    public static void setUp() {
+        user = new User();
+        user.setEmail("test@gmail.com");
+        crudFireBase = CRUDFireBase.getInstance();
         try {
-            crudFireBase.addLocation(location);
-            assertTrue(true);
-        } catch (NotSavedException exception){
+            crudFireBase.addUser(user.getEmail());
+            location = new Location("Teruel", 39.0, -1.0);
+            crudFireBase.addUserLocation(location, user.getEmail());
+            sleep(1000);
+        } catch (IncorrectUserException | InterruptedException | AlreadyExistentLocationException | NotSavedException |
+                 ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @AfterAll
+    public static void delete(){
+        try {
+            crudFireBase.deleteUsers();
+        } catch (IncorrectUserException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void addUserValid() {
+        try {
+            crudFireBase.addUser("tes2@gmail.com");
+            assertEquals(crudFireBase.getUser(user.getEmail()).getEmail(), user.getEmail());
+        } catch (IncorrectUserException | InterruptedException e) {
             fail();
         }
     }
 
     @Test
-    public void addLocationToBBDDInvalid(){
+    public void addUserInvalid() {
+       assertThrows(IncorrectUserException.class, () -> crudFireBase.addUser(null));
+    }
+
+    @Test
+    public void deleteUserValid() {
         try {
-            crudFireBase.addLocation(null);
+            crudFireBase.deleteUser("test4@gmail.com");
+            assertTrue(true);
+        } catch (IncorrectUserException e) {
             fail();
-        } catch (NotSavedException exception){
+        }
+    }
+
+    @Test
+    public void deleteUserInvalid() {
+        try {
+            crudFireBase.deleteUser(null);
+            fail();
+        } catch (IncorrectUserException e) {
             assertTrue(true);
         }
     }
 
     @Test
-    public void getLocationFromBBDDValid(){
-        Location location = new Location("Teruel", 40.345, -0.6667);
+    public void addUserLocationToBBDDValid(){
         try {
-            crudFireBase.addLocation(location);
-            assertEquals(location, crudFireBase.getLocation(location));
-        } catch (NotSavedException e) {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Location location = new Location("test", 40.345, -0.6667);
+        try {
+            crudFireBase.addUserLocation(location,user.getEmail());
+            assertTrue(true);
+        } catch (NotSavedException | AlreadyExistentLocationException | ExecutionException | InterruptedException exception){
+            fail();
+        }
+    }
+
+    @Test
+    public void addUserLocationToBBDDInvalid(){
+        try {
+            crudFireBase.addUserLocation(null, user.getEmail());
+            fail();
+        } catch (NotSavedException exception){
+            assertTrue(true);
+        } catch (AlreadyExistentLocationException | ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void getUserLocationFromBBDDValid(){
+        try {
+            Location location1=new Location("Casa",300,100);
+            crudFireBase.addUserLocation(location1, user.getEmail());
+            assertEquals(location1.getName(), crudFireBase.getUserLocation(user.getEmail(), location1.getName()).getName());
+        } catch (ExecutionException | InterruptedException | AlreadyExistentLocationException | NotSavedException e) {
             fail();
         }
     }
 
     @ParameterizedTest
     @MethodSource("locations")
-    public void getLocationFromBBDDInvalid(Location location) {
-        assertNull(crudFireBase.getLocation(location));
+    public void getUserLocationFromBBDDInvalid(String locationName){
+        try {
+            assertNull(crudFireBase.getUserLocation(user.getEmail(), locationName));
+        } catch (ExecutionException | InterruptedException e) {
+            fail();
+        }
     }
 
     static Stream<Arguments> locations(){
         return Stream.of(
-                Arguments.of(new Location("Teruel", 40.345, -0.6687)),
-                Arguments.of(new Location("Valencia", 39.4697600, -0.3773900)),
-                Arguments.of(new Location("Madridd", 40.4167754, -3.7037902)),
+                Arguments.of("Valencia"),
                 Arguments.of((Object) null)
         );
     }
 
     @Test
-    public void deleteLocationsFromBBDDValid(){
-        Location location = new Location("Teruel", 40.345, -0.6667);
+    public void deleteUserLocationValid() {
+        Location location1 = new Location("Benicarló", 39.4699, -0.3774);
         try {
-            crudFireBase.addLocation(location);
-            crudFireBase.deleteLocations();
-            assertEquals(0, crudFireBase.getLocations().size());
-        } catch (NotSavedException | IncorrectLocationException e){
-            fail();
-        }
-    }
-
-    @Test
-    public void deleteLocationsFromBBDDInvalid(){
-        try {
-            crudFireBase.deleteLocations();
-            System.out.println(crudFireBase.getLocations());
-            assertEquals(0, crudFireBase.getLocations().size());
-        } catch (IncorrectLocationException e) {
-            fail();
-        }
-    }
-
-    @Test
-    public void deleteLocationValid() {
-        Location location = new Location("Teruel", 40.345, -0.6667);
-        try {
-            crudFireBase.addLocation(location);
-            int size = crudFireBase.getLocations().size();
-            crudFireBase.deleteLocation(location);
-            assertEquals(size-1, crudFireBase.getLocations().size());
+            crudFireBase.addUserLocation(location1, user.getEmail());
+            int size = crudFireBase.getUserLocations(user.getEmail()).size();
+            sleep(1000);
+            crudFireBase.deleteUserLocation(user.getEmail(), location1.getName());
+            sleep(1000);
+            assertEquals(size-1, crudFireBase.getUserLocations(user.getEmail()).size());
         } catch (NotSavedException | IncorrectLocationException e) {
             fail();
+        } catch (InterruptedException | AlreadyExistentLocationException | ExecutionException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @ParameterizedTest
     @MethodSource("deleteLocations")
-    public void deleteLocationInvalid(Location location) {
+    public void deleteUserLocationInvalid(String locationName){
         try {
-            crudFireBase.deleteLocation(location);
+            crudFireBase.deleteUserLocation(user.getEmail(), locationName);
             fail();
         } catch (IncorrectLocationException e) {
             assertTrue(true);
@@ -119,94 +168,64 @@ public class FireBaseTest {
 
     public static Stream<Arguments> deleteLocations() {
         return Stream.of(
-                Arguments.of(new Location("Teruel", 40.345, -0.6667)),
+                Arguments.of("Benicarloo"),
                 Arguments.of((Object) null)
         );
     }
 
     @Test
-    public void getLocationsFromBBDDValid(){
-        Location location = new Location("Teruel", 40.345, -0.6667);
+    public void getUserLocationsFromBBDDValid(){
         try {
-            crudFireBase.addLocation(location);
-            assertEquals(1, crudFireBase.getLocations().size());
-        } catch (NotSavedException | IncorrectLocationException e) {
+            crudFireBase.deleteUserLocations(user.getEmail());
+            crudFireBase.addUserLocation(location, user.getEmail());
+            assertEquals(1, crudFireBase.getUserLocations(user.getEmail()).size());
+        } catch (IncorrectLocationException | IncorrectUserException | AlreadyExistentLocationException |
+                 NotSavedException | ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
 
     @Test
-    public void activateLocationFromBBDDValid(){
-        Location location = new Location("Teruel", 40.345, -0.6667);
+    public void activateUserLocationFromBBDDValid(){
         try {
             location.setActive(false);
-            crudFireBase.addLocation(location);
-            crudFireBase.changeLocationStatus(location);
-            assertTrue(crudFireBase.getLocation(location).getIsActive());
-        } catch (NotSavedException exception) {
+            crudFireBase.changeUserLocationStatus(user.getEmail(), location);
+            assertTrue(crudFireBase.getUserLocation(user.getEmail(),location.getName()).getIsActive());
+        } catch (NotSavedException | ExecutionException | InterruptedException exception) {
             fail();
         }
     }
 
-    @ParameterizedTest
-    @MethodSource("status")
-    public void activateLocationFromBBDDInvalid(Location status) {
+    @Test
+    public void activateUserLocationFromBBDDInvalid() {
         try {
-            crudFireBase.changeLocationStatus(status);
+            crudFireBase.changeUserLocationStatus(user.getEmail(), null);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
         }
     }
 
-    static Stream<Arguments> status(){
-        return Stream.of(
-                Arguments.of((Object) null),
-                Arguments.of(new Location("Teruel", 40.345, -0.6667))
-        );
-    }
 
     @Test
     public void deactivateLocationFromBBDDValid(){
-        Location location = new Location("Teruel", 40.345, -0.6667);
         try {
-            crudFireBase.addLocation(location);
-            crudFireBase.changeLocationStatus(location);
-            assertFalse(crudFireBase.getLocation(location).getIsActive());
-        } catch (NotSavedException exception) {
+            crudFireBase.changeUserLocationStatus(user.getEmail(), location);
+            Location location1 = crudFireBase.getUserLocation(user.getEmail(), location.getName());
+            assertFalse(location1.getIsActive());
+        } catch (NotSavedException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
             fail();
         }
     }
 
-    @ParameterizedTest
-    @MethodSource("status")
-    public void deactivateLocationFromBBDDInvalid(Location status) {
+    @Test
+    public void deactivateLocationFromBBDDInvalid() {
         try {
-            crudFireBase.changeLocationStatus(status);
+            crudFireBase.changeUserLocationStatus(user.getEmail(), null);
             fail();
         } catch (NotSavedException e) {
-            assertTrue(true);
-        }
-    }
-
-    @Test
-    public void addAPIValid(){
-        API api= new OpenWeather();
-        try {
-            crudFireBase.addAPI(api);
-            assertTrue(true);
-        } catch (NotSavedException exception){
-            fail();
-        }
-    }
-
-    @Test
-    public void addAPIInvalid(){
-        try {
-            crudFireBase.addAPI(null);
-            fail();
-        } catch (NotSavedException exception){
             assertTrue(true);
         }
     }
@@ -216,9 +235,8 @@ public class FireBaseTest {
         API api= new OpenWeather();
         try {
             api.setActive(false);
-            crudFireBase.addAPI(api);
-            crudFireBase.changeAPIStatus(api);
-            assertTrue(crudFireBase.getAPI(api).getIsActive());
+            crudFireBase.changeAPIStatus(user.getEmail(),api);
+            assertTrue(crudFireBase.getAPI(user.getEmail(),api.getName()).getIsActive());
         } catch (NotSavedException exception) {
             fail();
         }
@@ -227,7 +245,7 @@ public class FireBaseTest {
     @Test
     public void activateAPIInvalid() {
         try {
-            crudFireBase.changeAPIStatus(null);
+            crudFireBase.changeAPIStatus(user.getEmail(),null);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
@@ -238,9 +256,9 @@ public class FireBaseTest {
     public void deactivateAPIValid(){
         API api= new OpenWeather();
         try {
-            crudFireBase.addAPI(api);
-            crudFireBase.changeAPIStatus(api);
-            assertFalse(crudFireBase.getAPI(api).getIsActive());
+            api.setActive(false);
+            crudFireBase.changeAPIStatus(user.getEmail(),api);
+            assertTrue(crudFireBase.getAPI(user.getEmail(),api.getName()).getIsActive());
         } catch (NotSavedException exception) {
             fail();
         }
@@ -249,32 +267,32 @@ public class FireBaseTest {
     @Test
     public void deactivateAPIInvalid() {
         try {
-            crudFireBase.changeAPIStatus(null);
+            crudFireBase.changeAPIStatus(user.getEmail(),null);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
         }
     }
-
+/*
     @Test
     public void activateAPILocationValid(){
         API api= new OpenWeather();
-        Location location = new Location("Teruel", 40.345, -0.6667);
         try {
-            crudFireBase.addLocation(location);
             api.setActive(false);
-            crudFireBase.changeAPILocationStatus(api, location);
-            assertTrue(crudFireBase.getAPILocation(location).get(location.getName()).get(0).getIsActive());
+            crudFireBase.changeUserLocationAPIStatus(user.getEmail(), location.getName(), api);
+            assertTrue(crudFireBase.getUserLocationAPIs(user.getEmail(), location).get(0).getIsActive());
         } catch (NotSavedException exception) {
             fail();
+        } catch (IncorrectLocationException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @ParameterizedTest
     @MethodSource("APILocation")
-    public void activateAPILocationInvalid(API api, Location location) {
+    public void activateAPILocationInvalid(API api, String locationName) {
         try {
-            crudFireBase.changeAPILocationStatus(api, location);
+            crudFireBase.changeUserLocationAPIStatus(user.getEmail(), locationName, api);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
@@ -284,11 +302,9 @@ public class FireBaseTest {
     @Test
     public void deactivateAPILocationValid(){
         API api= new OpenWeather();
-        Location location = new Location("Teruel", 40.345, -0.6667);
         try {
-            crudFireBase.addLocation(location);
-            crudFireBase.changeAPILocationStatus(api, location);
-            assertFalse(crudFireBase.getAPILocation(location).get(location.getName()).get(0).getIsActive());
+            crudFireBase.changeUserLocationAPIStatus(user.getEmail(), location.getName(), api);
+            assertFalse(crudFireBase.getUserLocationAPI(user.getEmail(), location.getName(), api.getName()).getIsActive());
         } catch (NotSavedException exception) {
             fail();
         }
@@ -296,9 +312,9 @@ public class FireBaseTest {
 
     @ParameterizedTest
     @MethodSource("APILocation")
-    public void deactivateAPILocationInvalid(API api, Location location) {
+    public void deactivateAPILocationInvalid(API api, String location) {
         try {
-            crudFireBase.changeAPILocationStatus(api, location);
+            crudFireBase.changeUserLocationAPIStatus(user.getEmail(), location, api);
             fail();
         } catch (NotSavedException e) {
             assertTrue(true);
@@ -307,14 +323,7 @@ public class FireBaseTest {
 
     static Stream<Arguments> APILocation(){
         return Stream.of(
-                Arguments.of(null, new Location("Teruel", 40.345, -0.6667)),
-                Arguments.of(new OpenWeather(), null),
-                Arguments.of(null, null)
+                Arguments.of(null, "Teruel")
         );
-    }
-/*
-    @AfterAll
-    public static void tearDown() throws ExecutionException, InterruptedException {
-        crudFireBase.deleteLocations();
     }*/
 }

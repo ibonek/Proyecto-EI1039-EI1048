@@ -11,10 +11,23 @@
   left: 50%;
   transform: translate(-50%);
   -webkit-transform: translate(-50%);
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+  align-items: end;
 }
 
 .buttonLogo img{
-  width: 100%;
+  width: 12%;
   padding: 0;
+}
+
+.nameUser{
+  color: white;
+  font-weight: bold;
+}
+
+.mat-icon{
+  color: white !important;
 }
 

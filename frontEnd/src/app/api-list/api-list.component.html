@@ -1,6 +1,6 @@
+<h1>Active Location</h1>
 <div class="listBox">
   <div class="inBox">
-    <h1>Active Location</h1>
     <li *ngFor="let api of apis; let i = index" [ngClass]="api.isActive?'rowList':'rowList inactive'">
       <div class="information" [textContent]="api.name"></div>
       <div class="inputs">

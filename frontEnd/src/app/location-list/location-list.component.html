@@ -8,7 +8,7 @@
         <form class="alias" [formGroup]="froms" (ngSubmit)="onSubmit()">
           <div formArrayName="aliases">
             <div *ngFor="let alias of aliases.controls; let j=index">
-              <div *ngIf="i==j">
+              <div class="inputGab" *ngIf="i==j">
                 <input type="text" placeholder="Change the alias" [formControlName]="i">
                 <button class="buttonWhite buttonList" type="submit" (click)="setPos(i)" >Change</button>
               </div>
