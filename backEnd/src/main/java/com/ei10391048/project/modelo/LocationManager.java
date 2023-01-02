@@ -29,7 +29,7 @@ public class LocationManager{
 
     public Location getLocation(String name) throws IncorrectLocationException {
         for (Location loc : locations) {
-            if (loc.getAlias().equals(name)) {
+            if (loc.getName().equals(name) ||loc.getAlias().equals(name)) {
                 return loc;
             }
         }

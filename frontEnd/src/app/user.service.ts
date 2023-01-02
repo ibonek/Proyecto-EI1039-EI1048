@@ -10,10 +10,6 @@ export class UserService {
     return this.http.post<string>("http://localhost:8080/registerUser",email);
   }
 
-  public signOut(email: string | null){
-    return this.http.post<string>("http://localhost:8080/signOut",email)
-  }
-
   public signIn(email: string){
     return this.http.post<string>("http://localhost:8080/signIn",email);
   }
