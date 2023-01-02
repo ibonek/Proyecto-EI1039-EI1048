@@ -2,6 +2,7 @@ package com.ei10391048.project.modelo;
 
 
 import com.ei10391048.project.exception.IncorrectAliasException;
+import com.ei10391048.project.modelo.api.API;
 
 import java.util.Objects;
 
@@ -86,5 +87,10 @@ public class Location {
 
     public void setApiManager(APIManager apiManager) {
         this.apiManager = apiManager;
+    }
+
+    public void changeAPIState(int order){
+        API api = apiManager.getApiList().get(order);
+        api.setActive(!api.getIsActive());
     }
 }

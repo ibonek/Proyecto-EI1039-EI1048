@@ -3,6 +3,7 @@ package com.ei10391048.project.modelo;
 
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.modelo.api.APIsNames;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -99,7 +100,11 @@ public class LocationManager{
     }
 
     public void changeAPIState(String name, int order) throws IncorrectLocationException{
-
+        if (order <0 ||order >= APIsNames.values().length){
+            throw new IncorrectLocationException();
+        }
+        Location location = getLocation(name);
+        location.changeAPIState(order);
     }
 }
 
