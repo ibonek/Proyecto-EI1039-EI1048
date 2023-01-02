@@ -273,7 +273,7 @@ public class FireBaseTest {
             assertTrue(true);
         }
     }
-/*
+
     @Test
     public void activateAPILocationValid(){
         API api= new OpenWeather();
@@ -298,7 +298,7 @@ public class FireBaseTest {
             assertTrue(true);
         }
     }
-
+/*
     @Test
     public void deactivateAPILocationValid(){
         API api= new OpenWeather();
@@ -319,11 +319,11 @@ public class FireBaseTest {
         } catch (NotSavedException e) {
             assertTrue(true);
         }
-    }
+    }*/
 
     static Stream<Arguments> APILocation(){
         return Stream.of(
                 Arguments.of(null, "Teruel")
         );
-    }*/
+    }
 }
