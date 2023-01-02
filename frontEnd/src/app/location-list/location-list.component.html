@@ -17,6 +17,14 @@
         </form>
         <mat-slide-toggle [(ngModel)]="location.isActive" (click)="changeActiveState(location)"></mat-slide-toggle>
         <button mat-icon-button type="submit" (click)="deleteLocation(location)"><mat-icon >delete_forever</mat-icon></button>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <span>OpenWeather</span><mat-slide-toggle [(ngModel)]="location.isActive" (click)="changeActiveState(location)"></mat-slide-toggle>
+          <span>TicketMaster</span><mat-slide-toggle [(ngModel)]="location.isActive" (click)="changeActiveState(location)"></mat-slide-toggle>
+          <span>NewsAPI</span><mat-slide-toggle [(ngModel)]="location.isActive" (click)="changeActiveState(location)"></mat-slide-toggle>
+        </mat-menu>
       </div>
     </li>
   </div>
