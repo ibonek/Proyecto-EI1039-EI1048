@@ -12,4 +12,6 @@ public interface ApiFacade {
 
     List<API> getApiList();
 
+    void copyApiListState(List<API> list);
+
 }

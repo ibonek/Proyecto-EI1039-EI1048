@@ -95,7 +95,6 @@ public class LocationManager{
     public Location addUserLocation(Location location) throws IncorrectLocationException {
         if (location==null||location.getAlias()==null||location.getAlias().equals(""))
             throw new IncorrectLocationException();
-        location.setApiManager(new APIManager());
         locations.add(location);
         return location;
     }
