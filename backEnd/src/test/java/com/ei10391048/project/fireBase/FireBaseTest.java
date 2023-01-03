@@ -3,6 +3,7 @@ package com.ei10391048.project.fireBase;
 import com.ei10391048.project.exception.*;
 import com.ei10391048.project.modelo.Location;
 import com.ei10391048.project.modelo.api.API;
+import com.ei10391048.project.modelo.api.APIsNames;
 import com.ei10391048.project.modelo.api.OpenWeather;
 import com.ei10391048.project.modelo.user.User;
 import org.junit.jupiter.api.*;
@@ -13,6 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
@@ -280,14 +282,19 @@ public class FireBaseTest {
 
     @Test
     public void activateAPILocationValid(){
-        API api= new OpenWeather();
+        int order = APIsNames.WEATHER.getOrder();
+        API api= location.getApiManager().getApiList().get(order);
+        api.setActive(false);
         try {
-            api.setActive(false);
             crudFireBase.changeUserLocationAPIStatus(user.getEmail(), location.getName(), api);
-            assertTrue(crudFireBase.getUserLocationAPIs(user.getEmail(), location).get(0).getIsActive());
+            sleep(1000);
+            List<API> list = crudFireBase.getUserLocationAPIs(user.getEmail(), location);
+
+            System.out.println(list.get(0).getName() +" "+list.get(0).getIsActive());
+            assertTrue(list.get(order).getIsActive());
         } catch (NotSavedException exception) {
             fail();
-        } catch (IncorrectLocationException e) {
+        } catch (IncorrectLocationException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
