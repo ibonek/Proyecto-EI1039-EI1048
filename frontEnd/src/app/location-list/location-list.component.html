@@ -17,13 +17,26 @@
         </form>
         <mat-slide-toggle [(ngModel)]="location.isActive" (click)="changeActiveState(location)"></mat-slide-toggle>
         <button mat-icon-button type="submit" (click)="deleteLocation(location)"><mat-icon >delete_forever</mat-icon></button>
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-          <mat-icon>more_vert</mat-icon>
+
+        <button style="width: fit-content" mat-icon-button [matMenuTriggerFor]="menu">
+          Edit APIs<mat-icon>more_vert</mat-icon>
         </button>
-        <mat-menu #menu="matMenu">
-          <span>OpenWeather</span><mat-slide-toggle [(ngModel)]="location.apiManager.apiList[0].isActive" (click)="changeActiveAPIState(location,0)"></mat-slide-toggle>
-          <span>TicketMaster</span><mat-slide-toggle [(ngModel)]="location.apiManager.apiList[1].isActive" (click)="changeActiveAPIState(location,1)"></mat-slide-toggle>
-          <span>NewsAPI</span><mat-slide-toggle [(ngModel)]="location.apiManager.apiList[2].isActive" (click)="changeActiveAPIState(location,2)"></mat-slide-toggle>
+        <mat-menu #menu="matMenu" class="apis">
+          <button mat-menu-item [ngClass]="location.apiManager.apiList[0].isActive?'item':'item inactive'">
+            <span>{{location.apiManager.apiList[0].name}}
+              <mat-slide-toggle [(ngModel)]="location.apiManager.apiList[0].isActive"
+                                (click)="changeActiveAPIState(location,0)"></mat-slide-toggle></span>
+          </button>
+          <button mat-menu-item [ngClass]="location.apiManager.apiList[1].isActive?'item':'item inactive'">
+            <span>{{location.apiManager.apiList[1].name}}
+              <mat-slide-toggle [(ngModel)]="location.apiManager.apiList[1].isActive"
+                                (click)="changeActiveAPIState(location,1)"></mat-slide-toggle></span>
+          </button>
+          <button mat-menu-item [ngClass]="location.apiManager.apiList[2].isActive?'item':'item inactive'">
+            <span>{{location.apiManager.apiList[2].name}}
+              <mat-slide-toggle [(ngModel)]="location.apiManager.apiList[2].isActive"
+                                (click)="changeActiveAPIState(location,2)"></mat-slide-toggle></span>
+          </button>
         </mat-menu>
       </div>
     </li>
