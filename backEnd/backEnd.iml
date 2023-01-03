@@ -68,7 +68,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.23" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.3.23" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:5.3.23" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.mysql:mysql-connector-j:8.0.31" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-starter-test:2.7.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.7.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.7.5" level="project" />

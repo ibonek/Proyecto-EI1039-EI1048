@@ -211,11 +211,8 @@ public class CRUDFireBase {
                 locations.add(location);
                 location.getApiManager().copyApiListState(getUserLocationAPIs(email, location));
 
-                for (API api: location.getApiManager().getApiList()){
-                    System.out.println(api.getIsActive()+"    API BBDD "+api.getName()+"  EN  "+location.getName());
-                }
+
             }
-            System.out.println(locations);
             return locations;
         } catch (InterruptedException | ExecutionException |IncorrectAliasException e) {
             throw new IncorrectLocationException();

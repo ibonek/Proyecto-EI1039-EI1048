@@ -113,21 +113,6 @@ public class User implements UserFacade{
     }
 
     @Override
-    public int getNumberOfLocations() {
-        return locationManager.getUserLocations().size();
-    }
-
-    @Override
-    public List<String> getActiveLocationsName() {
-        return locationManager.getActiveLocationsName();
-    }
-
-    @Override
-    public Location getLocation(String name) throws IncorrectLocationException {
-        return locationManager.getLocation(name);
-    }
-
-    @Override
     public List<API> getApis() {
         return informationLocationManager.getApis();
     }

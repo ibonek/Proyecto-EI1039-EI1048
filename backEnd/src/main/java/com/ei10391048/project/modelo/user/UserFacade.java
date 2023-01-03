@@ -34,12 +34,6 @@ public interface UserFacade {
 
     void deleteLocation(String name) throws IncorrectLocationException;
 
-    int getNumberOfLocations();
-
-    List<String> getActiveLocationsName();
-
-    Location getLocation(String name) throws IncorrectLocationException;
-
     List<API> getApis();
 
     void signIn();

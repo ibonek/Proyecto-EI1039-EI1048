@@ -1,7 +1,8 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 body {
-  background: image("assets/images/fondo.jpg");
+  background-image: url("assets/images/fondo azul.png");
+  background-color: rgba(42, 178, 185, 0.05);
   padding-top: 4rem;
   margin: 0;
   font-family: Oswald, serif;
