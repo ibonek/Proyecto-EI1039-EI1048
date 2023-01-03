@@ -12,10 +12,18 @@ import Swal from "sweetalert2";
 export class ApiListComponent implements OnInit {
 
   apis!: Api[]
+  apiInfo = ['A real time weather API that has access for current weather data for ' +
+  'any location including over 200,000 cities in ranges of minute forecast for 1 hour, ' +
+  'hourly forecast for 48 hours...',
+    'The API provides access to content sourced from various platform, including Ticketmaster,' +
+    ' Universe, FrontGate Tickets and Ticketmaster Resale (TMR).',
+    'A real time news API that gets articles from 150.000 news publisher worldwide' +
+    ' in more than 50 languages and information about the mentioned entities, topics and sentiment.']
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private findingByNameService: FindingByNameService) { }
+              private findingByNameService: FindingByNameService) {
+  }
 
   ngOnInit(): void {
     this.findingByNameService.giveAvailableApis().subscribe(data => {
