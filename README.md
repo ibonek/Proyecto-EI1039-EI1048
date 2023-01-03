@@ -9,13 +9,13 @@
 <br />
 <p align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="frontEnd\src\assets\images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Proyecto-EI1039-EI1048</h3>
 
   <p align="center">
-    Proyecto EI1039 EI1048, Created by Carlos Feliu, David del Rio and Monica Pitarch
+    Proyecto EI1039 EI1048, Created by Carlos Feliu, David del Rio and Mónica Pitarch
     <br />
     <a href="https://github.com/ibonek/Proyecto-EI1039-EI1048"><strong>Explore the docs »</strong></a>
     <br />
@@ -168,5 +168,5 @@ Carlos Feliu Usó    -
 [Angular-url]: https://angular.io/
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
-[maven-shield]: https://img.shields.io/github/workflow/status/ibonek/Proyecto-EI1039-EI1048/Java%20CI%20with%20Maven?&style=for-the-badge
+[maven-shield]: https://img.shields.io/github/actions/workflow/status/ibonek/Proyecto-EI1039-EI1048/maven.yml?branch=master&style=for-the-badge
 [maven-url]: https://github.com/ibonek/Proyecto-EI1039-EI1048/actions/workflows/maven.yml
