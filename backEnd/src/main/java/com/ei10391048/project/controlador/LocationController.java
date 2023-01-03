@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -46,7 +45,6 @@ public class LocationController {
     @GetMapping("/addLocation")
     public Boolean giveConfirmation(){
         while (confirmation==null);
-
         return confirmation;
     }
 
@@ -61,34 +59,28 @@ public class LocationController {
         return user.getUserLocations();
     }
 
-    @PostMapping("/changeActiveState")
-    public void changeActiveState(@RequestBody String body) throws IncorrectLocationException, IncorrectUserException {
+    @PostMapping("/changeState")
+    public void changeState(@RequestBody String body) throws IncorrectLocationException, IncorrectUserException {
         String[] aux = body.split("#");
         String location = aux[1];
         String email = aux[0];
         UserFacade user = UserManager.getInstance().getUser(email);
         try {
             Location loc = user.getLocationManager().getLocation(location);
-            loc.setActive(!loc.getIsActive());
+            user.changeUserLocationState(user.getEmail(), loc);
         } catch (IncorrectLocationException e) {
             throw new IncorrectLocationException();
         }
     }
 
     @PostMapping("/changeAlias")
-    public void changeAlias(@RequestBody String body) throws IncorrectLocationException, IncorrectAliasException, IncorrectUserException {
+    public void changeAlias(@RequestBody String body) throws IncorrectUserException {
         String[] aux = body.split("#");
-
         String name = aux[1];
         String alias = aux[2];
         String email = aux[0];
         UserFacade user = UserManager.getInstance().getUser(email);
-        try {
-            Location location = user.getLocation(name);
-            location.setAlias(alias);
-        } catch ( IncorrectAliasException e) {
-            throw new IncorrectAliasException();
-        }
+        user.changeUserLocationAlias(email, name, alias);
     }
 
     @PostMapping("/deleteLocation")
@@ -112,31 +104,4 @@ public class LocationController {
 
         return user.getApis();
     }
-/*
-    @PostMapping("/addLocation")
-    public void addUserLocation(@RequestBody String body) throws IncorrectUserException, IncorrectLocationException, NotSavedException {
-        String[] aux = body.split("#");
-        String location = aux[1];
-        String email = aux[0];
-        UserFacade user = UserManager.getInstance().getUser(email);
-        String[] aux2 = location.split(",");
-        if (aux2.length == 2) {
-            double latitude = Double.parseDouble(aux2[0]);
-            double longitude = Double.parseDouble(aux2[1]);
-            Coordinates coordinates = new Coordinates(latitude, longitude);
-            try {
-                user.addUserLocation(coordinates);
-            } catch (AlreadyExistentLocationException e) {
-                confirmation = false;
-            }
-        } else {
-            try {
-                user.addUserLocation(location);
-            } catch (AlreadyExistentLocationException e) {
-                confirmation = false;
-            } catch (ExecutionException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }*/
 }

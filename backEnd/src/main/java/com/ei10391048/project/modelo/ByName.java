@@ -24,7 +24,7 @@ public class ByName implements  SearchInterface{
         Location location = new Location();
         try {
             Weather weather = openWeatherMapClient.currentWeather().single().byCityName(name).language(Language.SPANISH).unitSystem(UnitSystem.METRIC).retrieve().asJava();
-            location.setName(weather.getLocation().getName());
+            location.setName(name);
             location.setCoordinates(new Coordinates(weather.getLocation().getCoordinate().getLatitude(),weather.getLocation().getCoordinate().getLongitude()));
             return location;
         } catch (NoDataFoundException ex){

@@ -1,8 +1,10 @@
 package com.ei10391048.project.modelo;
 
 
+import com.ei10391048.project.exception.IncorrectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.exception.NotExistingAPIException;
+import com.ei10391048.project.modelo.api.APIsNames;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -90,12 +92,29 @@ public class LocationManager{
         return geoCod.findLocation();
     }
 
-    public Location addUserLocation(Location location) throws IncorrectLocationException, NotSavedException {
+    public Location addUserLocation(Location location) throws IncorrectLocationException {
         if (location==null||location.getAlias()==null||location.getAlias().equals(""))
             throw new IncorrectLocationException();
-        location.setApiManager(new APIManager());
         locations.add(location);
         return location;
+    }
+
+    public void changeAPIState(String name, int order) throws IncorrectLocationException, NotExistingAPIException {
+        if (order <0 ||order >= APIsNames.values().length){
+            throw new NotExistingAPIException();
+        }
+        Location location = getLocation(name);
+        location.changeAPIState(order);
+    }
+
+    public void changeLocationState(String name) throws IncorrectLocationException {
+        Location location = getLocation(name);
+        location.setActive(!location.getIsActive());
+    }
+
+    public void changeLocationAlias(String locationName, String alias) throws IncorrectLocationException, IncorrectAliasException {
+        Location location = getLocation(locationName);
+        location.setAlias(alias);
     }
 }
 

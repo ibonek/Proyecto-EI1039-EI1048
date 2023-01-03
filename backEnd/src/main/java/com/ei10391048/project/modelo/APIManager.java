@@ -5,6 +5,7 @@ import com.ei10391048.project.modelo.information.APIInformation;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class APIManager implements ApiFacade{
@@ -42,14 +43,9 @@ public class APIManager implements ApiFacade{
         apiInformation = new LinkedList<>();
         for (API api: apiList){
             List<APIInformation> info = api.generateInfo(locationName);
-            if (info != null)
-                apiInformation.add(info);
-            else
-                apiInformation.add(new LinkedList<>());
+            apiInformation.add(Objects.requireNonNullElseGet(info, LinkedList::new));
         }
-
     }
-
 
     public List<APIInformation> getWeatherInformation() {
         return apiInformation.get(APIsNames.WEATHER.getOrder());
@@ -59,12 +55,18 @@ public class APIManager implements ApiFacade{
         return apiInformation.get(APIsNames.EVENTS.getOrder());
     }
 
-    public  List<APIInformation> getNewsInformation() {
-        return apiInformation.get(APIsNames.NEWS.getOrder());
+    public  List<APIInformation> getNewsInformation() { return apiInformation.get(APIsNames.NEWS.getOrder()); }
 
-    }
 
     public List<API> getApiList(){
         return apiList;
     }
+
+    @Override
+    public void copyApiListState(List<API> list) {
+        for (int i=0; i<apiList.size();i++){
+            apiList.get(i).setActive(list.get(i).getIsActive());
+        }
+    }
+
 }

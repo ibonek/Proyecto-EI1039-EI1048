@@ -32,18 +32,11 @@ public class InformationLocationManager {
         if (order < 0 || order >= apiList.size())
             throw new NotExistingAPIException();
         API api=apiList.get(order);
-        //try {
             for (Location location: user.getUserLocations()){
-                //crudFireBase.changeAPILocationStatus(location.getApiManager().getApiList().get(order),location);
                 location.getApiManager().getApiList().get(order).setActive(!api.getIsActive());
             }
-            //crudFireBase.changeAPIStatus(api);
             api.setActive(!api.getIsActive());
 
-        /*} catch (NotSavedException e) {
-            throw new RuntimeException(e);
-        }
-        */
     }
     public List<List<List<APIInformation>>> getAllActivatedInfo(User user) throws IndexOutOfBoundsException{
         List<List<List<APIInformation>>> list = new LinkedList<>();
@@ -57,8 +50,7 @@ public class InformationLocationManager {
                 manager.generateInfo(location.getName());
 
                 for (int i = 0; i < apiList.size(); i++) {
-                    API api = apiList.get(i);
-                    if (!api.getIsActive()) {
+                    if (!manager.getApiList().get(i).getIsActive()) {
                         listAux.add(new LinkedList<>());
                     } else {
                         listAux.add(manager.getInformation(i));
@@ -71,11 +63,7 @@ public class InformationLocationManager {
         return list;
     }
 
-    public void changeAllAPIs(boolean active) {
-        for (API api: apiList){
-            api.setActive(active);
-        }
-    }
+
 
 
     public List<API> getApis() { return apiList; }

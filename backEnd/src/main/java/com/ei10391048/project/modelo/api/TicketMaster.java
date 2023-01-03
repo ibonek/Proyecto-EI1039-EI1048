@@ -1,5 +1,6 @@
 package com.ei10391048.project.modelo.api;
 
+import com.ei10391048.project.controlador.InputValidator;
 import com.ei10391048.project.modelo.information.APIInformation;
 import com.ei10391048.project.modelo.information.EventInformation;
 import org.json.JSONArray;
@@ -90,7 +91,7 @@ public class TicketMaster extends API{
     @Override
     boolean apiCall(String locationName) {
         // &page=${contador}
-
+        locationName = InputValidator.urlLocationName(locationName);
         HttpClient client= HttpClient.newHttpClient();
         HttpRequest request= HttpRequest.newBuilder()
                 .uri(URI.create("https://app.ticketmaster.com/discovery/v2/events.json?apikey="+apiKey+"&locale=*&size="+numberOfEvents+"&sort=relevance,desc&city="+locationName))

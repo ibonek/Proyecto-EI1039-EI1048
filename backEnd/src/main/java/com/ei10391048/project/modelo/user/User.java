@@ -1,9 +1,6 @@
 package com.ei10391048.project.modelo.user;
 
-import com.ei10391048.project.exception.AlreadyExistentLocationException;
-import com.ei10391048.project.exception.IncorrectLocationException;
-import com.ei10391048.project.exception.NotExistingAPIException;
-import com.ei10391048.project.exception.NotSavedException;
+import com.ei10391048.project.exception.*;
 import com.ei10391048.project.fireBase.CRUDFireBase;
 import com.ei10391048.project.modelo.*;
 import com.ei10391048.project.modelo.api.API;
@@ -16,9 +13,9 @@ public class User implements UserFacade{
 
     private String email;
 
-    private LocationManager locationManager;
+    private final LocationManager locationManager;
 
-    private InformationLocationManager informationLocationManager;
+    private final InformationLocationManager informationLocationManager;
 
     private final CRUDFireBase crudFireBase;
 
@@ -60,16 +57,8 @@ public class User implements UserFacade{
         return locationManager;
     }
 
-    public void setLocationManager(LocationManager locationManager) {
-        this.locationManager = locationManager;
-    }
-
     public InformationLocationManager getInformationLocationManager() {
         return informationLocationManager;
-    }
-
-    public void setInformationLocationManager(InformationLocationManager informationLocationManagerFacade) {
-        this.informationLocationManager = informationLocationManagerFacade;
     }
 
     public List<Location> getUserLocations(){
@@ -95,6 +84,7 @@ public class User implements UserFacade{
     public void addUserLocation(String name) throws NotSavedException, IncorrectLocationException, ExecutionException, InterruptedException {
         try {
             Location location=locationManager.findLocation(name);
+            location.getApiManager().copyApiListState(informationLocationManager.getApiList());
             crudFireBase.addUserLocation(location, email);
             locationManager.addUserLocation(location);
         } catch (AlreadyExistentLocationException e) {
@@ -106,6 +96,7 @@ public class User implements UserFacade{
     public void addUserLocation(Coordinates coords) throws NotSavedException, IncorrectLocationException, AlreadyExistentLocationException {
         try {
             Location location=locationManager.findLocation(coords);
+            location.getApiManager().copyApiListState(informationLocationManager.getApiList());
             crudFireBase.addUserLocation(location, email);
             locationManager.addUserLocation(location);
         } catch (AlreadyExistentLocationException e) {
@@ -150,5 +141,35 @@ public class User implements UserFacade{
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public void changeLocationAPIState(String locationName, int order) throws IncorrectLocationException, NotExistingAPIException {
+        try {
+            crudFireBase.changeUserLocationAPIStatus(email,locationName,informationLocationManager.getApiList().get(order));
+            locationManager.changeAPIState(locationName,order);
+        } catch (NotSavedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void changeUserLocationState(String email, Location loc) {
+        try {
+            crudFireBase.changeUserLocationStatus(email,loc);
+            locationManager.changeLocationState(loc.getName());
+        } catch (NotSavedException | IncorrectLocationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void changeUserLocationAlias(String email, String locationName, String alias) {
+        try {
+            crudFireBase.changeUserLocationAlias(email,locationName,alias);
+            locationManager.changeLocationAlias(locationName,alias);
+        } catch (IncorrectLocationException | IncorrectAliasException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

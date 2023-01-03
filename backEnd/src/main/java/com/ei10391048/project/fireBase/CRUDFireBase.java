@@ -20,7 +20,7 @@ public class CRUDFireBase {
     private static CRUDFireBase crudFireBase;
 
     private CRUDFireBase() {
-        db = FireBaseConnection.getInstance();
+        db = FireBaseConnection.getInstance().getDb();
     }
 
     public static CRUDFireBase getInstance(){
@@ -39,7 +39,7 @@ public class CRUDFireBase {
         db.collection("users").document(email).set(Map.of("email", email));
     sleep(1000);
 
-        addAPIs(email);
+        addUserLocationAPIs(email);
     }
 
     public UserFacade getUser(String email) {
@@ -115,7 +115,7 @@ public class CRUDFireBase {
         }
     }
 
-    private void addAPIs(String email){
+    private void addUserLocationAPIs(String email){
         OpenWeather openWeather = new OpenWeather();
         Map<String,Object>docAPI=new HashMap<>();
         docAPI.put("name", openWeather.getName());
@@ -136,19 +136,22 @@ public class CRUDFireBase {
         db.collection("users").document(email).collection("apis").document(newsAPI.getName()).set(docAPI3);
     }
 
-    private void addAPIs(String email, String locationName){
+    private void addUserLocationAPIs(String email, String locationName){
         OpenWeather openWeather = new OpenWeather();
+        openWeather = (OpenWeather) getUserAPI(email, openWeather.getName());
         Map<String,Object>docAPI=new HashMap<>();
         docAPI.put("name", openWeather.getName());
         docAPI.put("active",openWeather.getIsActive());
 
         Map<String,Object>docAPI2=new HashMap<>();
         TicketMaster ticketMaster = new TicketMaster();
+        ticketMaster = (TicketMaster) getUserAPI(email, ticketMaster.getName());
         docAPI2.put("name", ticketMaster.getName());
         docAPI2.put("active",ticketMaster.getIsActive());
 
         Map<String,Object>docAPI3=new HashMap<>();
         NewsAPI newsAPI = new NewsAPI();
+        newsAPI = (NewsAPI) getUserAPI(email, newsAPI.getName());
         docAPI3.put("name", newsAPI.getName());
         docAPI3.put("active",newsAPI.getIsActive());
 
@@ -177,7 +180,7 @@ public class CRUDFireBase {
         docLocation.put("alias",location.getAlias());
         docLocation.put("active",location.getIsActive());
         db.collection("users").document(email).collection("locations").document(location.getName()).set(docLocation);
-        addAPIs(email, location.getName());
+        addUserLocationAPIs(email, location.getName());
     }
 
     public List<Location> getUserLocations(String email) throws IncorrectLocationException {
@@ -204,10 +207,17 @@ public class CRUDFireBase {
                 coordinates.setLon((Double) document.getData().get("longitude"));
                 location.setCoordinates(coordinates);
                 location.setActive((Boolean) document.getData().get("active"));
+                location.setAlias((String) document.getData().get("alias"));
                 locations.add(location);
+                location.getApiManager().copyApiListState(getUserLocationAPIs(email, location));
+
+                for (API api: location.getApiManager().getApiList()){
+                    System.out.println(api.getIsActive()+"    API BBDD "+api.getName()+"  EN  "+location.getName());
+                }
             }
+            System.out.println(locations);
             return locations;
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException | ExecutionException |IncorrectAliasException e) {
             throw new IncorrectLocationException();
         }
     }
@@ -217,18 +227,32 @@ public class CRUDFireBase {
             ApiFuture<QuerySnapshot> future=db.collection("users").document(email).collection("locations").document(location.getName()).collection("apis").get();
             List<QueryDocumentSnapshot> documents=future.get().getDocuments();
             List<API> apis=new LinkedList<>();
+            for (int i=0; i< APIsNames.values().length;i++){
+                apis.add(null);
+            }
             for (QueryDocumentSnapshot document:documents){
                 String name=(String) document.getData().get("name");
-                API api=switch (name){
-                    case "OpenWeather" -> new OpenWeather();
-                    case "TicketMaster" -> new TicketMaster();
-                    case "NewsAPI" -> new NewsAPI();
-                    default -> null;
-                };
+                int order = 0;
+                API api = null;
+                switch (name){
+                    case "OpenWeather" ->{
+                        api = new OpenWeather();
+                        order = APIsNames.WEATHER.getOrder();
+                    }
+                    case "TicketMaster" ->{
+                        api = new TicketMaster();
+                        order = APIsNames.EVENTS.getOrder();
+                    }
+                    case "NewsAPI" ->{
+                        api = new NewsAPI();
+                        order = APIsNames.NEWS.getOrder();
+                    }
+                }
                 if (api!=null){
                     api.setName(name);
                     api.setActive((Boolean) document.getData().get("active"));
-                    apis.add(api);
+                    apis.remove(order);
+                    apis.add(order,api);
                 }
             }
             return apis;
@@ -291,17 +315,13 @@ public class CRUDFireBase {
         }
     }
 
-    public Location getUserLocation(String email, String locationName) throws ExecutionException, InterruptedException {
-        System.out.println(email+"  "+locationName);
+    public Location getUserLocation(String email, String locationName) throws ExecutionException, InterruptedException, IncorrectLocationException {
         if (locationName==null || email==null){
             return null;
         }
-        UserFacade user=getUser(email);
-        System.out.println("holi "+user.getEmail());
         List<QueryDocumentSnapshot> documents=db.collection("users").document(email).collection("locations").get().get().getDocuments();
         QueryDocumentSnapshot locDoc=null;
         for (QueryDocumentSnapshot document: documents){
-            System.out.println("AAAA"+document.getData());
             if (document.getData().get("name").toString().equals(locationName)){
                 locDoc=document;
                 break;
@@ -317,6 +337,7 @@ public class CRUDFireBase {
         coordinates.setLon((Double) locDoc.getData().get("longitude"));
         location.setCoordinates(coordinates);
         location.setActive((Boolean) locDoc.getData().get("active"));
+        location.getApiManager().copyApiListState(getUserLocationAPIs(email, location));
         return location;
     }
 
@@ -359,7 +380,7 @@ public class CRUDFireBase {
         db.collection("users").document(email).collection("locations").document(location.getName()).update("active", !location.getIsActive());
     }
 
-    public API getAPI(String email, String name) {
+    public API getUserAPI(String email, String name) {
         if (name==null){
             return null;
         }
@@ -379,7 +400,7 @@ public class CRUDFireBase {
             return null;
         }
         api.setName((String) document.getData().get("name"));
-        api.setActive((Boolean) document.getData().get("isActive"));
+        api.setActive((Boolean) document.getData().get("active"));
         return api;
     }
 
@@ -431,7 +452,18 @@ public class CRUDFireBase {
         if (document==null){
             throw new NotSavedException();
         }
-        document.getReference().update("isActive",!api.getIsActive());
+        document.getReference().update("active",!api.getIsActive());
+        try {
+            List<QueryDocumentSnapshot> documents=db.collection("users").document(email).collection("locations").get().get().getDocuments();
+            for (QueryDocumentSnapshot doc: documents){
+                QueryDocumentSnapshot docAPI=getUserLocationAPIDocument(email,doc.getData().get("name").toString(),api.getName());
+                if (docAPI!=null){
+                    docAPI.getReference().update("active",!api.getIsActive());
+                }
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void changeUserLocationAPIStatus(String email, String locationName, API api) throws NotSavedException {
@@ -499,7 +531,7 @@ public class CRUDFireBase {
 
                     }
                     default -> throw new NotExistingAPIException();
-                };
+                }
                 api.setName(name);
                 api.setActive((Boolean) document.getData().get("active"));
                 apis.remove(order);
@@ -521,5 +553,14 @@ public class CRUDFireBase {
         }
         deleteUserLocationAPIs(document);
         document.getReference().delete();
+    }
+
+    public void changeUserLocationAlias(String email, String locationName, String alias) throws IncorrectLocationException {
+        QueryDocumentSnapshot document;
+        document = getLocationDocument(email, locationName);
+        if (document==null){
+            throw new IncorrectLocationException();
+        }
+        document.getReference().update("alias",alias);
     }
 }

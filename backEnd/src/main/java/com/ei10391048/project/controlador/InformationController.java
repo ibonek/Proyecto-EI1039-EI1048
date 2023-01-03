@@ -1,5 +1,6 @@
 package com.ei10391048.project.controlador;
 
+import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.IncorrectUserException;
 import com.ei10391048.project.exception.NotExistingAPIException;
 import com.ei10391048.project.modelo.Location;
@@ -15,14 +16,11 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class InformationController {
-
     private Boolean confirmation =  null;
-    User user;
     @GetMapping("/apiInfo")
     public  List<List<List<APIInformation>>> getAPIsInfo(@RequestParam String email) throws IncorrectUserException {
         UserManager userManager = UserManager.getInstance();
         User user = userManager.getUser(email);
-
         return user.getAllActivatedInfo();
         }
 
@@ -43,8 +41,8 @@ public class InformationController {
 
     }
 
-    @PostMapping("/changeActiveApiState")
-    public void changeActiveApiState(@RequestBody String body) throws IncorrectUserException {
+    @PostMapping("/changeAPIState")
+    public void changeAPIState(@RequestBody String body) throws IncorrectUserException {
         String[] aux = body.split("#");
         int order = Integer.parseInt(aux[1]);
         String email = aux[0];
@@ -62,5 +60,16 @@ public class InformationController {
         while (confirmation==null);
 
         return confirmation;
+    }
+
+    @PostMapping("/changeLocationApiState")
+    public void changeLocationAPIState(@RequestBody String body) throws IncorrectUserException, IncorrectLocationException, NotExistingAPIException {
+        String[] aux = body.split("#");
+        int order = Integer.parseInt(aux[2]);
+        String email = aux[0];
+        String location = aux[1];
+        UserFacade user = UserManager.getInstance().getUser(email);
+        user.changeLocationAPIState(location,order);
+
     }
 }
