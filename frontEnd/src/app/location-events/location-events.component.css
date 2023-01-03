@@ -1,22 +1,27 @@
 .upButtons{
-  margin: 3rem auto;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-
-  gap: 1rem;
   width: fit-content;
+  color: #2ab2b9;
+  font-weight: bold;
+  margin: 3rem 0 0 10%;
 }
 
+.upButtons p{
+  font-size: x-large;
+}
 
 .infoBody{
   text-align: center;
   color: white;
-  margin:  0 auto;
+  margin: 0 auto;
   width: 80%;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-
+  min-width: fit-content;
+  padding: 0 10%;
 }
 .locationName{
   color: #2ab2b9;
@@ -31,7 +36,7 @@
   flex-direction: column;
   gap: 1rem;
   box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
-
+  min-width: fit-content;
 }
 .backgroundMain h2{
   line-height: 0;
@@ -43,15 +48,17 @@
   border-radius: 7px;
   display: flex;
   gap: 3rem;
+  justify-content: space-evenly;
   box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
-
+  min-width: fit-content;
 }
-
 .temperature{
   vertical-align: center;
   line-height: 0;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
 }
 .temperature p{
   text-decoration: none;
@@ -60,19 +67,23 @@
   font-size: 120px;
   font-weight: normal;
 }
+
 .temperature img{
   height: 18rem;
 }
 
+
 .weatherData{
   display: flex;
   gap: 2rem;
-  justify-content: center;
   text-align: left;
   font-size: 2.3rem;
   margin-top: auto;
   margin-bottom: auto;
   /*line-height: 1rem;*/
+}
+.weatherData div{
+  width: 50%;
 }
 
 .fecha{
@@ -81,7 +92,7 @@
   justify-content: space-evenly;
   text-align: right;
   padding-right: 1rem;
-  width: available;
+  width: 100%;
 }
 
 .separador{
@@ -101,19 +112,19 @@
   text-align: left;
   padding: 1rem;
   vertical-align: top;
-  height: 23rem;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
-
 }
+
 .events{
   color: #2ab2b9;
   background: white;
   border-radius: 7px;
   text-align: left;
-  height: 23rem;
+  height: fit-content;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -136,16 +147,19 @@
 }
 
 .newsImg{
-  height: 8rem;
+  height: 10rem;
+  aspect-ratio: auto;
+  object-fit: contain;
+
 }
 .eventImg{
   height: 6rem;
+  padding: 1rem 0;
 }
-.textContent{
+
+.textContent {
   display: flex;
   gap: 1rem;
-}
-.textContent {
   font-size: large;
   margin: 0;
   line-height: 1.5rem;
