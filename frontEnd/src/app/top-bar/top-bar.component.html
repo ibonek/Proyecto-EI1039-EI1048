@@ -15,17 +15,17 @@
         <span>Events</span>
       </button>
       <button mat-menu-item (click)="goApis()">
-        <span>APIs subscriptions</span>
+        <span>APIs</span>
       </button>
     </mat-menu>
   </div>
 
-  <button mat-button class="buttonLogo" >
+  <button mat-button class="buttonLogo" (click)="goEventList()">
     <img src="assets/images/logo.png" alt="Logo LookApp">
     LookApp
   </button>
-  <div style="display: flex; align-items: center; color: white; font-weight: bold; font-size: "  *ngIf="this.email!=null">
-    <button mat-button [matMenuTriggerFor]="user">{{this.email}}</button>
+  <div *ngIf="this.email!=null">
+    <button mat-button [matMenuTriggerFor]="user" class="nameUser">{{this.email}}</button>
     <mat-menu #user="matMenu">
       <button mat-menu-item (click)="signOut()">
         <span>Sign out</span>

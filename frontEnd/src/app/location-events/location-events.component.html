@@ -1,81 +1,78 @@
-<div>
-  <div class="upButtons">
-    <p>Filter <mat-icon>filter_list</mat-icon></p>
-    <app-filter></app-filter>
-  </div>
+<div class="upButtons" *ngIf="this.mylocations.length != 1">
+  <p>Filter <mat-icon>filter_list</mat-icon></p>
+  <app-filter></app-filter>
+</div>
 
-  <div *ngIf="this.mylocations.length == 1">
-    <app-location-form></app-location-form>
-  </div>
+<div *ngIf="this.mylocations.length == 1">
+  <app-location-form></app-location-form>
+</div>
 
-  <div class="infoBody" *ngFor="let infoPakage of this.info; let i=index">
-    <div class="locationName"><h1>{{mylocations[i+this.addCounter]}}</h1></div>
-    <div *ngIf="infoPakage[0].length != 0">
+<div class="infoBody" *ngFor="let infoPakage of this.info; let i=index">
+  <div class="locationName"><h1>{{mylocations[i+this.addCounter]}}</h1></div>
+  <div *ngIf="infoPakage[0].length != 0">
+    <div class="backgroundMain">
+      <div class="timeContent"> {{castWeatherInfo(infoPakage[0][0])}}
+        <div class="temperature">
+          <img src="{{this.weatherInfo.imageURL}}" alt="Weather">
+        </div>
+        <div class="temperature">
+          <p class="temperature">{{this.weatherInfo.temperature}}ºC</p>
+        </div>
+        <div class="fecha">
+          <div class="separador"></div>
+          <div class="weatherData">
+            <div>
+              Humidity
+              <p>{{this.weatherInfo.humidity}}%</p>
+            </div>
+            <div>
+              Weather
+              <p>{{this.weatherInfo.weatherState}}</p>
+            </div>
+            <div>
+              Wind
+              <p>{{this.weatherInfo.wind}}m/s</p>
+            </div>
+          </div>
+          <p>{{this.weatherInfo.date}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="extrasBody">
+    <div *ngIf="infoPakage[2].length != 0">
       <div class="backgroundMain">
-        <div class="timeContent"> {{castWeatherInfo(infoPakage[0][0])}}
-          <div class="temperature">
-            <img src="{{this.weatherInfo.imageURL}}" alt="Weather">
-          </div>
-          <div class="temperature">
-            <p class="temperature">{{this.weatherInfo.temperature}}ºC</p>
-          </div>
-          <div class="fecha">
-            <div class="separador"></div>
-            <div class="weatherData">
-              <div>
-                Humidity
-                <p>{{this.weatherInfo.humidity}}%</p>
-              </div>
-              <div>
-                Weather
-                <p>{{this.weatherInfo.weatherState}}</p>
-              </div>
-              <div>
-                Wind
-                <p>{{this.weatherInfo.wind}}m/s</p>
-              </div>
+        <h2>News</h2>
+        <div class="new" *ngFor="let news of infoPakage[2]"> {{castNewsInfo(news)}}
+          <label class="titleLabel">{{this.newsInfo.title}}</label>
+          <div class="textContent">
+            <div class="imagesContent">
+              <img class="newsImg" src="{{this.newsInfo.imageURL}}" alt="Imagen de la noticia">
+              <p>{{this.newsInfo.author}}</p>
+              <p>{{this.newsInfo.date}}</p>
+              <a href="{{this.newsInfo.newsURL}}">More info</a>
             </div>
-            <p>{{this.weatherInfo.date}}</p>
+            <p>{{this.newsInfo.description}}</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="extrasBody">
-      <div *ngIf="infoPakage[2].length != 0">
-        <div class="backgroundMain">
-          <h2>News</h2>
-          <div class="new" *ngFor="let news of infoPakage[2]"> {{castNewsInfo(news)}}
-            <label class="titleLabel">{{this.newsInfo.title}}</label>
-            <div class="textContent">
-              <div class="imagesContent">
-                <img class="newsImg" src="{{this.newsInfo.imageURL}}" alt="Imagen de la noticia">
-                <p>{{this.newsInfo.author}}</p>
-                <p>{{this.newsInfo.date}}</p>
-                <a href="{{this.newsInfo.newsURL}}">More info</a>
-              </div>
-              <p>{{this.newsInfo.description}}</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div *ngIf="infoPakage[1].length != 0">
-        <div class="backgroundMain">
-          <h2>Events</h2>
-          <div *ngFor="let event of infoPakage[1]"> {{castEventsInfo(event)}}
-            <div class="events">
-              <div>
-                <label class="titleLabel">{{this.eventInfo.eventName}}</label>
-                <label>{{this.eventInfo.place}}      {{this.eventInfo.date}}</label>
-              </div>
-              <img class="eventImg" src="{{this.eventInfo.imageURL}}" alt="Imagen del evento">
-              <p>{{this.eventInfo.address}}</p>
+    <div *ngIf="infoPakage[1].length != 0">
+      <div class="backgroundMain">
+        <h2>Events</h2>
+        <div *ngFor="let event of infoPakage[1]"> {{castEventsInfo(event)}}
+          <div class="events">
+            <div>
+              <label class="titleLabel">{{this.eventInfo.eventName}}</label>
+              <label>{{this.eventInfo.place}}      {{this.eventInfo.date}}</label>
             </div>
+            <img class="eventImg" src="{{this.eventInfo.imageURL}}" alt="Imagen del evento">
+            <p>{{this.eventInfo.address}}</p>
           </div>
         </div>
       </div>
     </div>
-    <br>
   </div>
-
+  <br>
 </div>

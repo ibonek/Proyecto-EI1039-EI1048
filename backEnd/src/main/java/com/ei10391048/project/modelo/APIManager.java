@@ -47,7 +47,6 @@ public class APIManager implements ApiFacade{
         }
     }
 
-
     public List<APIInformation> getWeatherInformation() {
         return apiInformation.get(APIsNames.WEATHER.getOrder());
     }
@@ -56,10 +55,7 @@ public class APIManager implements ApiFacade{
         return apiInformation.get(APIsNames.EVENTS.getOrder());
     }
 
-    public  List<APIInformation> getNewsInformation() {
-        System.out.println(apiInformation);
-        return apiInformation.get(APIsNames.NEWS.getOrder());
-    }
+    public  List<APIInformation> getNewsInformation() { return apiInformation.get(APIsNames.NEWS.getOrder()); }
 
     public List<API> getApiList(){
         return apiList;

@@ -1,6 +1,6 @@
 <div class="listBox">
   <div class="inBox">
-    <h1>Active Location</h1>
+    <h1>Yours Location</h1>
     <li *ngFor="let location of locations; let i = index" [ngClass]="location.isActive?'rowList':'rowList inactive'">
       <div class="information" [textContent]="location.alias +' ( '+location.name+' )' "></div>
       <div class="information" [textContent]="'Coordinates ( '+location.coordinates.lat+ ', '+location.coordinates.lon+' )' "></div>
