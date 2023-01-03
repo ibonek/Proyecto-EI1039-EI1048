@@ -42,8 +42,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
@@ -54,11 +52,26 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+This repository presents the joint internship project of the subjects Software Design (EI1039) and Software Paradigms (EI1048) for the academic year 2022/2023. The project covers the competences of both subjects, which complement each other in the realisation of a major software product that is functionally operative, that follows good practices in software design and user interfaces, and that its development rigorously follows the agile ATDD methodology. The project is conceived as a team activity, so it involves all aspects and tasks attributable to the realisation of the project, from communication and consensual decision-making among team members, to the use of tools for collaborative development and software management.
 
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`github_username`, `repo_name`, `twitter_handle`, `email`, `project_title`, `project_description`
+The aim of the project is the development of an application that offers information (news, weather and events) of a city or a geographical point of interest for the user. 
+
+![image](https://user-images.githubusercontent.com/79581464/210437686-e4905b5f-6a22-4d97-987c-0b7749f3b306.png)
+
+The application connects to open public services (free open API) to obtain updated information, and displays it in an orderly fashion. The user can choose the information he/she wants to see at any given moment. 
+
+![image](https://user-images.githubusercontent.com/79581464/210438174-5e7af905-15f0-4a3d-adcf-06850a765b7c.png)
+
+The application allows you to indicate the name (or geographic coordinates) of the city (or place) about which you are interested in obtaining information, and has a certain capacity to configure the system's behaviour (which API to use, what content to show, etc.). 
+
+![image](https://user-images.githubusercontent.com/79581464/210438404-89f0a40a-40ab-4d30-80bf-ad5eceb1d157.png)
+
+The application has a storage system that guarantees the persistence of the information obtained. 
+
+![image](https://user-images.githubusercontent.com/79581464/210438924-595d371e-85cc-4b1d-b0ce-43e0e55dc9a2.png)
+![image](https://user-images.githubusercontent.com/79581464/210439510-70e70645-f746-450f-a80b-21616c7ff00c.png)
+
+The business logic of the application is completely decoupled from the user interface, communication protocols and data exchange formats of each service. In addition, as part of the design, the necessary abstractions and patterns are considered to facilitate the efficient implementation of the business logic. The development has been carried out following the agile ATDD methodology, which consists of iterations determined by acceptance tests that promote small and gradual evolutions of the design along the architecture (long skinny slices), in order to progressively overcome these tests. Given that the development is carried out in teams, a teamwork and collaborative development methodology is used to ensure the correct execution of ATDD and the use of collaborative development tools.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
