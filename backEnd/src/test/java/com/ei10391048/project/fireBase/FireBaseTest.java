@@ -26,6 +26,7 @@ public class FireBaseTest {
     public static void setUp() {
         user = new User();
         user.setEmail("test@gmail.com");
+
         crudFireBase = CRUDFireBase.getInstance();
         try {
             crudFireBase.addUser(user.getEmail());
@@ -191,6 +192,7 @@ public class FireBaseTest {
         try {
             location.setActive(false);
             crudFireBase.changeUserLocationStatus(user.getEmail(), location);
+            sleep(1000);
             assertTrue(crudFireBase.getUserLocation(user.getEmail(),location.getName()).getIsActive());
         } catch (NotSavedException | ExecutionException | InterruptedException exception) {
             fail();
@@ -212,6 +214,7 @@ public class FireBaseTest {
     public void deactivateLocationFromBBDDValid(){
         try {
             crudFireBase.changeUserLocationStatus(user.getEmail(), location);
+            sleep(1000);
             Location location1 = crudFireBase.getUserLocation(user.getEmail(), location.getName());
             assertFalse(location1.getIsActive());
         } catch (NotSavedException | ExecutionException | InterruptedException exception) {
@@ -236,7 +239,7 @@ public class FireBaseTest {
         try {
             api.setActive(false);
             crudFireBase.changeAPIStatus(user.getEmail(),api);
-            assertTrue(crudFireBase.getAPI(user.getEmail(),api.getName()).getIsActive());
+            assertTrue(crudFireBase.getUserAPI(user.getEmail(),api.getName()).getIsActive());
         } catch (NotSavedException exception) {
             fail();
         }
@@ -258,7 +261,7 @@ public class FireBaseTest {
         try {
             api.setActive(false);
             crudFireBase.changeAPIStatus(user.getEmail(),api);
-            assertTrue(crudFireBase.getAPI(user.getEmail(),api.getName()).getIsActive());
+            assertTrue(crudFireBase.getUserAPI(user.getEmail(),api.getName()).getIsActive());
         } catch (NotSavedException exception) {
             fail();
         }
@@ -298,7 +301,7 @@ public class FireBaseTest {
             assertTrue(true);
         }
     }
-/*
+
     @Test
     public void deactivateAPILocationValid(){
         API api= new OpenWeather();
@@ -319,7 +322,7 @@ public class FireBaseTest {
         } catch (NotSavedException e) {
             assertTrue(true);
         }
-    }*/
+    }
 
     static Stream<Arguments> APILocation(){
         return Stream.of(

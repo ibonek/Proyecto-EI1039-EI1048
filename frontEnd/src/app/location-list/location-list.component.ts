@@ -48,7 +48,7 @@ export class LocationListComponent implements OnInit {
     })
   }
   changeActiveState(location: Location | undefined) {
-    this.findingByNameService.changeActiveState(location).subscribe(data=> {window.location.reload()});
+    this.findingByNameService.changeState(location).subscribe(data=> {window.location.reload()});
   }
 
   setPos(i: number){

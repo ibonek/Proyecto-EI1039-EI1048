@@ -1,9 +1,9 @@
 package com.ei10391048.project.modelo;
 
 
+import com.ei10391048.project.exception.IncorrectAliasException;
 import com.ei10391048.project.exception.IncorrectLocationException;
 import com.ei10391048.project.exception.NotExistingAPIException;
-import com.ei10391048.project.exception.NotSavedException;
 import com.ei10391048.project.modelo.api.APIsNames;
 
 import java.util.LinkedList;
@@ -105,6 +105,16 @@ public class LocationManager{
         }
         Location location = getLocation(name);
         location.changeAPIState(order);
+    }
+
+    public void changeLocationState(String name) throws IncorrectLocationException {
+        Location location = getLocation(name);
+        location.setActive(!location.getIsActive());
+    }
+
+    public void changeLocationAlias(String locationName, String alias) throws IncorrectLocationException, IncorrectAliasException {
+        Location location = getLocation(locationName);
+        location.setAlias(alias);
     }
 }
 

@@ -37,8 +37,8 @@ export class FindingByNameService {
     return this.http.get<Location[]>("http://localhost:8080/giveLocations", {params});
   }
 
-  public changeActiveState(location: Location | undefined){
-    return this.http.post<string>("http://localhost:8080/changeActiveState",sessionStorage.getItem("email")+"#"+location?.name);
+  public changeState(location: Location | undefined){
+    return this.http.post<string>("http://localhost:8080/changeState",sessionStorage.getItem("email")+"#"+location?.name);
   }
 
   public changeAlias(name: string, alias: string) {
