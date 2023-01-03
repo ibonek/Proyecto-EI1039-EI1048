@@ -31,6 +31,7 @@ public class FireBaseTest {
 
         crudFireBase = CRUDFireBase.getInstance();
         try {
+            crudFireBase.deleteUser(user.getEmail());
             crudFireBase.addUser(user.getEmail());
             location = new Location("Teruel", 39.0, -1.0);
             crudFireBase.addUserLocation(location, user.getEmail());
