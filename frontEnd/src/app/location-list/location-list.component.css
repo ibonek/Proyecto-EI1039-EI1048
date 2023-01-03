@@ -2,6 +2,11 @@ h1{
   color: white;
 }
 
+li{
+  display: flex;
+  justify-content: space-between;
+}
+
 .listBox{
   background: #2ab2b9;
   width: 80%;
@@ -33,9 +38,9 @@ h1{
   color: #303030;
   font-weight: bold;
   text-align: left;
-  border-radius: 2px;
+  border-radius: 7px;
   padding: 0.2rem 1rem ;
-  box-shadow: 0.1rem 0.1rem 0 #303030;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
   width: 20rem;
 }
 
@@ -61,13 +66,14 @@ h1{
   font-size:medium;
   padding: 0.3rem 0.4rem;
   border: none;
-  box-shadow: 0.1rem 0.1rem 0 #303030;
+  box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
   width: 10rem;
-  border-radius: 2px;
+  border-radius: 7px;
 }
 
 .buttonList{
   padding: 0.3rem 0.4rem;
+  font-weight: bold;
 }
 
 
@@ -91,4 +97,21 @@ background: white ;
   border-radius: 2px;
 }
 
+/deep/ .apis .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background: #2ab2b9;
+}
+/deep/  .apis .mat-slide-toggle-thumb{
+  background: #2ab2b9;
+}
+
+/deep/ .apis  .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background: rgba(42, 178, 185, 0.54);
+}
+/deep/ .apis  .mat-slide-toggle-bar{
+  background: rgba(42, 178, 185, 0.54);
+}
+
+.item{
+  font-weight: bold;
+}
 

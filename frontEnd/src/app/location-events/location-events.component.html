@@ -1,9 +1,11 @@
-<div class="upButtons">
-  <button class="buttonBlue" (click)="goApiList()">APIs subscriptions</button>
+<div class="upButtons" *ngIf="this.mylocations.length != 1">
+  <p>Filter <mat-icon>filter_list</mat-icon></p>
   <app-filter></app-filter>
 </div>
 
-<app-location-form></app-location-form>
+<div *ngIf="this.mylocations.length == 1">
+  <app-location-form></app-location-form>
+</div>
 
 <div class="infoBody" *ngFor="let infoPakage of this.info; let i=index">
   <div class="locationName"><h1>{{mylocations[i+this.addCounter]}}</h1></div>
@@ -12,14 +14,16 @@
       <div class="timeContent"> {{castWeatherInfo(infoPakage[0][0])}}
         <div class="temperature">
           <img src="{{this.weatherInfo.imageURL}}" alt="Weather">
-          <p>{{this.weatherInfo.temperature}}ºC</p>
+        </div>
+        <div class="temperature">
+          <p class="temperature">{{this.weatherInfo.temperature}}ºC</p>
         </div>
         <div class="fecha">
           <div class="separador"></div>
           <div class="weatherData">
             <div>
               Humidity
-              <p>{{this.weatherInfo.humidity}}</p>
+              <p>{{this.weatherInfo.humidity}}%</p>
             </div>
             <div>
               Weather
@@ -27,7 +31,7 @@
             </div>
             <div>
               Wind
-              <p>{{this.weatherInfo.wind}}</p>
+              <p>{{this.weatherInfo.wind}}m/s</p>
             </div>
           </div>
           <p>{{this.weatherInfo.date}}</p>
@@ -72,4 +76,3 @@
   </div>
   <br>
 </div>
-

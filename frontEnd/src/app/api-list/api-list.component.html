@@ -1,11 +1,20 @@
-<h1>Available APIs</h1>
+
+<h1>APIs</h1>
+
 <div class="listBox">
   <div class="inBox">
     <li *ngFor="let api of apis; let i = index" [ngClass]="api.isActive?'rowList':'rowList inactive'">
-      <div class="information" [textContent]="api.name"></div>
-      <div class="inputs">
-        <mat-slide-toggle [(ngModel)]="api.isActive" (click)="this.changeActiveState(i)"></mat-slide-toggle>
+
+      <div class="name">
+        <p>
+          {{api.name}}
+        </p>
+        <div class="inputs">
+          <mat-slide-toggle [(ngModel)]="api.isActive" (click)="this.changeActiveState(i)"></mat-slide-toggle>
+        </div>
       </div>
+      <div class="information" [textContent]="this.apiInfo[i]"></div>
+
     </li>
   </div>
 </div>

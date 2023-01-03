@@ -5,7 +5,6 @@
 .buttonLogo{
   margin: auto;
   padding: 0;
-  width:25%;
   z-index: 3;
   position: fixed;
   left: 50%;
@@ -15,16 +14,18 @@
   font-weight: bold;
   font-size: 2rem;
   align-items: end;
+
 }
 
 .buttonLogo img{
-  width: 12%;
+  width: 3rem;
   padding: 0;
 }
 
 .nameUser{
   color: white;
   font-weight: bold;
+  font-size: medium;
 }
 
 .mat-icon{
