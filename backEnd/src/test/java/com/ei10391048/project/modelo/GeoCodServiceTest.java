@@ -32,6 +32,11 @@ public class GeoCodServiceTest {
          assertEquals(location.getName(), "Valencia");
      }
 
+
+    /**
+     * Test que comprueba la historia de usuario 8: Como usuario quiero validar el topónimo de una ubicación disponible en los servicios API activos, con el fin de evaluar su utilidad.
+     *
+     */
     @Test
     void validatePlaceNameInvalid(){
         try {
@@ -60,6 +65,10 @@ public class GeoCodServiceTest {
 
     }
 
+    /**
+     * Test que comprueba la historia de usuario 8: Como usuario quiero validar el topónimo de una ubicación disponible en los servicios API activos, con el fin de evaluar su utilidad.
+     *
+     */
     @Test
     void validarToponimoInvalido(){
         try {

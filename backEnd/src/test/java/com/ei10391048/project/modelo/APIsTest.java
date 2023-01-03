@@ -26,6 +26,12 @@ public class APIsTest {
         list = new LinkedList<>();
         apiMock = Mockito.mock(API.class);
     }
+
+    /**
+     * Test de integración que comprueba la historia de usuario 18: Como usuario
+     * quiero consultar fácilmente la información de cualquiera de las ubicaciones
+     * activas por separado.
+     */
     @Test
     public void getInfo_API(){
         WeatherInformation info = new WeatherInformation();

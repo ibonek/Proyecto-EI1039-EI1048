@@ -20,6 +20,11 @@ public class ByNameTest {
         managerMock = Mockito.mock(LocationManager.class);
     }
 
+    /**
+     * Test de integración que comprueba la historia de usuario 8: Como usuario quiero
+     * validar el topónimo de una ubicación disponible en los servicios API activos,
+     * con el fin de evaluar su utilidad.
+     */
     @Test
     public void findLocation_invalidName() throws IncorrectLocationException {
         when(byNameMock.search()).thenThrow(new IncorrectLocationException());
@@ -38,6 +43,11 @@ public class ByNameTest {
 
     }
 
+    /**
+     * Test de integration que comprueba la historia de usuario 8: Como usuario quiero
+     * validar el topónimo de una ubicación disponible en los servicios API activos,
+     * con el fin de evaluar su utilidad.
+     */
     @Test
     public void registerLocation_validName() throws IncorrectLocationException, NotSavedException {
         Location place = new Location();

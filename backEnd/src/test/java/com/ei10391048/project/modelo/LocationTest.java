@@ -23,6 +23,11 @@ public class LocationTest {
     public void setUp(){
         location = new Location();
     }
+
+    /**
+     * Test que comprueba la historia de usuario 11: Como usuario quiero asignar un alias
+     * a una ubicación, con el fin de asignar nombres personalizados a las ubicaciones.
+     */
     @Test
     void getLocationsAliasValidCase() throws IncorrectAliasException {
         String name = "Valencia";
@@ -34,7 +39,10 @@ public class LocationTest {
     }
 
 
-
+    /**
+     * Test que comprueba la historia de usuario 11: Como usuario quiero asignar un alias
+     * a una ubicación, con el fin de asignar nombres personalizados a las ubicaciones.
+     */
     @Test
     void getLocationsAliasInvalidCase(){
         try {

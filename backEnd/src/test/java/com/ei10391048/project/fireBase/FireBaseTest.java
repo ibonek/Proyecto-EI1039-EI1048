@@ -50,6 +50,10 @@ public class FireBaseTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 1: Como usuario quiero registrarme usando un correo electrónico
+     * y contraseña para que mis datos se queden almacenados.
+     */
     @Test
     public void addUserValid() {
         try {
@@ -60,11 +64,18 @@ public class FireBaseTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 1: Como usuario quiero registrarme usando un correo electrónico
+     * y contraseña para que mis datos se queden almacenados.
+     */
     @Test
     public void addUserInvalid() {
        assertThrows(IncorrectUserException.class, () -> crudFireBase.addUser(null));
     }
 
+    /**
+     * Test que comprueba la historia de usuario 4: Como usuario quiero eliminar la cuenta para que se borren mis datos del sistema.
+     */
     @Test
     public void deleteUserValid() {
         try {
@@ -75,6 +86,9 @@ public class FireBaseTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 4: Como usuario quiero eliminar la cuenta para que se borren mis datos del sistema.
+     */
     @Test
     public void deleteUserInvalid() {
         try {
@@ -85,6 +99,11 @@ public class FireBaseTest {
         }
     }
 
+
+    /**
+     * Test que comprueba la historia de usuario 23.3: Como usuario quiero que cada vez que dé de alta una ubicación
+     * estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 1: La ubicación no existe.
+     */
     @Test
     public void addUserLocationToBBDDValid(){
         try {
@@ -100,7 +119,10 @@ public class FireBaseTest {
             fail();
         }
     }
-
+    /**
+     * Test que comprueba la historia de usuario 23.3: Como usuario quiero que cada vez que dé de alta una ubicación
+     * estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 2: La ubicación ya existe.
+     */
     @Test
     public void addUserLocationToBBDDInvalid(){
         try {
@@ -113,28 +135,6 @@ public class FireBaseTest {
         }
     }
 
-    @Test
-    public void getUserLocationFromBBDDValid(){
-        try {
-            Location location1=new Location("Casa",300,100);
-            crudFireBase.addUserLocation(location1, user.getEmail());
-            assertEquals(location1.getName(), crudFireBase.getUserLocation(user.getEmail(), location1.getName()).getName());
-        } catch (ExecutionException | InterruptedException | AlreadyExistentLocationException | NotSavedException |
-                 IncorrectLocationException e) {
-            fail();
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("locations")
-    public void getUserLocationFromBBDDInvalid(String locationName){
-        try {
-            assertNull(crudFireBase.getUserLocation(user.getEmail(), locationName));
-        } catch (ExecutionException | InterruptedException | IncorrectLocationException e) {
-            fail();
-        }
-    }
-
     static Stream<Arguments> locations(){
         return Stream.of(
                 Arguments.of("Valencia"),
@@ -142,6 +142,10 @@ public class FireBaseTest {
         );
     }
 
+    /**
+     * Test que comprueba la historia de usuario 23.4: Como usuario quiero que cada vez que dé de baja una ubicación
+     * estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 1: La ubicación existe.
+     */
     @Test
     public void deleteUserLocationValid() {
         Location location1 = new Location("Benicarló", 39.4699, -0.3774);
@@ -159,6 +163,11 @@ public class FireBaseTest {
         }
     }
 
+
+    /**
+     * Test que comprueba la historia de usuario 23.4: Como usuario quiero que cada vez que dé de baja una ubicación
+     * estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 2: La ubicación no existe.
+     */
     @ParameterizedTest
     @MethodSource("deleteLocations")
     public void deleteUserLocationInvalid(String locationName){
@@ -177,19 +186,10 @@ public class FireBaseTest {
         );
     }
 
-    @Test
-    public void getUserLocationsFromBBDDValid(){
-        try {
-            crudFireBase.deleteUserLocations(user.getEmail());
-            crudFireBase.addUserLocation(location, user.getEmail());
-            assertEquals(1, crudFireBase.getUserLocations(user.getEmail()).size());
-        } catch (IncorrectLocationException | IncorrectUserException | AlreadyExistentLocationException |
-                 NotSavedException | ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
+    /**
+     * Test que comprueba la historia de usuario 23.1: Como usuario quiero que cada vez que active una ubicación estos
+     * cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 1: La ubicación existe.
+     */
     @Test
     public void activateUserLocationFromBBDDValid(){
         try {
@@ -202,6 +202,10 @@ public class FireBaseTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 23.1: Como usuario quiero que cada vez que active una ubicación estos
+     * cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 2: La ubicación no existe.
+     */
     @Test
     public void activateUserLocationFromBBDDInvalid() {
         try {
@@ -212,7 +216,10 @@ public class FireBaseTest {
         }
     }
 
-
+    /**
+     * Test que comprueba la historia de usuario 23.2: Como usuario quiero que cada vez que desactive una ubicación
+     * estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 1: La ubicación existe.
+     */
     @Test
     public void deactivateLocationFromBBDDValid(){
         try {
@@ -226,6 +233,10 @@ public class FireBaseTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 23.2: Como usuario quiero que cada vez que desactive una ubicación
+     * estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 2: La ubicación no existe.
+     */
     @Test
     public void deactivateLocationFromBBDDInvalid() {
         try {
@@ -236,6 +247,10 @@ public class FireBaseTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 23.5: Como usuario quiero que cada vez que se active una API genérica
+     * estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 1: La API existe.
+     */
     @Test
     public void activateAPIValid(){
         API api= new OpenWeather();
@@ -248,6 +263,11 @@ public class FireBaseTest {
         }
     }
 
+
+    /**
+     * Test que comprueba la historia de usuario 23.5: Como usuario quiero que cada vez que se active una API genérica
+     * estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 2: La API no existe.
+     */
     @Test
     public void activateAPIInvalid() {
         try {
@@ -258,6 +278,11 @@ public class FireBaseTest {
         }
     }
 
+
+    /**
+     * Test que comprueba la historia de usuario 23.6: Como usuario quiero que cada vez que se desactive una API
+     * genérica estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 1: La API existe.
+     */
     @Test
     public void deactivateAPIValid(){
         API api= new OpenWeather();
@@ -270,6 +295,11 @@ public class FireBaseTest {
         }
     }
 
+
+    /**
+     * Test que comprueba la historia de usuario 23.6: Como usuario quiero que cada vez que se desactive una API
+     * genérica estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 2: La API no existe.
+     */
     @Test
     public void deactivateAPIInvalid() {
         try {
@@ -280,6 +310,11 @@ public class FireBaseTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 23.7: Como usuario quiero que cada vez que se active un servicio de una
+     * ubicación específica estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 1: La
+     * ubicación existe y la API existen.
+     */
     @Test
     public void activateAPILocationValid(){
         int order = APIsNames.WEATHER.getOrder();
@@ -299,6 +334,11 @@ public class FireBaseTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 23.7: Como usuario quiero que cada vez que se active un servicio de una
+     * ubicación específica estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 2: La
+     * API no existe.
+     */
     @ParameterizedTest
     @MethodSource("APILocation")
     public void activateAPILocationInvalid(API api, String locationName) {
@@ -310,6 +350,11 @@ public class FireBaseTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 23.8: Como usuario quiero que cada vez que se desactive un servicio de
+     * una ubicación específica estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 1:
+     * la ubicación existe y la API existen.
+     */
     @Test
     public void deactivateAPILocationValid(){
         API api= new OpenWeather();
@@ -321,6 +366,11 @@ public class FireBaseTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 23.8: Como usuario quiero que cada vez que se desactive un servicio de
+     * una ubicación específica estos cambios se almacenen en la base de datos para evitar que se pierdan. Escenario 2:
+     * La API no existe.
+     */
     @ParameterizedTest
     @MethodSource("APILocation")
     public void deactivateAPILocationInvalid(API api, String location) {

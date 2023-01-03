@@ -12,6 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class InputValidatorTest {
 
 
+    /**
+     * Test de unidad que comprueba formato de mayúsculas
+     */
+
     @ParameterizedTest
     @MethodSource("nameDataFormat")
     public void formatingInputNameTest(String input, String sol) {
@@ -28,6 +32,9 @@ class InputValidatorTest {
         );
     }
 
+    /**
+     * Test de unidad que comprueba formato de coordenadas
+     */
     @ParameterizedTest
     @MethodSource("coordsDataFormat")
     public void formatingInputCoordsTest(String input, double[] sol) {
@@ -44,6 +51,9 @@ class InputValidatorTest {
                 );
     }
 
+    /**
+     * Test de unidad que comprueba formato de coordenadas
+     */
     @ParameterizedTest
     @MethodSource("transformCoordsData")
     public void transformCoordsTest(String coord, double value){
@@ -59,6 +69,10 @@ class InputValidatorTest {
                 );
     }
 
+
+    /**
+     * Test de unidad que comprueba formato de espacios en el nombre
+     */
     @ParameterizedTest
     @MethodSource("urlLocationData")
     public void urlLocationName(String input, String sol){
@@ -72,6 +86,9 @@ class InputValidatorTest {
                 Arguments.of("Castellon De La Plana", "Castellon_de_la_Plana")
         );}
 
+    /**
+     * Test de unidad que comprueba si el formato es correcto
+     */
     @ParameterizedTest
     @MethodSource("NameOrCoordData")
     public void isCoordinatesTest(String input, boolean sol){

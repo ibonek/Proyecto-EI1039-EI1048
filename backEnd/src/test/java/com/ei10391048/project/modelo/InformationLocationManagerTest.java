@@ -42,6 +42,11 @@ public class InformationLocationManagerTest {
     static void delete(){
         UserManager.getInstance().deleteAllUsers();
     }
+
+    /**
+     * Test que comprueba la historia de usuario 19: Como usuario quiero consultar
+     * la lista de servicios de información disponibles (API).
+     */
     @Test
     void getApiList(){
         List<API> apilist = informationLocationManager.getApis();
@@ -58,7 +63,8 @@ public class InformationLocationManagerTest {
     }
 
     /**
-     Test que comprueba la historia de usuario 20: Como usuario quiero activar un servicio de información (API), entre aquellos disponibles
+     Test que comprueba la historia de usuario 20: Como usuario quiero activar un
+     servicio de información (API), entre aquellos disponibles
      */
     @Test
     public void activateAPIValidCase() throws NotExistingAPIException {
@@ -70,6 +76,11 @@ public class InformationLocationManagerTest {
             assertTrue(apiList.get(i).getIsActive());
         }
     }
+
+    /**
+     Test que comprueba la historia de usuario 20: Como usuario quiero activar un
+     servicio de información (API), entre aquellos disponibles
+     */
     @Test
     public void activateAPIInvalidCase() throws NotExistingAPIException {
         for(int i=0;i<informationLocationManager.getApis().size();i++){
@@ -86,6 +97,9 @@ public class InformationLocationManagerTest {
         }
     }
 
+    /**
+     * Test unidad comprueba el cambio de estado de las APIs de las historias 20 y 22
+     */
     @Test
     public void changeApiStateTest() throws NotExistingAPIException {
         List<API> apiList = informationLocationManager.getApis();
@@ -98,12 +112,14 @@ public class InformationLocationManagerTest {
             informationLocationManager.changeApiState(i,user);
         }
     }
+
+
     /**
-     * Test que comprueba la historia de usuario 22:  Como usuario quiero desactivar un servicio de información que haya dejado de interesar,
-     * con el fin de evitar interfaces de usuario sobrecargadas.
+     * Test que comprueba la historia de usuario 22: Como usuario quiero desactivar
+     * un servicio de información que haya dejado de interesar, con el fin de evitar
+     * interfaces de usuario sobrecargadas.
      *
      */
-
     @Test
     public void deactivateAPIValidCase() throws NotExistingAPIException {
         List<API> apiList = informationLocationManager.getApis();
@@ -113,6 +129,13 @@ public class InformationLocationManagerTest {
             informationLocationManager.changeApiState(i,user);
         }
     }
+
+    /**
+     * Test que comprueba la historia de usuario 22: Como usuario quiero desactivar
+     * un servicio de información que haya dejado de interesar, con el fin de evitar
+     * interfaces de usuario sobrecargadas.
+     *
+     */
     @Test
     public void deactivateAPIInvalidCase(){
         try{
@@ -125,6 +148,11 @@ public class InformationLocationManagerTest {
         }
     }
 
+    /**
+     * Test que comprueba la historia de usuario 10: Como usuario quiero activar
+     * una ubicación disponible en el sistema, con el fin de recibir información
+     * relacionada con dicha ubicación.
+     */
     @Test
     void activateLocationValidCase() {
         Location location = manager.getUserLocations().get(0);

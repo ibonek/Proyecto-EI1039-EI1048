@@ -24,6 +24,11 @@ public class ByCoordinatesTest {
 
     }
 
+    /**
+     * Test de integración que comprueba la historia de usuario 9: Como usuario quiero
+     * validar las coordenadas geográficas de una ubicación disponible en los servicios
+     * API activos, con el fin de evaluar su utilidad.
+     */
     @Test
     public void findLocation_validCoords() throws IncorrectLocationException, NotSavedException, IncorrectUserException {
         Location place = new Location();
@@ -38,6 +43,11 @@ public class ByCoordinatesTest {
 
     }
 
+    /**
+     * Test de integración que comprueba la historia de usuario 9: Como usuario quiero
+     * validar las coordenadas geográficas de una ubicación disponible en los servicios
+     * API activos, con el fin de evaluar su utilidad.
+     */
     @Test
     public void findLocation_invalidCoords() throws IncorrectLocationException{
         when(byCoordinatesMock.search()).thenThrow(new IncorrectLocationException());

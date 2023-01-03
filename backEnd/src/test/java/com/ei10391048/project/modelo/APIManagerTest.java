@@ -51,8 +51,9 @@ public class APIManagerTest {
         UserManager.getInstance().deleteAllUsers();
     }
     /**
-     * Test que comprueba la historia de usuario 15:  Como usuario quiero consultar información de múltiples ubicaciones simultáneamente
-     * con el fin de estar al corriente de novedades en todas ellas.
+     * Test que comprueba la historia de usuario 15:  Como usuario quiero consultar
+     * información de múltiples ubicaciones simultáneamente con el fin de estar al
+     * corriente de novedades en todas ellas.
      *
      */
 
@@ -72,10 +73,9 @@ public class APIManagerTest {
 
     }
 
-
-
     /**
-     * Test que comprueba la historia de usuario 18:  Como usuario quiero consultar fácilmente la información de cualquiera de las ubicaciones activas por separado.
+     * Test que comprueba la historia de usuario 18:  Como usuario quiero consultar
+     * fácilmente la información de cualquiera de las ubicaciones activas por separado.
      *
      */
     @Test
@@ -87,23 +87,5 @@ public class APIManagerTest {
         assertEquals(apiManager.getInformation(APIsNames.WEATHER.getOrder()).get(0).getLocationName(), manager.getUserLocations().get(index).getName());
 
     }
-
-    /*
-    @Test
-    public void getInfoFrom1LocationInvalidTest(){
-
-        LocationManager locationManager = LocationManager.getInstance();
-        APIManager manager = locationManager.getLocations().get(0).getApiManager();
-
-        try {
-            manager.getAPI(APIsNames.EVENTS);
-
-            fail();
-        } catch (NonActiveServiceException ex){
-            assertTrue(true);
-        }
-
-    }
-*/
 
 }

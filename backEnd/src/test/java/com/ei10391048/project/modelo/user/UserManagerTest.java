@@ -14,6 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserManagerTest {
     UserManager manager = UserManager.getInstance();
+
+    /**
+     * Test que comprueba la historia de usuario 1: Como usuario quiero registrarme
+     * usando un correo electrónico y contraseña para que mis datos se queden almacenados.
+     */
     @Test
     public void registerValidUserTest() throws IncorrectUserException, AlreadyExistentUser {
         int num = manager.getNumberOfUsers();
@@ -21,6 +26,11 @@ public class UserManagerTest {
         assertEquals(num+1, manager.getNumberOfUsers());
     }
 
+
+    /**
+     * Test que comprueba la historia de usuario 1: Como usuario quiero registrarme
+     * usando un correo electrónico y contraseña para que mis datos se queden almacenados.
+     */
     @ParameterizedTest
     @MethodSource("invalidUser")
     public void registerInvalidUserTest(String email){

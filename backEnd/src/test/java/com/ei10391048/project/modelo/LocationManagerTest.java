@@ -46,8 +46,9 @@ class LocationManagerTest {
     }
 
     /**
-     * Test que comprueba la historia de usuario 6: Como usuario quiero dar de alta una ubicación a partir de un
-     * topónimo, con el fin de tenerla disponible en el sistema.
+     * Test que comprueba la historia de usuario 6: Como usuario quiero dar de alta
+     * una ubicación a partir de un topónimo, con el fin de tenerla disponible en
+     * el sistema.
      *
      * @throws IncorrectLocationException
      */
@@ -64,7 +65,12 @@ class LocationManagerTest {
         assertEquals( manager.getNumberOfLocations(), num + 1);
     }
 
-
+    /**
+     * Test que comprueba la historia de usuario 6: Como usuario quiero dar de alta
+     * una ubicación a partir de un topónimo, con el fin de tenerla disponible en
+     * el sistema.
+     *
+     */
     @Test
     public void addLocationByNameInvalid()  {
         String name = "";
@@ -80,8 +86,9 @@ class LocationManagerTest {
 
 
     /**
-     * Test que comprueba la historia de usuario 7: Como usuario quiero dar de alta una ubicación a partir de unas
-     * coordenadas geográficas, con el fin de tenerla disponible en el sistema.
+     * Test que comprueba la historia de usuario 7: Como usuario quiero dar de alta
+     * una ubicación a partir de unas coordenadas geográficas, con el fin de tenerla
+     * disponible en el sistema.
      *
      * @throws IncorrectLocationException
      */
@@ -93,7 +100,12 @@ class LocationManagerTest {
         assertEquals(manager.getNumberOfLocations(), num + 1);
     }
 
-
+    /**
+     * Test que comprueba la historia de usuario 7: Como usuario quiero dar de alta
+     * una ubicación a partir de unas coordenadas geográficas, con el fin de tenerla
+     * disponible en el sistema.
+     *
+     */
     @ParameterizedTest
     @MethodSource("coords")
     public void addLocationByCoordinatesInvalid(double lat, double lon){
@@ -116,7 +128,10 @@ class LocationManagerTest {
         );
     }
 
-
+    /**
+     * Test que comprueba la historia de usuario 17: Como usuario quiero consultar
+     * fácilmente la lista de ubicaciones activas.
+     */
     @ParameterizedTest
     @MethodSource("getName")
     void getLocationsNameValidCase(ArrayList<String> sol) throws IncorrectLocationException, NotSavedException {
@@ -141,13 +156,22 @@ class LocationManagerTest {
         );
     }
 
+
+    /**
+     * Test que comprueba la historia de usuario 17: Como usuario quiero consultar
+     * fácilmente la lista de ubicaciones activas.
+     */
     @Test
     void getLocationsNameInvalidCase() {
         manager.setLocations(new LinkedList<>());
         assertEquals(user.getUserLocations(), new LinkedList<Location>());
     }
 
-
+    /**
+     * Test que comprueba la historia de usuario 10: Como usuario quiero activar
+     * una ubicación disponible en el sistema, con el fin de recibir información
+     * relacionada con dicha ubicación.
+     */
     @ParameterizedTest
     @MethodSource("getActiveLocation")
     void getActiveLocationValidCase(ArrayList<String> sol) throws IncorrectLocationException,  NotSavedException {
@@ -172,6 +196,11 @@ class LocationManagerTest {
         );
     }
 
+    /**
+     * Test que comprueba la historia de usuario 10: Como usuario quiero activar
+     * una ubicación disponible en el sistema, con el fin de recibir información
+     * relacionada con dicha ubicación.
+     */
     @ParameterizedTest
     @MethodSource("getActiveLocationInvalid")
     void getActiveLocationInvalidCase(ArrayList<String> input) throws IncorrectLocationException, NotSavedException {
@@ -198,7 +227,11 @@ class LocationManagerTest {
         );
     }
 
-
+    /**
+     * Test que comprueba la historia de usuario 12:  Como usuario quiero desactivar
+     * una ubicación activa, con el fin de reducir temporalmente la cantidad de
+     * información a consultar.
+     */
     @Test
     void deleteLocationValidCase(){
         try {
@@ -212,6 +245,12 @@ class LocationManagerTest {
         }
     }
 
+
+    /**
+     * Test que comprueba la historia de usuario 12:  Como usuario quiero desactivar
+     * una ubicación activa, con el fin de reducir temporalmente la cantidad de
+     * información a consultar.
+     */
     @Test
     void deleteLocationInvalidCase(){
         try {
@@ -223,9 +262,10 @@ class LocationManagerTest {
     }
 
     /**
-     * Test que comprueba la historia de usuario 16: Como usuario quiero poder elegir servicios de información (API) independientes para cada ubicación,
-     * con el doble fin de consultar sólo información de interés y contribuir a la gestión eficiente de recursos.
-     *
+     * Test que comprueba la historia de usuario 16: Como usuario quiero poder elegir
+     * servicios de información (API) independientes para cada ubicación, con el doble
+     * fin de consultar sólo información de interés y contribuir a la gestión eficiente
+     * de recursos.
      */
     @Test
     void changeStateLocationAPIValidCase() throws IncorrectLocationException, NotExistingAPIException {
@@ -239,6 +279,13 @@ class LocationManagerTest {
         assertTrue(manager.getLocation(name).getApiManager().getApiList().get(order).getIsActive());
     }
 
+
+    /**
+     * Test que comprueba la historia de usuario 16: Como usuario quiero poder elegir
+     * servicios de información (API) independientes para cada ubicación, con el doble
+     * fin de consultar sólo información de interés y contribuir a la gestión eficiente
+     * de recursos.
+     */
     @Test
     void changeStateLocationAPIInvalidCase() throws IncorrectLocationException {
         String name = "Valencia";
