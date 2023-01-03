@@ -287,9 +287,9 @@ public class FireBaseTest {
     public void deactivateAPIValid(){
         API api= new OpenWeather();
         try {
-            api.setActive(false);
+            api.setActive(true);
             crudFireBase.changeAPIStatus(user.getEmail(),api);
-            assertTrue(crudFireBase.getUserAPI(user.getEmail(),api.getName()).getIsActive());
+            assertFalse(crudFireBase.getUserAPI(user.getEmail(),api.getName()).getIsActive());
         } catch (NotSavedException exception) {
             fail();
         }
@@ -386,5 +386,33 @@ public class FireBaseTest {
         return Stream.of(
                 Arguments.of(null, "Teruel")
         );
+    }
+
+    /**
+     * Test de unidad valido
+     */
+    @Test
+    public void getUserLocationFromBBDDValid(){
+        try {
+            Location location1=new Location("Casa",300,100);
+            crudFireBase.addUserLocation(location1, user.getEmail());
+            assertEquals(location1.getName(), crudFireBase.getUserLocation(user.getEmail(), location1.getName()).getName());
+        } catch (ExecutionException | InterruptedException | AlreadyExistentLocationException | NotSavedException |
+                IncorrectLocationException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Test de unidad invalido
+     */
+    @ParameterizedTest
+    @MethodSource("locations")
+    public void getUserLocationFromBBDDInvalid(String locationName){
+        try {
+            assertNull(crudFireBase.getUserLocation(user.getEmail(), locationName));
+        } catch (ExecutionException | InterruptedException | IncorrectLocationException e) {
+            fail();
+        }
     }
 }
