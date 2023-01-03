@@ -3,7 +3,6 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
 [![Workflow][maven-shield]][maven-url]
 <!-- PROJECT LOGO -->
 <br />
@@ -20,11 +19,6 @@
     <a href="https://github.com/ibonek/Proyecto-EI1039-EI1048"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/ibonek/Proyecto-EI1039-EI1048">View Demo</a>
-    ·
-    <a href="https://github.com/ibonek/Proyecto-EI1039-EI1048/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/ibonek/Proyecto-EI1039-EI1048/issues">Request Feature</a>
   </p>
 </p>
 
@@ -71,7 +65,12 @@ Here's a blank template to get started:
 ### Built With
 
 * [![Angular][Angular.io]][Angular-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)
+* ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+* ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+* ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+* ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+* ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -113,39 +112,25 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 
 
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/ibonek/Proyecto-EI1039-EI1048/issues) for a list of proposed features (and known issues).
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- CONTACT -->
 ## Contact
 
 Mónica Pitarch Ruiz - al394883@uji.es
 
-David del Río López - 
+David del Río López - al394756@uji.es
 
-Carlos Feliu Usó    - 
+Carlos Feliu Usó    - al394759@uji.es
 
 
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-* []()
-* []()
-* []()
+* [Proyecto conjunto Curso 2022-2023, versión 1.0, EI1039 - EI1048 Grado en Ingeniería Informática](https://aulavirtual.uji.es/mod/resource/view.php?id=4868114)
+* [Angular Guide](https://angular.io/guide/what-is-angular)
+* [Building a Web Application with Spring Boot and Angular by Alejandro Ugarte](https://www.baeldung.com/spring-boot-angular-web)
+* [Firebase Documentation](https://firebase.google.com/docs/build)
+* 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -162,11 +147,7 @@ Carlos Feliu Usó    -
 [stars-url]: https://github.com/ibonek/Proyecto-EI1039-EI1048/stargazers
 [issues-shield]: https://img.shields.io/github/issues/ibonek/Proyecto-EI1039-EI1048.svg?style=for-the-badge
 [issues-url]: https://github.com/ibonek/Proyecto-EI1039-EI1048/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
 [Angular-url]: https://angular.io/
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
 [maven-shield]: https://img.shields.io/github/actions/workflow/status/ibonek/Proyecto-EI1039-EI1048/maven.yml?branch=master&style=for-the-badge
 [maven-url]: https://github.com/ibonek/Proyecto-EI1039-EI1048/actions/workflows/maven.yml
