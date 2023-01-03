@@ -207,10 +207,17 @@ public class CRUDFireBase {
                 coordinates.setLon((Double) document.getData().get("longitude"));
                 location.setCoordinates(coordinates);
                 location.setActive((Boolean) document.getData().get("active"));
+                location.setAlias((String) document.getData().get("alias"));
                 locations.add(location);
+                location.getApiManager().copyApiListState(getUserLocationAPIs(email, location));
+
+                for (API api: location.getApiManager().getApiList()){
+                    System.out.println(api.getIsActive()+"    API BBDD "+api.getName()+"  EN  "+location.getName());
+                }
             }
+            System.out.println(locations);
             return locations;
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException | ExecutionException |IncorrectAliasException e) {
             throw new IncorrectLocationException();
         }
     }
@@ -220,18 +227,32 @@ public class CRUDFireBase {
             ApiFuture<QuerySnapshot> future=db.collection("users").document(email).collection("locations").document(location.getName()).collection("apis").get();
             List<QueryDocumentSnapshot> documents=future.get().getDocuments();
             List<API> apis=new LinkedList<>();
+            for (int i=0; i< APIsNames.values().length;i++){
+                apis.add(null);
+            }
             for (QueryDocumentSnapshot document:documents){
                 String name=(String) document.getData().get("name");
-                API api=switch (name){
-                    case "OpenWeather" -> new OpenWeather();
-                    case "TicketMaster" -> new TicketMaster();
-                    case "NewsAPI" -> new NewsAPI();
-                    default -> null;
-                };
+                int order = 0;
+                API api = null;
+                switch (name){
+                    case "OpenWeather" ->{
+                        api = new OpenWeather();
+                        order = APIsNames.WEATHER.getOrder();
+                    }
+                    case "TicketMaster" ->{
+                        api = new TicketMaster();
+                        order = APIsNames.EVENTS.getOrder();
+                    }
+                    case "NewsAPI" ->{
+                        api = new NewsAPI();
+                        order = APIsNames.NEWS.getOrder();
+                    }
+                }
                 if (api!=null){
                     api.setName(name);
                     api.setActive((Boolean) document.getData().get("active"));
-                    apis.add(api);
+                    apis.remove(order);
+                    apis.add(order,api);
                 }
             }
             return apis;
@@ -294,7 +315,7 @@ public class CRUDFireBase {
         }
     }
 
-    public Location getUserLocation(String email, String locationName) throws ExecutionException, InterruptedException {
+    public Location getUserLocation(String email, String locationName) throws ExecutionException, InterruptedException, IncorrectLocationException {
         if (locationName==null || email==null){
             return null;
         }
@@ -316,6 +337,7 @@ public class CRUDFireBase {
         coordinates.setLon((Double) locDoc.getData().get("longitude"));
         location.setCoordinates(coordinates);
         location.setActive((Boolean) locDoc.getData().get("active"));
+        location.getApiManager().copyApiListState(getUserLocationAPIs(email, location));
         return location;
     }
 

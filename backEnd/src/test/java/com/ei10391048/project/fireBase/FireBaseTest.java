@@ -117,7 +117,8 @@ public class FireBaseTest {
             Location location1=new Location("Casa",300,100);
             crudFireBase.addUserLocation(location1, user.getEmail());
             assertEquals(location1.getName(), crudFireBase.getUserLocation(user.getEmail(), location1.getName()).getName());
-        } catch (ExecutionException | InterruptedException | AlreadyExistentLocationException | NotSavedException e) {
+        } catch (ExecutionException | InterruptedException | AlreadyExistentLocationException | NotSavedException |
+                 IncorrectLocationException e) {
             fail();
         }
     }
@@ -127,7 +128,7 @@ public class FireBaseTest {
     public void getUserLocationFromBBDDInvalid(String locationName){
         try {
             assertNull(crudFireBase.getUserLocation(user.getEmail(), locationName));
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException | IncorrectLocationException e) {
             fail();
         }
     }
@@ -194,7 +195,7 @@ public class FireBaseTest {
             crudFireBase.changeUserLocationStatus(user.getEmail(), location);
             sleep(1000);
             assertTrue(crudFireBase.getUserLocation(user.getEmail(),location.getName()).getIsActive());
-        } catch (NotSavedException | ExecutionException | InterruptedException exception) {
+        } catch (NotSavedException | ExecutionException | InterruptedException | IncorrectLocationException exception) {
             fail();
         }
     }
@@ -217,7 +218,7 @@ public class FireBaseTest {
             sleep(1000);
             Location location1 = crudFireBase.getUserLocation(user.getEmail(), location.getName());
             assertFalse(location1.getIsActive());
-        } catch (NotSavedException | ExecutionException | InterruptedException exception) {
+        } catch (NotSavedException | ExecutionException | InterruptedException | IncorrectLocationException exception) {
             exception.printStackTrace();
             fail();
         }
