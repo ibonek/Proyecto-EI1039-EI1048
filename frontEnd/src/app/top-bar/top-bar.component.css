@@ -15,10 +15,11 @@
   font-weight: bold;
   font-size: 2rem;
   align-items: end;
+
 }
 
 .buttonLogo img{
-  width: 12%;
+  width: 3rem;
   padding: 0;
 }
 

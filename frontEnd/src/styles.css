@@ -1,11 +1,11 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 body {
-
   background: image("assets/images/fondo.jpg");
   padding-top: 4rem;
   margin: 0;
   font-family: Oswald, serif;
+  letter-spacing: 1px;
 }
 
 app-top-bar{
@@ -25,6 +25,8 @@ app-top-bar{
   box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
   border-radius: 7px;
   height: fit-content;
+  font-family: Oswald, serif;
+  letter-spacing: 1px;
 }
 .buttonBlue{
   background: #2ab2b9;
@@ -36,5 +38,13 @@ app-top-bar{
   box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
   border-radius: 7px;
   height: fit-content;
+  font-family: Oswald, serif;
+  letter-spacing: 1px;
+}
 
+.buttonBlue:hover{
+  background: #efefef;
+}
+.buttonWhite:hover{
+  background: #efefef;
 }

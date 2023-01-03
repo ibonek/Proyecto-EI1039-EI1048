@@ -1,7 +1,8 @@
 .loginBody{
+  margin: 3rem auto;
   background: #2ab2b9;
   width: 25rem;
-  padding: 1rem 1rem 2rem;
+  padding: 1rem;
   color: white;
   text-align: center;
   border-radius: 7px;
@@ -15,6 +16,13 @@
   gap: 0.5rem;
   padding: 1rem 2rem 0;
 }
+.formReg div{text-align: center}
+
+button{
+  font-size: larger;
+  width: 9rem;
+  padding: 0.4rem 1rem;
+}
 
 input{
   font-size:medium;
@@ -22,8 +30,15 @@ input{
   border: none;
   box-shadow: 0.1rem 0.1rem 0.2rem #7b7b7b;
   border-radius: 7px;
+  width: available;
 }
 
-button{
-  font-size: larger;
+
+
+label{
+  font-size: xx-large;
+}
+
+p{
+  text-align: center;
 }

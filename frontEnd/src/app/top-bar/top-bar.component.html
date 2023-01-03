@@ -24,19 +24,15 @@
     <img src="assets/images/logo.png" alt="Logo LookApp">
     LookApp
   </button>
-  <div style="display: flex; align-items: center" *ngIf="this.email!=null">
-    <div class="dropdown">
-      <button type="button" class="btn dropdown-toggle border border-white" data-bs-toggle="dropdown">
-        <div class="nameUser">{{this.email}}</div>
+  <div style="display: flex; align-items: center; color: white; font-weight: bold; font-size: "  *ngIf="this.email!=null">
+    <button mat-button [matMenuTriggerFor]="user">{{this.email}}</button>
+    <mat-menu #user="matMenu">
+      <button mat-menu-item (click)="signOut()">
+        <span>Sign out</span>
       </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item text-bg-secondary rounded" (click)="signOut()">Sign out</a></li>
-        <li><a class="dropdown-item text-bg-danger rounded" (click)="deleteAccount()">Delete account</a></li>
-      </ul>
-    </div>
-    <!--p class="nameUser">{{this.email}}</--p>
-    <button mat-icon-button (click)="signOut()">
-      <mat-icon>exit_to_app</mat-icon>
-    </button-->
+      <button mat-menu-item (click)="deleteAccount()">
+        <span>Delete account</span>
+      </button>
+    </mat-menu>
   </div>
 </mat-toolbar>
