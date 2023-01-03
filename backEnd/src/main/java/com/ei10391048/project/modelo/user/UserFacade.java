@@ -45,4 +45,8 @@ public interface UserFacade {
     void signIn();
 
     void changeLocationAPIState(String name, int order) throws IncorrectLocationException, NotExistingAPIException;
+
+    void changeUserLocationState(String email, Location loc);
+
+    void changeUserLocationAlias(String email, String locationName, String alias);
 }

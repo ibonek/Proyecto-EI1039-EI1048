@@ -11,35 +11,55 @@ import java.io.IOException;
 public class FireBaseConnection {
     private static Firestore db;
 
-    private boolean test = false;
+    private static FireBaseConnection fireBaseConnection;
 
-    static Firestore getInstance() {
-        if (db == null) {
-            db = initializeFireBase();
+    private FireBaseConnection() {
+        db=initializeFireBase();
+    }
+    static FireBaseConnection getInstance() {
+        if (fireBaseConnection == null) {
+            fireBaseConnection = new FireBaseConnection();
         }
-        return db;
+        return fireBaseConnection;
+    }
+
+    private static Firestore initializeFireBaseTest() {
+        try {
+            FileInputStream serviceAccount =
+                    new FileInputStream("src/main/java/com/ei10391048/project/fireBase/lookapp-8874e-firebase-adminsdk-9apj5-67c0d225ec.json");
+
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setDatabaseUrl("https://proyectoei1039-1048-default-rtdb.firebaseio.com")
+                    .build();
+
+            FirebaseApp.initializeApp(options);
+
+            return FirestoreClient.getFirestore();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static Firestore initializeFireBase(){
-        Firestore db;
         try {
-            String filePath = "src/main/java/com/ei10391048/project/fireBase/proyectoei1039-1048-firebase-adminsdk-k0u0g-61d7b914e4.json";
-            if (!System.getProperty("user.dir").contains("backEnd")){
-                filePath= "backEnd/"+filePath;
+            if (System.getProperty("user.dir").contains("backEnd")){
+                return initializeFireBaseTest();
             }
-            FileInputStream serviceAccount = new FileInputStream(filePath);
+            FileInputStream serviceAccount = new FileInputStream("backEnd/src/main/java/com/ei10391048/project/fireBase/proyectoei1039-1048-firebase-adminsdk-k0u0g-61d7b914e4.json");
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://proyectoei1039-1048-default-rtdb.firebaseio.com")
                     .build();
             FirebaseApp.initializeApp(options);
-            db = FirestoreClient.getFirestore();
+            return FirestoreClient.getFirestore();
         } catch (IOException e) {
-
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public Firestore getDb() {
         return db;
     }
 }

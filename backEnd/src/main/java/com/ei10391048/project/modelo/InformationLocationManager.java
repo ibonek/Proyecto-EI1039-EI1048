@@ -63,11 +63,7 @@ public class InformationLocationManager {
         return list;
     }
 
-    public void changeAllAPIs(boolean active) {
-        for (API api: apiList){
-            api.setActive(active);
-        }
-    }
+
 
 
     public List<API> getApis() { return apiList; }

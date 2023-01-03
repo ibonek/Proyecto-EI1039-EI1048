@@ -57,6 +57,7 @@ public class APIManager implements ApiFacade{
 
     public  List<APIInformation> getNewsInformation() { return apiInformation.get(APIsNames.NEWS.getOrder()); }
 
+
     public List<API> getApiList(){
         return apiList;
     }
