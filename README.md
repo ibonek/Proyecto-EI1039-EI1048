@@ -95,14 +95,6 @@ The business logic of the application is completely decoupled from the user inte
 
 To get a local copy up and running follow these simple steps.
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
 ### Installation
 
 1. Clone the repo
@@ -120,11 +112,18 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+1. Open IntelliJ IDEA
+2. Run the file "backEnd/src/main/java/com/ei10391048/project/ProjectApplication.java"
+3. Go to "Run" in the top bar and click on "Edit Configurations". Then click on the "+" symbol and select the "npm" option from the list.
+![image](https://user-images.githubusercontent.com/79581464/210460538-88b20c9b-2f06-493c-ac92-5a861d78d7d2.png)
+4. In the "package.json" field, select the url of the "package.json" file located in the "frontEnd" folder. Then type in the "script" field "start" and click on the "OK" button.
+![image](https://user-images.githubusercontent.com/79581464/210461214-c5a8175f-3527-4942-a4af-7c977c8cd259.png)
+5. Go to the list of run configurations, next to the hammer ![image](https://user-images.githubusercontent.com/79581464/210461496-490c2b1e-333c-43ad-97b1-57bf846c6dc9.png)
+, and click on "start". Then click on the run button ![image](https://user-images.githubusercontent.com/79581464/210461568-544f7982-6441-4c6c-ba82-52fac80b7d87.png)
+6. Finally, go to [http://localhost:4200/](http://localhost:4200/) in your browser when the "start" console compiles successfully. It should look like this:
+![image](https://user-images.githubusercontent.com/79581464/210461803-ba8d32e5-be33-4f2b-ba38-05d4b636fe0b.png)
 
-_For more examples, please refer to the [Documentation](https://example.com)_
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- CONTACT -->
