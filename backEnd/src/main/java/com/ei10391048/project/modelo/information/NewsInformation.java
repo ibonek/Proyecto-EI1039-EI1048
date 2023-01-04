@@ -41,6 +41,13 @@ public class NewsInformation extends APIInformation{
         this.newsURL = newsURL;
     }
 
+    public void setDate(String date) {
+        String[] aux = date.split("T");
+        this.date = aux[0]+": "+aux[1];
+        if (this.date.contains("Z")){
+            this.date = this.date.substring(0,this.date.length()-1);
+        }
+    }
     @Override
     public String toString() {
         return "NewsInformation{" +

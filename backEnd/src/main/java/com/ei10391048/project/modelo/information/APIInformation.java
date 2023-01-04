@@ -38,7 +38,11 @@ public abstract class APIInformation {
     }
 
     public void setDate(String date) {
-        this.date = date;
+        String[] aux = date.split("T");
+        this.date = aux[0]+": "+aux[1];
+        if (this.date.contains("Z")){
+            this.date = this.date.substring(0,this.date.length()-1);
+        }
     }
 
     public void setImageURL(String imageURL) {
