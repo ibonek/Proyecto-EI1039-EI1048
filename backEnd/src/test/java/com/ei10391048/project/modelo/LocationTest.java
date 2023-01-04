@@ -25,8 +25,8 @@ public class LocationTest {
     }
 
     /**
-     * Test que comprueba la historia de usuario 11: Como usuario quiero asignar un alias
-     * a una ubicación, con el fin de asignar nombres personalizados a las ubicaciones.
+     * Test que comprueba la historia de usuario 11: Como usuario quiero asignar un alias a una ubicación, con el fin de
+     * asignar nombres personalizados a las ubicaciones. Escenario 1: El alias es correcto.
      */
     @Test
     void getLocationsAliasValidCase() throws IncorrectAliasException {
@@ -40,8 +40,8 @@ public class LocationTest {
 
 
     /**
-     * Test que comprueba la historia de usuario 11: Como usuario quiero asignar un alias
-     * a una ubicación, con el fin de asignar nombres personalizados a las ubicaciones.
+     * Test que comprueba la historia de usuario 11: Como usuario quiero asignar un alias a una ubicación, con el fin de
+     * asignar nombres personalizados a las ubicaciones. Escenario 2: El alias es incorrecto.
      */
     @Test
     void getLocationsAliasInvalidCase(){

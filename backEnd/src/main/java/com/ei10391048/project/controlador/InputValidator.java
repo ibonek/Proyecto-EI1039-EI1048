@@ -1,8 +1,5 @@
 package com.ei10391048.project.controlador;
 
-import com.ei10391048.project.modelo.Location;
-import com.ei10391048.project.modelo.LocationManager;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -106,16 +103,16 @@ public class InputValidator {
     }
 
     public static String formatingInputName(String input){
-        String aux = "";
+        StringBuilder aux = new StringBuilder();
         //Quitamos tildes
         input= StringUtils.stripAccents(input);
         //Ponemos inicial en primera letra de cada palabra
         for (String palabra: input.split(" ")){
-            aux += palabra.substring(0,1).toUpperCase()+ palabra.substring(1).toLowerCase();
-            aux += " ";
+            aux.append(palabra.substring(0, 1).toUpperCase()).append(palabra.substring(1).toLowerCase());
+            aux.append(" ");
         }
 
-        return aux.trim();
+        return aux.toString().trim();
     }
 
     public static List<String> generateAutocompleteList() throws IOException, InterruptedException {
@@ -139,14 +136,14 @@ public class InputValidator {
     public static String urlLocationName(String location){
         String[] aux = location.split(" ");
 
-        String urlName = aux[0];
+        StringBuilder urlName = new StringBuilder(aux[0]);
         for (int i=1;i< aux.length;i++){
             if (aux[i].equalsIgnoreCase("de") || aux[i].equalsIgnoreCase("la") || aux[i].equalsIgnoreCase("el")){
                 aux[i] = aux[i].toLowerCase();
             }
-            urlName += "_"+aux[i];
+            urlName.append("_").append(aux[i]);
         }
-        return urlName;
+        return urlName.toString();
     }
 
 }

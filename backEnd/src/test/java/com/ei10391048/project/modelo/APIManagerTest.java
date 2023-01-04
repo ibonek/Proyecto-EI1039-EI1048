@@ -8,12 +8,13 @@ import com.ei10391048.project.modelo.information.APIInformation;
 import com.ei10391048.project.modelo.user.User;
 import com.ei10391048.project.modelo.user.UserManager;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class APIManagerTest {
@@ -50,15 +51,14 @@ public class APIManagerTest {
     static void delete(){
         UserManager.getInstance().deleteAllUsers();
     }
+
     /**
      * Test que comprueba la historia de usuario 15:  Como usuario quiero consultar
      * información de múltiples ubicaciones simultáneamente con el fin de estar al
-     * corriente de novedades en todas ellas.
-     *
+     * corriente de novedades en todas ellas. Escenario 1: Hay ubicaciones activas.
      */
-
     @Test
-    public void getInfoFromAllLocationsValidTest(){
+    public void getInfoFromAllLocationsValidCase(){
         List<List<List<APIInformation>>> list = informationLocationManager.getAllActivatedInfo(user);
         assertEquals(list.size(),manager.getActiveLocations().size());
 
@@ -69,23 +69,36 @@ public class APIManagerTest {
             assertEquals(location.getApiManager().getInformation(APIsNames.EVENTS.getOrder()), list.get(i).get(APIsNames.EVENTS.getOrder()));
 
         }
-
-
     }
 
     /**
-     * Test que comprueba la historia de usuario 18:  Como usuario quiero consultar
-     * fácilmente la información de cualquiera de las ubicaciones activas por separado.
-     *
+     * Test que comprueba la historia de usuario 15: Como usuario quiero consultar
+     * información de múltiples ubicaciones simultáneamente con el fin de estar al
+     * corriente de novedades en todas ellas. Escenario 2: No hay ubicaciones activas.
      */
     @Test
-    public void getInfoFrom1LocationValidTest() {
+    public void getInfoFromAllLocationsInvalidCase(){
+        try {
+            for (Location location : manager.getActiveLocations()) {
+                manager.changeLocationState(location.getName());
+            }
+            List<List<List<APIInformation>>> list = informationLocationManager.getAllActivatedInfo(user);
+            Assertions.assertTrue(list.isEmpty());
+        } catch (IncorrectLocationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Test que comprueba la historia de usuario 18: Como usuario quiero consultar
+     * fácilmente la información de cualquiera de las ubicaciones activas por separado. Escenario 1: Hay ubicaciones activas.
+     */
+    @Test
+    public void getInfoFrom1LocationValidCase() {
         int index = 0;
         Location location = manager.getUserLocations().get(index);
         ApiFacade apiManager = location.getApiManager();
         apiManager.generateInfo(location.getName());
         assertEquals(apiManager.getInformation(APIsNames.WEATHER.getOrder()).get(0).getLocationName(), manager.getUserLocations().get(index).getName());
-
     }
-
 }

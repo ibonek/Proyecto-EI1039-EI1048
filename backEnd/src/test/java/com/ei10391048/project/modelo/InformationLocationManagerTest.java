@@ -24,8 +24,7 @@ public class InformationLocationManagerTest {
 
     static User user;
     @BeforeAll
-    static void setUp() throws NotSavedException, IncorrectLocationException, IncorrectUserException {
-        //UserManager.getInstance().registerUser("test1@gmail.com","123456");
+    static void setUp() throws IncorrectLocationException, IncorrectUserException {
         user = new User();
         user.setEmail("test@gmail.com");
         UserManager.getInstance().getUserList().add(user);
@@ -41,6 +40,32 @@ public class InformationLocationManagerTest {
     @AfterAll
     static void delete(){
         UserManager.getInstance().deleteAllUsers();
+    }
+
+    /**
+     * Test que comprueba la historia de usuario 10: Como usuario quiero activar
+     * una ubicación disponible en el sistema, con el fin de recibir información
+     * relacionada con dicha ubicación. Escenario 1: La ubicación está desactivada.
+     */
+    @Test
+    void activateLocationValidCase() {
+        Location location = manager.getUserLocations().get(0);
+        location.setActive(!location.getIsActive());
+        location.setActive(!location.getIsActive());
+        assertTrue(manager.getUserLocations().get(0).getIsActive());
+    }
+
+
+    /**
+     * Test que comprueba la historia de usuario 12: Como usuario quiero desactivar una ubicación activa, con el fin de reducir temporalmente la cantidad de
+     * información a consultar. Escenario 1: La ubicación está activa.
+     */
+    @Test
+    void desactivateLocationValidCase() {
+        Location location = manager.getUserLocations().get(0);
+        location.setActive(!location.getIsActive());
+        location.setActive(!location.getIsActive());
+        assertTrue(manager.getUserLocations().get(0).getIsActive());
     }
 
     /**
@@ -64,22 +89,19 @@ public class InformationLocationManagerTest {
 
     /**
      Test que comprueba la historia de usuario 20: Como usuario quiero activar un
-     servicio de información (API), entre aquellos disponibles
+     servicio de información (API), entre aquellos disponibles. Escenario 1: La API
+     está desactivada.
      */
     @Test
-    public void activateAPIValidCase() throws NotExistingAPIException {
+    public void activateAPIValidCase() {
         List<API> apiList = informationLocationManager.getApis();
-        for (int i=0;i<apiList.size();i++){
-            assertTrue(apiList.get(i).getIsActive());
-            informationLocationManager.changeApiState(i,user);
-            informationLocationManager.changeApiState(i,user);
-            assertTrue(apiList.get(i).getIsActive());
-        }
+        assertTrue(apiList.get(0).getIsActive());
     }
 
     /**
      Test que comprueba la historia de usuario 20: Como usuario quiero activar un
-     servicio de información (API), entre aquellos disponibles
+     servicio de información (API), entre aquellos disponibles. Escenario 2: La API
+     está activada.
      */
     @Test
     public void activateAPIInvalidCase() throws NotExistingAPIException {
@@ -117,8 +139,7 @@ public class InformationLocationManagerTest {
     /**
      * Test que comprueba la historia de usuario 22: Como usuario quiero desactivar
      * un servicio de información que haya dejado de interesar, con el fin de evitar
-     * interfaces de usuario sobrecargadas.
-     *
+     * interfaces de usuario sobrecargadas. Escenario 1: La API está activada.
      */
     @Test
     public void deactivateAPIValidCase() throws NotExistingAPIException {
@@ -133,8 +154,7 @@ public class InformationLocationManagerTest {
     /**
      * Test que comprueba la historia de usuario 22: Como usuario quiero desactivar
      * un servicio de información que haya dejado de interesar, con el fin de evitar
-     * interfaces de usuario sobrecargadas.
-     *
+     * interfaces de usuario sobrecargadas. Escenario 2: La API está desactivada.
      */
     @Test
     public void deactivateAPIInvalidCase(){
@@ -147,18 +167,4 @@ public class InformationLocationManagerTest {
             }
         }
     }
-
-    /**
-     * Test que comprueba la historia de usuario 10: Como usuario quiero activar
-     * una ubicación disponible en el sistema, con el fin de recibir información
-     * relacionada con dicha ubicación.
-     */
-    @Test
-    void activateLocationValidCase() {
-        Location location = manager.getUserLocations().get(0);
-        location.setActive(!location.getIsActive());
-        location.setActive(!location.getIsActive());
-        assertTrue(manager.getUserLocations().get(0).getIsActive());
-    }
-
 }

@@ -26,7 +26,7 @@ public class ByNameTest {
      * con el fin de evaluar su utilidad.
      */
     @Test
-    public void findLocation_invalidName() throws IncorrectLocationException {
+    public void findLocationInvalidCase() throws IncorrectLocationException {
         when(byNameMock.search()).thenThrow(new IncorrectLocationException());
 
         GeoCodService geoCodService = new GeoCodService();
@@ -49,7 +49,7 @@ public class ByNameTest {
      * con el fin de evaluar su utilidad.
      */
     @Test
-    public void registerLocation_validName() throws IncorrectLocationException, NotSavedException {
+    public void registerLocationValidCase() throws IncorrectLocationException, NotSavedException {
         Location place = new Location();
 
         place.setName("Barcelona");

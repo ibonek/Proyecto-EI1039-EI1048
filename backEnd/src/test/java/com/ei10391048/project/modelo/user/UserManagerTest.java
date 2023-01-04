@@ -20,7 +20,7 @@ public class UserManagerTest {
      * usando un correo electrónico y contraseña para que mis datos se queden almacenados.
      */
     @Test
-    public void registerValidUserTest() throws IncorrectUserException, AlreadyExistentUser {
+    public void registerValidCase() throws IncorrectUserException, AlreadyExistentUser {
         int num = manager.getNumberOfUsers();
         manager.registerUser("test@gmail.com");
         assertEquals(num+1, manager.getNumberOfUsers());
@@ -33,7 +33,7 @@ public class UserManagerTest {
      */
     @ParameterizedTest
     @MethodSource("invalidUser")
-    public void registerInvalidUserTest(String email){
+    public void registerInvalidCase(String email){
         int num = manager.getNumberOfUsers();
         try {
             manager.registerUser(email);
@@ -42,17 +42,14 @@ public class UserManagerTest {
         }
     }
 
-    static Stream<Arguments> invalidUser(){
+    static Stream<Arguments> invalidUser() {
         return Stream.of(
-                Arguments.of("",""),
-                Arguments.of(null,"1234a"),
-                Arguments.of("test@gmail.com",null),
-                Arguments.of("test@gmail.com","12"),
+                Arguments.of("", ""),
+                Arguments.of(null, "1234a"),
+                Arguments.of("test@gmail.com", null),
+                Arguments.of("test@gmail.com", "12"),
 
-                Arguments.of("test@gmail.com","ab")
-                );
+                Arguments.of("test@gmail.com", "ab")
+        );
     }
-
-
-
 }

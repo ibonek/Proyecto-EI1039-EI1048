@@ -18,9 +18,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GeoCodServiceTest {
 
     /**
-     * Test que comprueba la historia de usuario 8: Como usuario quiero validar el topónimo de una ubicación disponible en los servicios API activos, con el fin de evaluar su utilidad.
-     *
-     * @throws IncorrectLocationException
+     * Test que comprueba la historia de usuario 8: Como usuario quiero validar el topónimo de una ubicación disponible
+     * en los servicios API activos, con el fin de evaluar su utilidad. Escenario 1: El topónimo es correcto.
      */
 
      @Test
@@ -34,8 +33,8 @@ public class GeoCodServiceTest {
 
 
     /**
-     * Test que comprueba la historia de usuario 8: Como usuario quiero validar el topónimo de una ubicación disponible en los servicios API activos, con el fin de evaluar su utilidad.
-     *
+     * Test que comprueba la historia de usuario 8: Como usuario quiero validar el topónimo de una ubicación disponible
+     * en los servicios API activos, con el fin de evaluar su utilidad. Escenario 2: El topónimo es incorrecto.
      */
     @Test
     void validatePlaceNameInvalid(){
@@ -50,9 +49,9 @@ public class GeoCodServiceTest {
     }
 
     /**
-     * Test que comprueba la historia de usuario 9: Como usuario quiero validar las coordenadas geográficas de una ubicación disponible en los servicios API activos, con el fin de evaluar su utilidad.
-     *
-     * @throws IncorrectLocationException
+     * Test que comprueba la historia de usuario 9: Como usuario quiero validar las coordenadas geográficas de una
+     * ubicación disponible en los servicios API activos, con el fin de evaluar su utilidad. Escenario 1: Las coordenadas
+     * son correctas.
      */
     @Test
     public void validateCoordinatesValid() throws IncorrectLocationException {
@@ -66,11 +65,12 @@ public class GeoCodServiceTest {
     }
 
     /**
-     * Test que comprueba la historia de usuario 8: Como usuario quiero validar el topónimo de una ubicación disponible en los servicios API activos, con el fin de evaluar su utilidad.
-     *
+     * Test que comprueba la historia de usuario 9: Como usuario quiero validar las coordenadas geográficas de una
+     * ubicación disponible en los servicios API activos, con el fin de evaluar su utilidad. Escenario 2: Las coordenadas
+     * son incorrectas.
      */
     @Test
-    void validarToponimoInvalido(){
+    void validarCoordinatesInvalido(){
         try {
             Coordinates coordinates = new Coordinates(-191,-0.049);
             GeoCodService geoCodSrv = new GeoCodService();

@@ -18,7 +18,7 @@ class InputValidatorTest {
 
     @ParameterizedTest
     @MethodSource("nameDataFormat")
-    public void formatingInputNameTest(String input, String sol) {
+    public void formatingInputNameValidCase(String input, String sol) {
         assertEquals(InputValidator.formatingInputName(input), sol);
     }
 
@@ -37,7 +37,7 @@ class InputValidatorTest {
      */
     @ParameterizedTest
     @MethodSource("coordsDataFormat")
-    public void formatingInputCoordsTest(String input, double[] sol) {
+    public void formatingInputCoordsValidCase(String input, double[] sol) {
         Assert.assertArrayEquals(InputValidator.formatingInputCoords(input), sol,0.1);
     }
 
@@ -56,7 +56,7 @@ class InputValidatorTest {
      */
     @ParameterizedTest
     @MethodSource("transformCoordsData")
-    public void transformCoordsTest(String coord, double value){
+    public void transformCoordsValidCase(String coord, double value){
         assertEquals(InputValidator.transformCoords(coord),value,0.1);
     }
     static Stream<Arguments> transformCoordsData() {
@@ -75,7 +75,7 @@ class InputValidatorTest {
      */
     @ParameterizedTest
     @MethodSource("urlLocationData")
-    public void urlLocationName(String input, String sol){
+    public void urlLocationNameValidCase(String input, String sol){
         assertEquals(InputValidator.urlLocationName(input),sol);
     }
 
@@ -91,7 +91,7 @@ class InputValidatorTest {
      */
     @ParameterizedTest
     @MethodSource("NameOrCoordData")
-    public void isCoordinatesTest(String input, boolean sol){
+    public void isCoordinatesTestValidCase(String input, boolean sol){
         assertEquals(InputValidator.isCoordinates(input),sol);
     }
 

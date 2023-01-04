@@ -90,7 +90,7 @@ public class CRUDFireBase {
             throw new IncorrectUserException();
         }
         if (document==null){
-            return;
+            throw new IncorrectUserException();
         }
         deleteUserAPIs(email);
         deleteUserLocations(email);

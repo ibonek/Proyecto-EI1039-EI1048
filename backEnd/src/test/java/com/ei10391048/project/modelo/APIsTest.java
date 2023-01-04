@@ -33,7 +33,7 @@ public class APIsTest {
      * activas por separado.
      */
     @Test
-    public void getInfo_API(){
+    public void getInfoAPIValidCase(){
         WeatherInformation info = new WeatherInformation();
         info.setWeatherState("Cloudy");
         list.add(info);

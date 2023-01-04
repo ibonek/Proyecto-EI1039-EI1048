@@ -1,8 +1,5 @@
 package com.ei10391048.project.modelo;
 
-
-import java.util.Objects;
-
 public class Coordinates {
     private double lat;
     private double lon;

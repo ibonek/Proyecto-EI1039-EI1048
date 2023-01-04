@@ -30,7 +30,7 @@ public class ByCoordinatesTest {
      * API activos, con el fin de evaluar su utilidad.
      */
     @Test
-    public void findLocation_validCoords() throws IncorrectLocationException, NotSavedException, IncorrectUserException {
+    public void findLocationValidCase() throws IncorrectLocationException, NotSavedException, IncorrectUserException {
         Location place = new Location();
         place.setCoordinates(new Coordinates(-3.7025600,40.4165000));
         LocationManager manager = Mockito.spy(new LocationManager());
@@ -49,7 +49,7 @@ public class ByCoordinatesTest {
      * API activos, con el fin de evaluar su utilidad.
      */
     @Test
-    public void findLocation_invalidCoords() throws IncorrectLocationException{
+    public void findLocationInvalidCase() throws IncorrectLocationException{
         when(byCoordinatesMock.search()).thenThrow(new IncorrectLocationException());
 
         GeoCodService geoCodService = new GeoCodService();
