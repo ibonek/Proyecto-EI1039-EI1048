@@ -37,7 +37,6 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -134,7 +133,7 @@ Mónica Pitarch Ruiz - al394883@uji.es
 David del Río López - al394756@uji.es
 
 Carlos Feliu Usó    - al394759@uji.es
-
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- ACKNOWLEDGEMENTS -->
@@ -144,7 +143,8 @@ Carlos Feliu Usó    - al394759@uji.es
 * [Angular Guide](https://angular.io/guide/what-is-angular)
 * [Building a Web Application with Spring Boot and Angular by Alejandro Ugarte](https://www.baeldung.com/spring-boot-angular-web)
 * [Firebase Documentation](https://firebase.google.com/docs/build)
-* 
+* [OpenWeatherMap Java API](https://github.com/Prominence/openweathermap-java-api.git)
+* [Best-README-Template](https://github.com/othneildrew/Best-README-Template.git)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
